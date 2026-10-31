@@ -1,0 +1,379 @@
+\documentclass{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{tikz}
+
+\setbeamertemplate{navigation symbols}{}
+
+\newtheorem*{definicja}{Definicja}
+\newtheorem*{twierdzenie}{Twierdzenie}
+\newtheorem*{stwierdzenie}{Stwierdzenie}
+\newtheorem*{lemat}{Lemat}
+\newtheorem*{przyklad}{Przykład}
+\newtheorem*{uwaga}{Uwaga}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+
+\title{Czy punkt musi być w odległości zero od siebie?}
+\subtitle{Przestrzenie częściowo metryczne}
+\author{Adrian Madajewski}
+\institute{Wydział Matematyki i Informatyki UAM}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Plan}
+  \begin{enumerate}
+    \item Przestrzenie metryczne i ich topologia
+    \item Przestrzenie częściowo metryczne
+    \item Topologia w przestrzeniach częściowo metrycznych
+    \item Zupełność i twierdzenie o punkcie stałym
+  \end{enumerate}
+\end{frame}
+
+% ------------------------------------------------------------------
+\section{Przestrzenie metryczne}
+
+\begin{frame}{Przestrzeń metryczna}
+  \begin{definicja}
+    \emph{Metryką} na zbiorze $X$ nazywamy funkcję $d\colon X\times X\to[0,\infty)$,
+    która dla wszystkich $x,y,z\in X$ spełnia warunki
+    \begin{enumerate}
+      \item[(M1)] $d(x,y)=0 \iff x=y$,
+      \item[(M2)] $d(x,y)=d(y,x)$,
+      \item[(M3)] $d(x,z)\le d(x,y)+d(y,z)$.
+    \end{enumerate}
+    Parę $(X,d)$ nazywamy \emph{przestrzenią metryczną}.
+  \end{definicja}
+
+  \begin{przyklad}
+    $X\coloneqq\R$, $d(x,y)\coloneqq|x-y|$.
+  \end{przyklad}
+\end{frame}
+
+\begin{frame}{Topologia w przestrzeni metrycznej}
+  \begin{definicja}
+    \emph{Kulą} o środku $x\in X$ i promieniu $\varepsilon>0$ nazywamy zbiór
+    \[
+      B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}.
+    \]
+    Zbiór $U\subset X$ jest \emph{otwarty}, gdy dla każdego $x\in U$ istnieje
+    $\varepsilon>0$ takie, że $B_d(x,\varepsilon)\subset U$.
+  \end{definicja}
+
+  \begin{itemize}
+    \item Ciąg $(x_n)_{n\in\N}\subset X$ jest zbieżny do $x\in X$ wtedy i tylko
+          wtedy, gdy $\lim_{n\to\infty}d(x,x_n)=0$.
+    \item Przestrzeń jest Hausdorffa. Dla $x\neq y$ kule
+          $B_d\bigl(x,\tfrac{d(x,y)}{2}\bigr)$ i $B_d\bigl(y,\tfrac{d(x,y)}{2}\bigr)$ są rozłączne.
+    \item W szczególności granica ciągu jest jedyna. Ciąg stały $x_n=a$ dla
+          $n\in\N$ jest zbieżny tylko do $a$.
+  \end{itemize}
+\end{frame}
+
+% ------------------------------------------------------------------
+\section{Przestrzenie częściowo metryczne}
+
+\begin{frame}{Przestrzeń częściowo metryczna}
+  Rezygnujemy z warunku $d(x,x)=0$.
+
+  \begin{definicja}
+    \emph{Metryką częściową} na zbiorze $X$ nazywamy funkcję
+    $p\colon X\times X\to[0,\infty)$, która dla wszystkich $x,y,z\in X$ spełnia warunki
+    \begin{enumerate}
+      \item[(P1)] $x=y \iff p(x,x)=p(x,y)=p(y,y)$,
+      \item[(P2)] $p(x,x)\le p(x,y)$,
+      \item[(P3)] $p(x,y)=p(y,x)$,
+      \item[(P4)] $p(x,z)\le p(x,y)+p(y,z)-p(y,y)$.
+    \end{enumerate}
+    Parę $(X,p)$ nazywamy \emph{przestrzenią częściowo metryczną}.
+  \end{definicja}
+
+  \begin{itemize}
+    \item (P1) przejmuje rolę rozróżniania punktów.
+    \item (P2) mówi, że żaden punkt nie jest bliżej $x$ niż samo $x$.
+    \item (P4) jest silniejsza od zwykłej nierówności trójkąta, bo odejmujemy $p(y,y)$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Metryka jako szczególny przypadek}
+  \begin{stwierdzenie}
+    Jeżeli $p$ jest metryką częściową na $X$ i $p(x,x)=0$ dla każdego $x\in X$,
+    to $p$ jest metryką.
+  \end{stwierdzenie}
+
+  \begin{proof}
+    Warunek (M2) to (P3). Warunek (M3) dostajemy, podstawiając $p(y,y)=0$ do (P4).
+
+    Dla (M1) zauważmy, że jeśli $x=y$, to $p(x,y)=p(x,x)=0$.
+    Jeśli natomiast $p(x,y)=0$, to $p(x,x)=p(x,y)=p(y,y)=0$, więc z (P1) mamy $x=y$.
+  \end{proof}
+
+  \medskip
+  Metryki to dokładnie te metryki częściowe, w których każdy punkt jest
+  \emph{w pełni określony}. Dodatnia wartość $p(x,x)$ mierzy, jak bardzo punkt $x$
+  jest niedookreślony.
+\end{frame}
+
+\begin{frame}{Przykład podstawowy}
+  \begin{przyklad}
+    $X\coloneqq[0,\infty)$, $p(x,y)\coloneqq\max\{x,y\}$. W szczególności $p(x,x)=x$.
+  \end{przyklad}
+
+  \begin{itemize}
+    \item (P1) $x=\max\{x,y\}=y$ zachodzi wtedy i tylko wtedy, gdy $x=y$.
+    \item (P2) $x\le\max\{x,y\}$.
+    \item (P3) jest oczywiste.
+    \item (P4) Przez symetrię możemy założyć, że $\max\{x,z\}=x$. Ponieważ
+          $\max\{x,y\}\ge x$ oraz $\max\{y,z\}\ge y$, mamy
+          \[
+            \max\{x,y\}+\max\{y,z\}-y \;\ge\; x+y-y \;=\; x \;=\; \max\{x,z\}.
+          \]
+  \end{itemize}
+
+  \medskip
+  Ten przykład będzie nam towarzyszył przez cały referat.
+\end{frame}
+
+\begin{frame}{Inne przykłady}
+  \begin{przyklad}
+    Niech $X$ będzie zbiorem przedziałów domkniętych $[a,b]\subset\R$ i
+    \[
+      p\bigl([a,b],[c,d]\bigr)\coloneqq\max\{b,d\}-\min\{a,c\},
+    \]
+    czyli długość najmniejszego przedziału zawierającego oba przedziały.
+    Wtedy $p\bigl([a,b],[a,b]\bigr)=b-a$.
+  \end{przyklad}
+
+  \begin{przyklad}
+    Niech $(X,d)$ będzie przestrzenią metryczną i $c>0$. Wtedy
+    $p(x,y)\coloneqq d(x,y)+c$ jest metryką częściową, w której $p(x,x)=c$.
+    Warunek (P4) sprowadza się do
+    $d(x,z)+c\le d(x,y)+c+d(y,z)+c-c$, czyli do (M3).
+  \end{przyklad}
+\end{frame}
+
+% ------------------------------------------------------------------
+\section{Topologia}
+
+\begin{frame}{Kule w przestrzeni częściowo metrycznej}
+  \begin{definicja}
+    \emph{Kulą} o środku $x\in X$ i promieniu $\varepsilon>0$ nazywamy zbiór
+    \[
+      B_p(x,\varepsilon)\coloneqq\{y\in X : p(x,y)<p(x,x)+\varepsilon\}.
+    \]
+  \end{definicja}
+
+  \begin{lemat}
+    Jeżeli $y\in B_p(x,\varepsilon)$, to istnieje $\delta>0$ takie, że
+    $B_p(y,\delta)\subset B_p(x,\varepsilon)$.
+  \end{lemat}
+
+  \begin{proof}
+    Niech $\delta\coloneqq p(x,x)+\varepsilon-p(x,y)>0$ i $z\in B_p(y,\delta)$. Z (P4)
+    \[
+      p(x,z)\le p(x,y)+p(y,z)-p(y,y) < p(x,y)+\delta = p(x,x)+\varepsilon. \qedhere
+    \]
+  \end{proof}
+
+  Zatem kule tworzą bazę pewnej topologii $\tau_p$ na $X$.
+  Tu właśnie potrzebne jest odjęcie $p(y,y)$ w (P4).
+\end{frame}
+
+\begin{frame}{Własności topologii $\tau_p$}
+  \begin{stwierdzenie}
+    Topologia $\tau_p$ spełnia aksjomat $T_0$.
+  \end{stwierdzenie}
+  \begin{proof}
+    Niech $x\neq y$. Z (P1) i (P2) mamy $p(x,x)<p(x,y)$ lub $p(y,y)<p(x,y)$.
+    W pierwszym przypadku dla $\varepsilon\coloneqq p(x,y)-p(x,x)$ jest
+    $y\notin B_p(x,\varepsilon)$. Drugi przypadek jest symetryczny.
+  \end{proof}
+
+  \begin{stwierdzenie}
+    Ciąg $(x_n)_{n\in\N}\subset X$ jest zbieżny do $x\in X$ w $\tau_p$ wtedy i tylko
+    wtedy, gdy $\lim_{n\to\infty}p(x,x_n)=p(x,x)$.
+  \end{stwierdzenie}
+  \begin{proof}
+    Z lematu kule $B_p(x,\varepsilon)$, $\varepsilon>0$, tworzą bazę otoczeń punktu $x$.
+    Warunek $x_n\in B_p(x,\varepsilon)$ oznacza $p(x,x_n)<p(x,x)+\varepsilon$,
+    a z (P2) zawsze $p(x,x)\le p(x,x_n)$.
+  \end{proof}
+\end{frame}
+
+\begin{frame}{Przykład: ciąg $x_n=0$}
+  W przestrzeni $\bigl([0,\infty),\max\bigr)$ rozważmy ciąg
+  $(x_n)_{n\in\N}\subset[0,\infty)$, $x_n\coloneqq 0$.
+
+  \medskip
+  Dla dowolnego $x\in[0,\infty)$ mamy
+  \[
+    p(x,x_n)=\max\{x,0\}=x=p(x,x),
+  \]
+  więc ciąg $(x_n)_{n\in\N}$ jest zbieżny do \emph{każdego} punktu przestrzeni.
+
+  \medskip
+  Kule mają postać $B_p(x,\varepsilon)=[0,x+\varepsilon)$, więc każde otoczenie
+  dowolnego punktu zawiera $0$. Przestrzeń nie spełnia nawet aksjomatu $T_1$.
+
+  \begin{center}
+    \begin{tikzpicture}[scale=1.6]
+      \draw[->] (-0.2,0) -- (4.3,0);
+      \foreach \t in {0,1,2,3,4} {
+        \draw (\t,0.06) -- (\t,-0.06) node[below] {$\t$};
+      }
+      \draw[very thick,blue] (0,0) -- (3,0);
+      \fill[blue] (0,0) circle (1.5pt);
+      \draw[blue,fill=white] (3,0) circle (1.5pt);
+      \node[above,blue] at (1.5,0.05) {$B_p(2,1)=[0,3)$};
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+% ------------------------------------------------------------------
+% ------------------------------------------------------------------
+\section{Zupełność i punkty stałe}
+
+\begin{frame}{Zupełność}
+  \begin{definicja}
+    Ciąg $(x_n)_{n\in\N}\subset X$ jest \emph{ciągiem Cauchy'ego}, gdy istnieje
+    $a\in[0,\infty)$ takie, że dla każdego $\varepsilon>0$ istnieje $N\in\N$
+    spełniające $|p(x_n,x_m)-a|<\varepsilon$ dla $n,m\ge N$.
+    Piszemy wtedy $a=\lim_{n,m\to\infty}p(x_n,x_m)$.
+
+    \smallskip
+    Przestrzeń $(X,p)$ jest \emph{zupełna}, gdy dla każdego ciągu Cauchy'ego
+    $(x_n)_{n\in\N}\subset X$ istnieje $x\in X$ takie, że
+    \[
+      p(x,x)=\lim_{n\to\infty}p(x,x_n)=\lim_{n,m\to\infty}p(x_n,x_m).
+    \]
+  \end{definicja}
+
+  \begin{uwaga}
+    Wzór $d_p(x,y)\coloneqq 2p(x,y)-p(x,x)-p(y,y)$ definiuje metrykę na $X$, oraz
+    $(X,p)$ jest zupełna wtedy i tylko wtedy, gdy $(X,d_p)$ jest zupełna.
+    W $\bigl([0,\infty),\max\bigr)$ mamy $d_p(x,y)=|x-y|$.
+  \end{uwaga}
+\end{frame}
+
+\begin{frame}{Przykład zupełnej przestrzeni}
+  \begin{przyklad}
+    Przestrzeń $\bigl([0,\infty),\max\bigr)$ jest zupełna.
+  \end{przyklad}
+
+  Niech $(x_n)_{n\in\N}\subset[0,\infty)$ będzie ciągiem Cauchy'ego i
+  $L\coloneqq\lim_{n,m\to\infty}\max\{x_n,x_m\}$.
+
+  \begin{enumerate}
+    \item \emph{Kandydat na granicę.} Dla $m=n$ dostajemy
+          $x_n=\max\{x_n,x_n\}\to L$, więc $L$ jest granicą ciągu $(x_n)_{n\in\N}$ w $\R$.
+          Kładziemy $x\coloneqq L$.
+    \item \emph{Zbieżność.} $p(x,x_n)=\max\{L,x_n\}\to L=p(x,x)$, co jest równe
+          $\lim_{n,m\to\infty}p(x_n,x_m)$.
+    \item \emph{Przynależność.} $L\ge 0$ jako granica liczb nieujemnych,
+          więc $x\in[0,\infty)$.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Twierdzenie o punkcie stałym}
+  \begin{definicja}
+    Odwzorowanie $f\colon X\to X$ jest \emph{kontrakcją}, gdy istnieje
+    $c\in[0,1)$ takie, że
+    \[
+      p\bigl(f(x),f(y)\bigr)\le c\,p(x,y)\qquad\text{dla wszystkich } x,y\in X.
+    \]
+  \end{definicja}
+
+  \begin{przyklad}
+    W $\bigl([0,\infty),\max\bigr)$ funkcja $f(x)\coloneqq x/2$ jest kontrakcją ze
+    stałą $c=\tfrac12$.
+  \end{przyklad}
+
+  \begin{twierdzenie}
+    Niech $(X,p)$ będzie zupełną przestrzenią częściowo metryczną, a
+    $f\colon X\to X$ kontrakcją. Wtedy $f$ ma dokładnie jeden punkt stały $x^*$.
+    Ponadto $p(x^*,x^*)=0$.
+  \end{twierdzenie}
+
+  \medskip
+  Gdy $p$ jest metryką, jest to klasyczne twierdzenie Banacha.
+\end{frame}
+
+\begin{frame}{Dowód (1/2)}
+  Ustalmy $x_0\in X$ i określmy ciąg $(x_n)_{n\in\N}\subset X$ wzorem
+  $x_n\coloneqq f(x_{n-1})$.
+
+  \medskip
+  \emph{Krok 1.} Indukcyjnie $p(x_n,x_{n+1})\le c^n\,p(x_0,x_1)$.
+
+  \medskip
+  \emph{Krok 2.} Dla $m>n$ z (P4), pomijając nieujemny wyraz $p(x_{n+1},x_{n+1})$,
+  \[
+    p(x_n,x_m)\le p(x_n,x_{n+1})+p(x_{n+1},x_m).
+  \]
+  Iterując, dostajemy
+  \[
+    p(x_n,x_m)\le\sum_{k=n}^{m-1}c^k\,p(x_0,x_1)\le\frac{c^n}{1-c}\,p(x_0,x_1).
+  \]
+  Dla $m=n$ z (P2) mamy $p(x_n,x_n)\le p(x_n,x_{n+1})\le c^n\,p(x_0,x_1)$.
+  Zatem $\lim_{n,m\to\infty}p(x_n,x_m)=0$ i ciąg jest ciągiem Cauchy'ego.
+
+  \medskip
+  \emph{Krok 3.} Z zupełności istnieje $x^*\in X$ takie, że
+  \[
+    p(x^*,x^*)=\lim_{n\to\infty}p(x^*,x_n)=0.
+  \]
+\end{frame}
+
+\begin{frame}{Dowód (2/2)}
+  \emph{Krok 4.} Z (P4) i z warunku kontrakcji
+  \begin{align*}
+    p\bigl(x^*,f(x^*)\bigr)&\le p(x^*,x_{n+1})+p\bigl(f(x_n),f(x^*)\bigr)-p(x_{n+1},x_{n+1})\\
+    &\le p(x^*,x_{n+1})+c\,p(x_n,x^*).
+  \end{align*}
+  Prawa strona dąży do $0$, więc $p\bigl(x^*,f(x^*)\bigr)=0$.
+  Z (P2) mamy też $p(x^*,x^*)=p\bigl(f(x^*),f(x^*)\bigr)=0$, więc z (P1)
+  $f(x^*)=x^*$.
+
+  \medskip
+  \emph{Krok 5.} Jeśli $f(y^*)=y^*$, to
+  \[
+    p(x^*,y^*)=p\bigl(f(x^*),f(y^*)\bigr)\le c\,p(x^*,y^*),
+  \]
+  więc $p(x^*,y^*)=0$. Z (P2) i (P1) dostajemy $y^*=x^*$. \qed
+\end{frame}
+
+\begin{frame}{Podsumowanie}
+  \begin{itemize}
+    \item Dodatnia wartość $p(x,x)$ opisuje informację częściową.
+          Gdy $p(x,x)=0$ dla każdego $x$, wracamy do metryki.
+    \item Topologia $\tau_p$ jest $T_0$, ale na ogół nie $T_1$.
+          Granice ciągów nie są jednoznaczne.
+    \item Twierdzenie Banacha przenosi się na zupełne przestrzenie częściowo
+          metryczne, a punkt stały jest w pełni określony.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Literatura}
+  \begin{itemize}
+    \item S.\,G.~Matthews, \emph{Partial Metric Topology},
+          Annals of the New York Academy of Sciences 728 (1994), 183--197.
+  \end{itemize}
+
+  \vfill
+  \begin{center}
+    \Large Dziękuję za uwagę!
+  \end{center}
+  \vfill
+\end{frame}
+
+\end{document}
