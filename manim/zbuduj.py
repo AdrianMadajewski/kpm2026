@@ -13,6 +13,7 @@ import sys
 SCENY = [
     ("s00_tytul.py", "Tytul"),
     ("s01_plan.py", "Plan"),
+    ("s02_metryka.py", "PrzestrzenMetryczna"),
     ("s08_kule.py", "Kule"),
 ]
 
