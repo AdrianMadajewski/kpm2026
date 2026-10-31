@@ -23,7 +23,7 @@ class MetrykaCzesciowa(Slide):
         p2 = aksjomat(r"(P2)", r"p(x,x)\le p(x,y)")
         p3 = aksjomat(r"(P3)", r"p(x,y)=p(y,x)")
         p4 = aksjomat(r"(P4)", r"p(x,z)\le p(x,y)+p(y,z)", r"-p(y,y)")
-        p4[1][1].set_color(KOLOR_SAMO)
+        p4[1][1].set_color(KOLOR_CZESCIOWA)
         aks_p = VGroup(p1, p2, p3, p4).arrange(DOWN, aligned_edge=LEFT, buff=0.28)
         nazwa = VGroup(
             Tex(r"Parę $(X,p)$ nazywamy", font_size=32),
@@ -75,7 +75,8 @@ class MetrykaCzesciowa(Slide):
         self.play(TransformMatchingShapes(m1, p1), run_time=1.2)
         self.play(FadeIn(p2, shift=0.2 * RIGHT))
         self.play(FadeIn(p4[1][1], shift=0.3 * LEFT))
-        self.play(Indicate(p4[1][1], color=KOLOR_SAMO, scale_factor=1.2))
+        self.play(Indicate(p4[1][1], color=KOLOR_CZESCIOWA, scale_factor=1.2))
+        self.play(p4[1][1].animate.set_color(KOLOR_TEKST))
         self.next_slide()
 
         # Krok 4: komentarze przy zmienionych aksjomatach.
