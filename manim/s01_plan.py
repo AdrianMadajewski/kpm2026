@@ -9,11 +9,15 @@ class Plan(Slide):
         wiersze, strzalki = plan
 
         self.play(Write(naglowek))
+        self.next_slide()
+
+        # Każdy punkt planu na osobne kliknięcie.
         self.play(FadeIn(wiersze[0], shift=0.2 * RIGHT))
+        self.next_slide()
         for i in range(1, len(wiersze)):
             self.play(GrowArrow(strzalki[i - 1]), run_time=0.4)
             self.play(FadeIn(wiersze[i], shift=0.2 * RIGHT), run_time=0.7)
-        self.next_slide()
+            self.next_slide()
 
         # Przejście do pierwszej sekcji: wyróżnienie punktu 1.
         cel = plan_referatu(aktywny=0).move_to(plan)
