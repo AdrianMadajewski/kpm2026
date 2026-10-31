@@ -15,7 +15,8 @@ config.tex_template = SZABLON
 config.background_color = WHITE
 KOLOR_TEKST = BLACK
 KOLOR_DRUGORZEDNY = GRAY_D   # podtytuły, opisy
-for klasa in (Tex, MathTex, Text, Dot, Line, Arrow, Arc, NumberLine, Axes):
+for klasa in (Tex, MathTex, Text, Dot, Line, Arrow, Arc, NumberLine, Axes,
+              DecimalNumber, Integer):
     klasa.set_default(color=KOLOR_TEKST)
 
 # Stałe kolory w całej prezentacji (ciemniejsze odcienie, czytelne na białym).

@@ -5,7 +5,7 @@ from common import *
 class Tytul(Slide):
     def construct(self):
         tytul = Tex(
-            r"Czy punkt musi być w odległości\\zero od siebie?",
+            r"Czy odległość punktu od samego siebie\\musi być zerowa?",
             font_size=60,
         ).to_edge(UP, buff=0.8)
         podtytul = Tex(
