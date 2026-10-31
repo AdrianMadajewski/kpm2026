@@ -226,14 +226,18 @@ class Oddzielanie(Slide):
         o2a = owal(srodek(p2) + 0.5 * LEFT, 1.6, KOLOR_METRYKA)
         o2b = owal(srodek(p2) + 0.5 * RIGHT, 1.6, KOLOR_CZESCIOWA)
 
+        def_osd[0].become(tlo_dla(def_osd, wstep_osd))
         self.play(FadeIn(def_osd[0]), FadeIn(def_osd[1]), FadeIn(wstep_osd))
         self.next_slide()
+        self.play(dopasuj_ramke(def_osd, wstep_osd, p0))
         self.play(FadeIn(VGroup(*p0[:6])))
         self.play(FadeIn(o0), FadeIn(p0[6]))
         self.next_slide()
+        self.play(dopasuj_ramke(def_osd, wstep_osd, p0, p1))
         self.play(FadeIn(VGroup(*p1[:6])))
         self.play(FadeIn(o1a), FadeIn(o1b), FadeIn(p1[6]))
         self.next_slide()
+        self.play(dopasuj_ramke(def_osd, wstep_osd, p0, p1, p2))
         self.play(FadeIn(VGroup(*p2[:6])))
         self.play(FadeIn(o2a), FadeIn(o2b))
         # Owale odsuwają się i zwężają, aż przestaną się przecinać.

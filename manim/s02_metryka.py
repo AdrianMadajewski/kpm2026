@@ -68,6 +68,7 @@ class PrzestrzenMetryczna(Slide):
 
         # Krok 1: definicja i przestrzeń.
         self.play(FadeIn(naglowek))
+        definicja[0].become(tlo_dla(definicja, wstep))
         self.play(FadeIn(definicja[0]), FadeIn(definicja[1]))
         self.play(FadeIn(wstep, shift=0.2 * RIGHT))
         self.play(Create(ax), FadeIn(podpis_ax))
@@ -77,6 +78,7 @@ class PrzestrzenMetryczna(Slide):
 
         # Krok 2: (M1) — y dojeżdża do x, odległość spada do zera.
         ramka = SurroundingRectangle(m1, color=KOLOR_METRYKA, buff=0.12, corner_radius=0.08)
+        self.play(dopasuj_ramke(definicja, wstep, m1))
         self.play(FadeIn(m1, shift=0.2 * RIGHT), Create(ramka))
         self.play(py[0].animate.set_value(px[0]), py[1].animate.set_value(px[1]), run_time=2.5)
         self.wait(0.5)
@@ -84,6 +86,7 @@ class PrzestrzenMetryczna(Slide):
         self.next_slide()
 
         # Krok 3: (M2) — strzałki w obie strony mają tę samą długość.
+        self.play(dopasuj_ramke(definicja, wstep, m1, m2))
         self.play(FadeIn(m2, shift=0.2 * RIGHT), Transform(ramka, SurroundingRectangle(
             m2, color=KOLOR_METRYKA, buff=0.12, corner_radius=0.08)))
         yv = wsp_y()
@@ -99,6 +102,7 @@ class PrzestrzenMetryczna(Slide):
 
         # Krok 4: (M3) — trójkąt i „rozprostowanie” dwóch boków.
         self.play(FadeOut(VGroup(tam, z_pow, e_tam, e_zpow)), FadeOut(wartosc))
+        self.play(dopasuj_ramke(definicja, wstep, m1, m2, m3))
         self.play(FadeIn(m3, shift=0.2 * RIGHT), Transform(ramka, SurroundingRectangle(
             m3, color=KOLOR_METRYKA, buff=0.12, corner_radius=0.08)))
         pz = np.array([2.0, 2.8])
@@ -137,5 +141,6 @@ class PrzestrzenMetryczna(Slide):
         self.next_slide()
 
         # Krok 6: nazwa przestrzeni.
-        self.play(FadeOut(ramka), FadeIn(nazwa, shift=0.2 * RIGHT))
+        self.play(FadeOut(ramka), dopasuj_ramke(definicja, wstep, m1, m2, m3, nazwa))
+        self.play(FadeIn(nazwa, shift=0.2 * RIGHT))
         self.next_slide()

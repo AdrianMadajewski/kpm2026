@@ -94,7 +94,23 @@ def blok(tresc, rodzaj="Definicja", szerokosc=None):
     if szerokosc is not None and tlo.width < szerokosc:
         tlo.stretch_to_fit_width(szerokosc).align_to(calosc, LEFT).shift(0.25 * LEFT)
     tlo.set_fill(tlo_kolor, 1)
-    return VGroup(tlo, naglowek, tresc)
+    wynik = VGroup(tlo, naglowek, tresc)
+    wynik.rodzaj = rodzaj
+    return wynik
+
+
+def tlo_dla(b, *widoczne):
+    """Ramka bloku `b` dopasowana do nagłówka i aktualnie widocznych fragmentów."""
+    tlo_kolor, kolor = STYL_BLOKU[b.rodzaj]
+    return SurroundingRectangle(
+        VGroup(b[1], *widoczne), buff=0.25, corner_radius=0.12,
+        color=kolor, stroke_width=2.5,
+    ).set_fill(tlo_kolor, 1)
+
+
+def dopasuj_ramke(b, *widoczne):
+    """Animacja wydłużenia ramki bloku do nowo odkrytej treści."""
+    return Transform(b[0], tlo_dla(b, *widoczne))
 
 
 # Bez generowania odwróconych animacji (bardzo wydłuża budowanie).
