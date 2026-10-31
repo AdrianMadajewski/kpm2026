@@ -95,3 +95,8 @@ def blok(tresc, rodzaj="Definicja", szerokosc=None):
         tlo.stretch_to_fit_width(szerokosc).align_to(calosc, LEFT).shift(0.25 * LEFT)
     tlo.set_fill(tlo_kolor, 1)
     return VGroup(tlo, naglowek, tresc)
+
+
+# Bez generowania odwróconych animacji (bardzo wydłuża budowanie).
+from manim_slides import Slide as _Slide
+_Slide.skip_reversing = True

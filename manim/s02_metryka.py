@@ -24,7 +24,10 @@ class PrzestrzenMetryczna(Slide):
         m2 = aksjomat(r"(M2)", r"d(x,y)=d(y,x)")
         m3 = aksjomat(r"(M3)", r"d(x,z)\le d(x,y)+d(y,z)")
         aksjomaty = VGroup(m1, m2, m3).arrange(DOWN, aligned_edge=LEFT, buff=0.35)
-        nazwa = Tex(r"Parę $(X,d)$ nazywamy \emph{przestrzenią metryczną}.", font_size=32)
+        nazwa = VGroup(
+            Tex(r"Parę $(X,d)$ nazywamy", font_size=32),
+            Tex(r"\emph{przestrzenią metryczną}.", font_size=32),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
         lewa = VGroup(wstep, aksjomaty, nazwa).arrange(DOWN, aligned_edge=LEFT, buff=0.5)
         definicja = blok(lewa, "Definicja")
         definicja.to_edge(LEFT, buff=0.4).shift(0.2 * DOWN)
