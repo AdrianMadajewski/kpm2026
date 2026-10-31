@@ -23,3 +23,47 @@ for klasa in (Tex, MathTex, Text, Dot, Line, Arrow, Arc, NumberLine, Axes,
 KOLOR_METRYKA = BLUE_D       # zwykła metryka d
 KOLOR_CZESCIOWA = ManimColor("#E06C00")  # metryka częściowa p
 KOLOR_SAMO = RED_D           # odległość punktu od siebie p(x,x)
+
+
+# Plan referatu (te same punkty co w wersji Beamer).
+PUNKTY_PLANU = [
+    r"Przestrzenie metryczne i ich topologia",
+    r"Przestrzenie częściowo metryczne",
+    r"Topologia w przestrzeniach częściowo metrycznych",
+    r"Zupełność i twierdzenie o punkcie stałym",
+]
+
+
+def plan_referatu(aktywny=None):
+    """Lista punktów planu w ramkach połączonych strzałkami.
+
+    aktywny -- numer punktu (od 0) do wyróżnienia albo None.
+    """
+    wiersze = VGroup()
+    for i, tekst in enumerate(PUNKTY_PLANU):
+        numer = Tex(rf"{i + 1}.", font_size=38)
+        opis = Tex(tekst, font_size=38)
+        wiersz = VGroup(numer, opis).arrange(RIGHT, buff=0.3)
+        ramka = SurroundingRectangle(
+            wiersz, buff=0.2, corner_radius=0.1, color=GRAY_C, stroke_width=2
+        )
+        wiersze.add(VGroup(ramka, wiersz))
+    # Ramki o jednakowej szerokości, wyrównane do lewej.
+    szer = max(w[0].width for w in wiersze)
+    for w in wiersze:
+        w[0].stretch_to_fit_width(szer).align_to(w[1], LEFT).shift(0.2 * LEFT)
+    wiersze.arrange(DOWN, buff=0.45, aligned_edge=LEFT)
+    strzalki = VGroup(*[
+        Arrow(wiersze[i][0].get_bottom(), wiersze[i + 1][0].get_top(),
+              buff=0.05, stroke_width=3, max_tip_length_to_length_ratio=0.35,
+              color=GRAY_C)
+        for i in range(len(wiersze) - 1)
+    ])
+    if aktywny is not None:
+        for i, w in enumerate(wiersze):
+            if i == aktywny:
+                w[0].set_stroke(KOLOR_CZESCIOWA, width=4)
+            else:
+                w[0].set_stroke(opacity=0.35)
+                w[1].set_opacity(0.35)
+    return VGroup(wiersze, strzalki)
