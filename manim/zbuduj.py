@@ -15,6 +15,7 @@ SCENY = [
     ("s01_plan.py", "Plan"),
     ("s02_metryka.py", "PrzestrzenMetryczna"),
     ("s03_topologia_metryczna.py", "TopologiaMetryczna"),
+    ("s03_topologia_metryczna.py", "Oddzielanie"),
     ("s08_kule.py", "Kule"),
 ]
 

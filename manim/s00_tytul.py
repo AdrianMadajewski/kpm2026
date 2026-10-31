@@ -28,7 +28,7 @@ class Tytul(Slide):
         self.next_slide()
 
         # Tytuł.
-        self.play(Write(tytul), run_time=2)
+        self.play(FadeIn(tytul), run_time=2)
         self.next_slide()
 
         # Podtytuł.
@@ -49,8 +49,8 @@ class Tytul(Slide):
         wzor_d = MathTex(r"d(x,x) = 0", font_size=40, color=KOLOR_METRYKA)
         wzor_d.next_to(petla, RIGHT, buff=0.4)
 
-        self.play(FadeIn(punkt, scale=0.5), Write(etykieta_x))
-        self.play(Create(petla), Write(wzor_d))
+        self.play(FadeIn(punkt, scale=0.5), FadeIn(etykieta_x))
+        self.play(Create(petla), FadeIn(wzor_d))
         self.next_slide()
 
         # A gdyby nie?

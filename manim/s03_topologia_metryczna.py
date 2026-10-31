@@ -10,24 +10,30 @@ def kula(srodek_ekran, promien, kolor=KOLOR_METRYKA, wypelnienie=0.15):
     return VGroup(wnetrze, brzeg).move_to(srodek_ekran)
 
 
+def przygotuj():
+    """Nagłówek, osie i pomocnicze funkcje wspólne dla obu scen."""
+    naglowek = Tex(r"Topologia w przestrzeni metrycznej", font_size=44).to_edge(UP, buff=0.4)
+
+    ax = Axes(
+        x_range=[0, 4, 1], y_range=[0, 3, 1],
+        x_length=5.2, y_length=3.9,
+        tips=False,
+        axis_config={"include_numbers": True, "font_size": 24},
+    ).to_edge(RIGHT, buff=0.7).shift(0.2 * DOWN)
+    J = ax.x_axis.unit_size  # długość jednostki na ekranie (taka sama na obu osiach)
+
+    def P(u):
+        return ax.c2p(u[0], u[1])
+
+    def kolumna(*wiersze, rodzaj="Definicja"):
+        g = VGroup(*wiersze).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        return blok(g, rodzaj).to_edge(LEFT, buff=0.4).shift(0.2 * DOWN)
+    return naglowek, ax, J, P, kolumna
+
+
 class TopologiaMetryczna(Slide):
     def construct(self):
-        naglowek = Tex(r"Topologia w przestrzeni metrycznej", font_size=44).to_edge(UP, buff=0.4)
-
-        ax = Axes(
-            x_range=[0, 4, 1], y_range=[0, 3, 1],
-            x_length=5.2, y_length=3.9,
-            tips=False,
-            axis_config={"include_numbers": True, "font_size": 24},
-        ).to_edge(RIGHT, buff=0.7).shift(0.2 * DOWN)
-        J = ax.x_axis.unit_size  # długość jednostki na ekranie (taka sama na obu osiach)
-
-        def P(u):
-            return ax.c2p(u[0], u[1])
-
-        def kolumna(*wiersze, rodzaj="Definicja"):
-            g = VGroup(*wiersze).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
-            return blok(g, rodzaj).to_edge(LEFT, buff=0.4).shift(0.2 * DOWN)
+        naglowek, ax, J, P, kolumna = przygotuj()
 
         # ---------------- Krok 1: kula ----------------
         tekst1 = kolumna(
@@ -45,7 +51,7 @@ class TopologiaMetryczna(Slide):
         e1 = MathTex("x", font_size=30).next_to(d1, DL, buff=0.08)
 
         # Tytuł.
-        self.play(Write(naglowek))
+        self.play(FadeIn(naglowek))
         self.next_slide()
 
         # Podstawowe pytania o topologię — każde na osobne kliknięcie.
@@ -62,13 +68,13 @@ class TopologiaMetryczna(Slide):
         # Definicja kuli na środku ekranu.
         cel_tekst1 = tekst1.copy()
         tekst1.move_to(ORIGIN)
-        self.play(Write(tekst1))
+        self.play(FadeIn(tekst1))
         self.next_slide()
 
         # Definicja na lewo, wykres z kulą po prawej.
         self.play(Transform(tekst1, cel_tekst1))
         self.play(Create(ax))
-        self.play(FadeIn(k1), FadeIn(d1), Write(e1), Create(promien), Write(etyk_eps))
+        self.play(FadeIn(k1), FadeIn(d1), FadeIn(e1), Create(promien), FadeIn(etyk_eps))
         self.play(eps.animate.set_value(1.2), run_time=1.2)
         self.play(eps.animate.set_value(0.4), run_time=1.2)
         self.play(eps.animate.set_value(0.8), run_time=1.0)
@@ -111,7 +117,7 @@ class TopologiaMetryczna(Slide):
         ))
 
         self.play(FadeOut(VGroup(tekst1, d1, e1, promien, etyk_eps, k1)))
-        self.play(FadeIn(tekst2, shift=0.2 * RIGHT), FadeIn(U_tlo), Create(U), Write(etyk_U))
+        self.play(FadeIn(tekst2, shift=0.2 * RIGHT), FadeIn(U_tlo), Create(U), FadeIn(etyk_U))
         self.play(LaggedStart(*[FadeIn(m) for m in male_kule], lag_ratio=0.4))
         self.play(FadeIn(ruch))
         self.play(t.animate.set_value(1.30), run_time=3, rate_func=smooth)
@@ -138,7 +144,7 @@ class TopologiaMetryczna(Slide):
         ea.add_background_rectangle(color=WHITE, opacity=0.85, buff=0.04)
 
         self.play(FadeOut(VGroup(tekst2, U, U_tlo, etyk_U, male_kule, ruch)))
-        self.play(FadeIn(tekst3, shift=0.2 * RIGHT), FadeIn(da), Write(ea))
+        self.play(FadeIn(tekst3, shift=0.2 * RIGHT), FadeIn(da), FadeIn(ea))
         self.play(FadeIn(komentarz3))
         self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki], lag_ratio=0.25), run_time=2.5)
 
@@ -153,6 +159,13 @@ class TopologiaMetryczna(Slide):
             ], run_time=0.6)
             self.wait(0.3)
         self.next_slide()
+
+
+class Oddzielanie(Slide):
+    """Przypomnienie aksjomatów oddzielania i własność Hausdorffa."""
+    def construct(self):
+        naglowek, ax, J, P, kolumna = przygotuj()
+        self.add(naglowek)
 
         # ---------------- Krok 4: Hausdorff ----------------
         tekst4 = kolumna(
@@ -173,10 +186,75 @@ class TopologiaMetryczna(Slide):
         ey = MathTex("y", font_size=30).next_to(dy, DOWN, buff=0.12)
         odc = DashedLine(P(hx), P(hy), color=KOLOR_DRUGORZEDNY, stroke_width=2)
 
-        self.play(FadeOut(VGroup(tekst3, komentarz3, kropki, da, ea, kula_a)))
-        self.play(FadeIn(tekst4, shift=0.2 * RIGHT), FadeIn(dx), FadeIn(dy), Write(ex), Write(ey))
+
+        # ---------------- Przypomnienie: aksjomaty oddzielania ----------------
+        def panel(nazwa, opis):
+            ramka = RoundedRectangle(width=3.7, height=2.1, corner_radius=0.15,
+                                     color=GRAY_C, stroke_width=2)
+            px_ = Dot(ramka.get_center() + 0.75 * LEFT, radius=0.07)
+            py_ = Dot(ramka.get_center() + 0.75 * RIGHT, radius=0.07)
+            lx = MathTex("x", font_size=28).next_to(px_, DOWN, buff=0.1)
+            ly = MathTex("y", font_size=28).next_to(py_, DOWN, buff=0.1)
+            tyt = MathTex(nazwa, font_size=36).next_to(ramka, UP, buff=0.15)
+            tekst = Tex(opis, font_size=26).next_to(ramka, DOWN, buff=0.2)
+            return VGroup(ramka, px_, py_, lx, ly, tyt, tekst)
+
+        def owal(srodek, szer, kolor):
+            o = Ellipse(width=szer, height=1.3)
+            return VGroup(
+                o.copy().set_stroke(width=0).set_fill(kolor, 0.15),
+                DashedVMobject(o.copy().set_stroke(kolor, 2.5), num_dashes=30),
+            ).move_to(srodek)
+
+        p0 = panel(r"T_0", r"jeden z punktów ma otoczenie,\\które nie zawiera drugiego")
+        p1 = panel(r"T_1", r"każdy z punktów ma otoczenie,\\które nie zawiera drugiego")
+        p2 = panel(r"T_2", r"punkty mają\\rozłączne otoczenia")
+        panele = VGroup(p0, p1, p2).arrange(RIGHT, buff=0.45)
+        wstep_osd = Tex(r"Przestrzeń topologiczna $X$ spełnia aksjomat \dots, gdy dla dowolnych $x\neq y$",
+                        font_size=28)
+        zawartosc = VGroup(wstep_osd, panele).arrange(DOWN, buff=0.35)
+        def_osd = blok(zawartosc, "Definicja").move_to(0.15 * UP)
+        implikacje = MathTex(r"T_2 \;\Longrightarrow\; T_1 \;\Longrightarrow\; T_0", font_size=40)
+        implikacje.next_to(def_osd, DOWN, buff=0.3)
+
+        def srodek(p):
+            return p[0].get_center()
+
+        o0 = owal(srodek(p0) + 0.75 * LEFT, 1.2, KOLOR_METRYKA)
+        o1a = owal(srodek(p1) + 0.5 * LEFT, 1.6, KOLOR_METRYKA)
+        o1b = owal(srodek(p1) + 0.5 * RIGHT, 1.6, KOLOR_CZESCIOWA)
+        o2a = owal(srodek(p2) + 0.5 * LEFT, 1.6, KOLOR_METRYKA)
+        o2b = owal(srodek(p2) + 0.5 * RIGHT, 1.6, KOLOR_CZESCIOWA)
+
+        self.play(FadeIn(def_osd[0]), FadeIn(def_osd[1]), FadeIn(wstep_osd))
+        self.next_slide()
+        self.play(FadeIn(VGroup(*p0[:6])))
+        self.play(FadeIn(o0), FadeIn(p0[6]))
+        self.next_slide()
+        self.play(FadeIn(VGroup(*p1[:6])))
+        self.play(FadeIn(o1a), FadeIn(o1b), FadeIn(p1[6]))
+        self.next_slide()
+        self.play(FadeIn(VGroup(*p2[:6])))
+        self.play(FadeIn(o2a), FadeIn(o2b))
+        # Owale odsuwają się i zwężają, aż przestaną się przecinać.
+        self.play(
+            o2a.animate.stretch_to_fit_width(1.3).move_to(srodek(p2) + 0.75 * LEFT),
+            o2b.animate.stretch_to_fit_width(1.3).move_to(srodek(p2) + 0.75 * RIGHT),
+            run_time=1.2,
+        )
+        self.play(FadeIn(p2[6]))
+        self.next_slide()
+        self.play(FadeIn(implikacje, shift=0.2 * UP))
+        self.next_slide()
+        self.play(FadeOut(VGroup(def_osd, panele, o0, o1a, o1b, o2a, o2b, implikacje)))
+        self.play(FadeIn(ax))
+        self.play(FadeIn(tekst4, shift=0.2 * RIGHT), FadeIn(dx), FadeIn(dy), FadeIn(ex), FadeIn(ey))
         self.play(Create(odc))
         self.play(GrowFromCenter(kx), GrowFromCenter(ky))
-        self.play(Write(wniosek4))
+        self.play(FadeIn(wniosek4))
+        ptaszki = MathTex(r"T_0\ \checkmark \qquad T_1\ \checkmark \qquad T_2\ \checkmark",
+                          font_size=36, color=KOLOR_METRYKA)
+        ptaszki.next_to(wniosek4, DOWN, buff=0.4).align_to(wniosek4, LEFT)
+        self.play(FadeIn(ptaszki, shift=0.2 * UP))
         self.next_slide()
 

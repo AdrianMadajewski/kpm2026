@@ -38,9 +38,9 @@ class Kule(Slide):
         etyk_d = MathTex("x", font_size=32).next_to(punkt_d, UP, buff=0.15)
         etyk_p = MathTex("x", font_size=32).next_to(punkt_p, UP, buff=0.15)
 
-        self.play(Write(naglowek))
-        self.play(Create(os_d), Create(os_p), Write(opis_d), Write(opis_p))
-        self.play(FadeIn(punkt_d), FadeIn(punkt_p), Write(etyk_d), Write(etyk_p))
+        self.play(FadeIn(naglowek))
+        self.play(Create(os_d), Create(os_p), FadeIn(opis_d), FadeIn(opis_p))
+        self.play(FadeIn(punkt_d), FadeIn(punkt_p), FadeIn(etyk_d), FadeIn(etyk_p))
         self.next_slide()
 
         # Kule o promieniu eps.
@@ -81,7 +81,7 @@ class Kule(Slide):
 
         self.add(k_d, k_p)
         self.bring_to_front(punkt_d, punkt_p)
-        self.play(FadeIn(k_d), FadeIn(k_p), Write(wzor_kd), Write(wzor_kp), FadeIn(licznik))
+        self.play(FadeIn(k_d), FadeIn(k_p), FadeIn(wzor_kd), FadeIn(wzor_kp), FadeIn(licznik))
         self.next_slide()
 
         # eps -> 0
@@ -95,7 +95,7 @@ class Kule(Slide):
         odcinek.next_to(os_p, DOWN, buff=0.55).align_to(os_p.n2p(0), LEFT)
         klamra = Brace(odcinek, DOWN, color=KOLOR_SAMO)
         podpis = MathTex(r"p(x,x) = x", font_size=34, color=KOLOR_SAMO).next_to(klamra, DOWN, buff=0.1)
-        self.play(Create(odcinek), GrowFromCenter(klamra), Write(podpis))
+        self.play(Create(odcinek), GrowFromCenter(klamra), FadeIn(podpis))
         komentarz = Tex(r"każda kula zawiera $[0,x]$", font_size=32, color=KOLOR_SAMO)
         komentarz.next_to(odcinek, RIGHT, buff=1.0)
         self.play(FadeIn(komentarz, shift=0.2 * LEFT))

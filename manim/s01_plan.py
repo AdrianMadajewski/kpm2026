@@ -8,7 +8,7 @@ class Plan(Slide):
         plan = plan_referatu().move_to(0.4 * DOWN)
         wiersze, strzalki = plan
 
-        self.play(Write(naglowek))
+        self.play(FadeIn(naglowek))
         self.next_slide()
 
         # Każdy punkt planu na osobne kliknięcie.

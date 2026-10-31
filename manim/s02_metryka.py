@@ -24,7 +24,8 @@ class PrzestrzenMetryczna(Slide):
         m2 = aksjomat(r"(M2)", r"d(x,y)=d(y,x)")
         m3 = aksjomat(r"(M3)", r"d(x,z)\le d(x,y)+d(y,z)")
         aksjomaty = VGroup(m1, m2, m3).arrange(DOWN, aligned_edge=LEFT, buff=0.35)
-        lewa = VGroup(wstep, aksjomaty).arrange(DOWN, aligned_edge=LEFT, buff=0.5)
+        nazwa = Tex(r"Parę $(X,d)$ nazywamy \emph{przestrzenią metryczną}.", font_size=32)
+        lewa = VGroup(wstep, aksjomaty, nazwa).arrange(DOWN, aligned_edge=LEFT, buff=0.5)
         definicja = blok(lewa, "Definicja")
         definicja.to_edge(LEFT, buff=0.4).shift(0.2 * DOWN)
 
@@ -36,7 +37,7 @@ class PrzestrzenMetryczna(Slide):
             axis_config={"include_numbers": True, "font_size": 24},
         ).to_edge(RIGHT, buff=0.7).shift(0.35 * UP)
         podpis_ax = MathTex(
-            r"\text{Przykład. } X\coloneqq\mathbb{R}^2,\quad "
+            r"X\coloneqq\mathbb{R}^2,\quad "
             r"d(x,y)\coloneqq\sqrt{(x_1-y_1)^2+(x_2-y_2)^2}",
             font_size=28,
         ).next_to(ax, UP, buff=0.2).to_edge(RIGHT, buff=0.4)
@@ -63,11 +64,11 @@ class PrzestrzenMetryczna(Slide):
         wartosc[1].add_updater(lambda m: m.set_value(np.linalg.norm(wsp_y() - px)))
 
         # Krok 1: definicja i przestrzeń.
-        self.play(Write(naglowek))
+        self.play(FadeIn(naglowek))
         self.play(FadeIn(definicja[0]), FadeIn(definicja[1]))
         self.play(FadeIn(wstep, shift=0.2 * RIGHT))
         self.play(Create(ax), FadeIn(podpis_ax))
-        self.play(FadeIn(kropka_x), Write(etyk_x), FadeIn(kropka_y), Write(etyk_y))
+        self.play(FadeIn(kropka_x), FadeIn(etyk_x), FadeIn(kropka_y), FadeIn(etyk_y))
         self.play(Create(odc_xy), FadeIn(wartosc))
         self.next_slide()
 
@@ -89,8 +90,8 @@ class PrzestrzenMetryczna(Slide):
         z_pow = Arrow(P(yv - normal), P(px - normal), buff=0.1, color=KOLOR_METRYKA, stroke_width=4)
         e_tam = MathTex(r"d(x,y)", font_size=28, color=KOLOR_METRYKA).next_to(tam.get_center(), UL, buff=0.15)
         e_zpow = MathTex(r"d(y,x)", font_size=28, color=KOLOR_METRYKA).next_to(z_pow.get_center(), DR, buff=0.15)
-        self.play(FadeOut(odc_xy), GrowArrow(tam), Write(e_tam))
-        self.play(GrowArrow(z_pow), Write(e_zpow))
+        self.play(FadeOut(odc_xy), GrowArrow(tam), FadeIn(e_tam))
+        self.play(GrowArrow(z_pow), FadeIn(e_zpow))
         self.next_slide()
 
         # Krok 4: (M3) — trójkąt i „rozprostowanie” dwóch boków.
@@ -103,7 +104,7 @@ class PrzestrzenMetryczna(Slide):
         bok_xy = Line(P(px), P(yv), color=KOLOR_METRYKA, stroke_width=5)
         bok_yz = Line(P(yv), P(pz), color=KOLOR_METRYKA, stroke_width=5)
         bok_xz = Line(P(px), P(pz), color=KOLOR_TEKST, stroke_width=5)
-        self.play(FadeIn(kropka_z), Write(etyk_z))
+        self.play(FadeIn(kropka_z), FadeIn(etyk_z))
         self.play(Create(bok_xz))
         self.play(Create(bok_xy), Create(bok_yz))
         self.next_slide()
@@ -132,3 +133,6 @@ class PrzestrzenMetryczna(Slide):
         self.play(Indicate(m3[1], color=KOLOR_METRYKA, scale_factor=1.1))
         self.next_slide()
 
+        # Krok 6: nazwa przestrzeni.
+        self.play(FadeOut(ramka), FadeIn(nazwa, shift=0.2 * RIGHT))
+        self.next_slide()
