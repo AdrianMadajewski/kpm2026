@@ -67,3 +67,31 @@ def plan_referatu(aktywny=None):
                 w[0].set_stroke(opacity=0.35)
                 w[1].set_opacity(0.35)
     return VGroup(wiersze, strzalki)
+
+
+# Ramki dla definicji, twierdzeń itd. (jak bloki w Beamerze).
+STYL_BLOKU = {
+    "Definicja":    (ManimColor("#EAF2FA"), KOLOR_METRYKA),
+    "Twierdzenie":  (ManimColor("#FDEFE2"), KOLOR_CZESCIOWA),
+    "Stwierdzenie": (ManimColor("#F1F1F1"), GRAY_D),
+    "Lemat":        (ManimColor("#F1F1F1"), GRAY_D),
+    "Wniosek":      (ManimColor("#F1F1F1"), GRAY_D),
+}
+
+
+def blok(tresc, rodzaj="Definicja", szerokosc=None):
+    """Treść w ramce z nagłówkiem. Zwraca VGroup(tlo, naglowek, tresc).
+
+    Ramka jest liczona od razu dla całej treści, więc można ją pokazać
+    wcześniej, a fragmenty treści dopisywać później.
+    """
+    tlo_kolor, kolor = STYL_BLOKU[rodzaj]
+    naglowek = Tex(rodzaj, font_size=28, color=kolor)
+    naglowek.next_to(tresc, UP, buff=0.2).align_to(tresc, LEFT)
+    calosc = VGroup(naglowek, tresc)
+    tlo = SurroundingRectangle(calosc, buff=0.25, corner_radius=0.12,
+                               color=kolor, stroke_width=2.5)
+    if szerokosc is not None and tlo.width < szerokosc:
+        tlo.stretch_to_fit_width(szerokosc).align_to(calosc, LEFT).shift(0.25 * LEFT)
+    tlo.set_fill(tlo_kolor, 1)
+    return VGroup(tlo, naglowek, tresc)

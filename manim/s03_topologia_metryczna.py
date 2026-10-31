@@ -25,9 +25,9 @@ class TopologiaMetryczna(Slide):
         def P(u):
             return ax.c2p(u[0], u[1])
 
-        def kolumna(*wiersze):
+        def kolumna(*wiersze, rodzaj="Definicja"):
             g = VGroup(*wiersze).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
-            return g.to_edge(LEFT, buff=0.6).shift(0.2 * DOWN)
+            return blok(g, rodzaj).to_edge(LEFT, buff=0.4).shift(0.2 * DOWN)
 
         # ---------------- Krok 1: kula ----------------
         tekst1 = kolumna(
@@ -44,9 +44,30 @@ class TopologiaMetryczna(Slide):
         d1 = Dot(P(x1), radius=0.07)
         e1 = MathTex("x", font_size=30).next_to(d1, DL, buff=0.08)
 
+        # Tytuł.
         self.play(Write(naglowek))
+        self.next_slide()
+
+        # Podstawowe pytania o topologię — każde na osobne kliknięcie.
+        pytania = VGroup(
+            Tex(r"1. Jak wyglądają zbiory otwarte?", font_size=38),
+            Tex(r"2. Co możemy powiedzieć o zbieżności?", font_size=38),
+            Tex(r"3. Jakie aksjomaty oddzielania spełnia nasza przestrzeń?", font_size=38),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.5).move_to(0.2 * DOWN)
+        for pyt in pytania:
+            self.play(FadeIn(pyt, shift=0.2 * RIGHT))
+            self.next_slide()
+        self.play(FadeOut(pytania))
+
+        # Definicja kuli na środku ekranu.
+        cel_tekst1 = tekst1.copy()
+        tekst1.move_to(ORIGIN)
+        self.play(Write(tekst1))
+        self.next_slide()
+
+        # Definicja na lewo, wykres z kulą po prawej.
+        self.play(Transform(tekst1, cel_tekst1))
         self.play(Create(ax))
-        self.play(FadeIn(tekst1, shift=0.2 * RIGHT))
         self.play(FadeIn(k1), FadeIn(d1), Write(e1), Create(promien), Write(etyk_eps))
         self.play(eps.animate.set_value(1.2), run_time=1.2)
         self.play(eps.animate.set_value(0.4), run_time=1.2)
@@ -100,9 +121,11 @@ class TopologiaMetryczna(Slide):
         tekst3 = kolumna(
             Tex(r"Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest zbieżny do $a$, gdy", font_size=32),
             MathTex(r"\lim_{n\to\infty} d(a,x_n)=0.", font_size=34),
+        )
+        komentarz3 = VGroup(
             Tex(r"Każda kula wokół $a$ zawiera", font_size=32),
             Tex(r"prawie wszystkie wyrazy ciągu.", font_size=32),
-        )
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2).next_to(tekst3, DOWN, buff=0.4).align_to(tekst3, LEFT)
         a = np.array([2.4, 1.5])
         wyrazy = []
         for n in range(1, 16):
@@ -116,6 +139,7 @@ class TopologiaMetryczna(Slide):
 
         self.play(FadeOut(VGroup(tekst2, U, U_tlo, etyk_U, male_kule, ruch)))
         self.play(FadeIn(tekst3, shift=0.2 * RIGHT), FadeIn(da), Write(ea))
+        self.play(FadeIn(komentarz3))
         self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki], lag_ratio=0.25), run_time=2.5)
 
         kula_a = kula(P(a), 0.9 * J)
@@ -134,8 +158,13 @@ class TopologiaMetryczna(Slide):
         tekst4 = kolumna(
             Tex(r"Dla $x\neq y$ kule o promieniu $\tfrac{1}{2}d(x,y)$", font_size=32),
             Tex(r"wokół $x$ i wokół $y$ są rozłączne.", font_size=32),
-            Tex(r"Zatem granica ciągu jest jedyna.", font_size=32, color=KOLOR_METRYKA),
+            rodzaj="Stwierdzenie",
         )
+        wniosek4 = VGroup(
+            Tex(r"Przestrzeń metryczna jest Hausdorffa ($T_2$),", font_size=32, color=KOLOR_METRYKA),
+            Tex(r"więc granica ciągu jest jedyna.", font_size=32, color=KOLOR_METRYKA),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        wniosek4.next_to(tekst4, DOWN, buff=0.4).align_to(tekst4, LEFT)
         hx, hy = np.array([1.1, 1.3]), np.array([2.9, 1.9])
         r = np.linalg.norm(hy - hx) / 2
         kx, ky = kula(P(hx), r * J), kula(P(hy), r * J)
@@ -144,33 +173,10 @@ class TopologiaMetryczna(Slide):
         ey = MathTex("y", font_size=30).next_to(dy, DOWN, buff=0.12)
         odc = DashedLine(P(hx), P(hy), color=KOLOR_DRUGORZEDNY, stroke_width=2)
 
-        self.play(FadeOut(VGroup(tekst3, kropki, da, ea, kula_a)))
-        self.play(FadeIn(tekst4[:2], shift=0.2 * RIGHT), FadeIn(dx), FadeIn(dy), Write(ex), Write(ey))
+        self.play(FadeOut(VGroup(tekst3, komentarz3, kropki, da, ea, kula_a)))
+        self.play(FadeIn(tekst4, shift=0.2 * RIGHT), FadeIn(dx), FadeIn(dy), Write(ex), Write(ey))
         self.play(Create(odc))
         self.play(GrowFromCenter(kx), GrowFromCenter(ky))
-        self.play(Write(tekst4[2]))
+        self.play(Write(wniosek4))
         self.next_slide()
 
-        # ---------------- Krok 5: ciąg stały ----------------
-        tekst5 = kolumna(
-            MathTex(r"x_n = a \quad\text{dla } n\in\mathbb{N}", font_size=34),
-            Tex(r"Ciąg stały jest zbieżny", font_size=32),
-            Tex(r"\emph{tylko} do $a$.", font_size=32),
-        )
-        a5 = np.array([1.6, 1.5])
-        b5 = np.array([3.0, 2.0])
-        d5a = Dot(P(a5), radius=0.08, color=KOLOR_TEKST)
-        e5a = MathTex(r"a = x_1 = x_2 = \dots", font_size=28).next_to(d5a, DOWN, buff=0.15)
-        d5b = Dot(P(b5), radius=0.07)
-        e5b = MathTex("b", font_size=30).next_to(d5b, UR, buff=0.08)
-        kb = kula(P(b5), 0.6 * J)
-
-        self.play(FadeOut(VGroup(tekst4, kx, ky, dx, dy, ex, ey, odc)))
-        self.play(FadeIn(tekst5[0], shift=0.2 * RIGHT), FadeIn(d5a), Write(e5a))
-        self.play(FadeIn(d5b), Write(e5b))
-        self.play(FadeIn(kb))
-        self.play(Transform(kb, kula(P(b5), 0.3 * J)))
-        self.play(FadeIn(tekst5[1:], shift=0.2 * RIGHT))
-        ramka = SurroundingRectangle(tekst5[1:], color=KOLOR_METRYKA, buff=0.15, corner_radius=0.08)
-        self.play(Create(ramka))
-        self.next_slide()

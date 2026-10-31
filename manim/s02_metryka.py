@@ -25,7 +25,8 @@ class PrzestrzenMetryczna(Slide):
         m3 = aksjomat(r"(M3)", r"d(x,z)\le d(x,y)+d(y,z)")
         aksjomaty = VGroup(m1, m2, m3).arrange(DOWN, aligned_edge=LEFT, buff=0.35)
         lewa = VGroup(wstep, aksjomaty).arrange(DOWN, aligned_edge=LEFT, buff=0.5)
-        lewa.to_edge(LEFT, buff=0.6).shift(0.3 * DOWN)
+        definicja = blok(lewa, "Definicja")
+        definicja.to_edge(LEFT, buff=0.4).shift(0.2 * DOWN)
 
         # --- Prawa kolumna: ilustracja w R^2 --------------------------------
         ax = Axes(
@@ -63,6 +64,7 @@ class PrzestrzenMetryczna(Slide):
 
         # Krok 1: definicja i przestrzeń.
         self.play(Write(naglowek))
+        self.play(FadeIn(definicja[0]), FadeIn(definicja[1]))
         self.play(FadeIn(wstep, shift=0.2 * RIGHT))
         self.play(Create(ax), FadeIn(podpis_ax))
         self.play(FadeIn(kropka_x), Write(etyk_x), FadeIn(kropka_y), Write(etyk_y))
