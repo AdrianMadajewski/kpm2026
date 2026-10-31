@@ -69,48 +69,32 @@ def plan_referatu(aktywny=None):
     return VGroup(wiersze, strzalki)
 
 
-# Ramki dla definicji, twierdzeń itd. (jak bloki w Beamerze).
-STYL_BLOKU = {
-    "Definicja":    (ManimColor("#EAF2FA"), KOLOR_METRYKA),
-    "Twierdzenie":  (ManimColor("#FDEFE2"), KOLOR_CZESCIOWA),
-    "Stwierdzenie": (ManimColor("#F1F1F1"), GRAY_D),
-    "Lemat":        (ManimColor("#F1F1F1"), GRAY_D),
-    "Wniosek":      (ManimColor("#F1F1F1"), GRAY_D),
-}
+# Bloki definicji, twierdzeń itd. — bez widocznej ramki i nagłówka.
+# Zachowujemy strukturę VGroup(tlo, naglowek, tresc), żeby sceny mogły
+# korzystać z pozycji bloku (np. komentarze obok), ale tło i nagłówek są
+# niewidoczne.
+
+
+def _niewidoczne_tlo(*obiekty):
+    return SurroundingRectangle(VGroup(*obiekty), buff=0.25).set_stroke(opacity=0).set_fill(opacity=0)
 
 
 def blok(tresc, rodzaj="Definicja", szerokosc=None):
-    """Treść w ramce z nagłówkiem. Zwraca VGroup(tlo, naglowek, tresc).
-
-    Ramka jest liczona od razu dla całej treści, więc można ją pokazać
-    wcześniej, a fragmenty treści dopisywać później.
-    """
-    tlo_kolor, kolor = STYL_BLOKU[rodzaj]
-    naglowek = Tex(rodzaj, font_size=28, color=kolor)
-    naglowek.next_to(tresc, UP, buff=0.2).align_to(tresc, LEFT)
-    calosc = VGroup(naglowek, tresc)
-    tlo = SurroundingRectangle(calosc, buff=0.25, corner_radius=0.12,
-                               color=kolor, stroke_width=2.5)
-    if szerokosc is not None and tlo.width < szerokosc:
-        tlo.stretch_to_fit_width(szerokosc).align_to(calosc, LEFT).shift(0.25 * LEFT)
-    tlo.set_fill(tlo_kolor, 1)
-    wynik = VGroup(tlo, naglowek, tresc)
+    """Treść bloku. Zwraca VGroup(tlo, naglowek, tresc) z niewidocznym tłem i nagłówkiem."""
+    naglowek = VectorizedPoint(tresc.get_corner(UL))
+    wynik = VGroup(_niewidoczne_tlo(tresc), naglowek, tresc)
     wynik.rodzaj = rodzaj
     return wynik
 
 
 def tlo_dla(b, *widoczne):
-    """Ramka bloku `b` dopasowana do nagłówka i aktualnie widocznych fragmentów."""
-    tlo_kolor, kolor = STYL_BLOKU[b.rodzaj]
-    return SurroundingRectangle(
-        VGroup(b[1], *widoczne), buff=0.25, corner_radius=0.12,
-        color=kolor, stroke_width=2.5,
-    ).set_fill(tlo_kolor, 1)
+    """Niewidoczne tło dopasowane do widocznych fragmentów (zgodność ze scenami)."""
+    return _niewidoczne_tlo(*widoczne)
 
 
 def dopasuj_ramke(b, *widoczne):
-    """Animacja wydłużenia ramki bloku do nowo odkrytej treści."""
-    return Transform(b[0], tlo_dla(b, *widoczne))
+    """Dawniej wydłużała ramkę; teraz praktycznie natychmiastowa i niewidoczna."""
+    return Transform(b[0], tlo_dla(b, *widoczne), run_time=0.05)
 
 
 # Bez generowania odwróconych animacji (bardzo wydłuża budowanie).
