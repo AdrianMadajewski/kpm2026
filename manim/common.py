@@ -11,7 +11,14 @@ SZABLON.add_to_preamble(
 )
 config.tex_template = SZABLON
 
-# Stałe kolory w całej prezentacji.
-KOLOR_METRYKA = BLUE        # zwykła metryka d
-KOLOR_CZESCIOWA = ORANGE    # metryka częściowa p
-KOLOR_SAMO = RED            # odległość punktu od siebie p(x,x)
+# Jasne tło, ciemny tekst.
+config.background_color = WHITE
+KOLOR_TEKST = BLACK
+KOLOR_DRUGORZEDNY = GRAY_D   # podtytuły, opisy
+for klasa in (Tex, MathTex, Text, Dot, Line, Arrow, Arc, NumberLine, Axes):
+    klasa.set_default(color=KOLOR_TEKST)
+
+# Stałe kolory w całej prezentacji (ciemniejsze odcienie, czytelne na białym).
+KOLOR_METRYKA = BLUE_D       # zwykła metryka d
+KOLOR_CZESCIOWA = ManimColor("#E06C00")  # metryka częściowa p
+KOLOR_SAMO = RED_D           # odległość punktu od siebie p(x,x)
