@@ -34,8 +34,11 @@ class PrzestrzenMetryczna(Slide):
             tips=False,
             axis_config={"include_numbers": True, "font_size": 24},
         ).to_edge(RIGHT, buff=0.7).shift(0.35 * UP)
-        podpis_ax = Tex(r"$X=\mathbb{R}^2$, odległość euklidesowa",
-                        font_size=26, color=KOLOR_DRUGORZEDNY).next_to(ax, UP, buff=0.15)
+        podpis_ax = MathTex(
+            r"\text{Przykład. } X\coloneqq\mathbb{R}^2,\quad "
+            r"d(x,y)\coloneqq\sqrt{(x_1-y_1)^2+(x_2-y_2)^2}",
+            font_size=28,
+        ).next_to(ax, UP, buff=0.2).to_edge(RIGHT, buff=0.4)
 
         px = np.array([1.0, 1.0])
         py = ValueTracker(3.0), ValueTracker(1.5)
@@ -127,8 +130,3 @@ class PrzestrzenMetryczna(Slide):
         self.play(Indicate(m3[1], color=KOLOR_METRYKA, scale_factor=1.1))
         self.next_slide()
 
-        # Krok 5: przykład.
-        przyklad = MathTex(r"\text{Przykład. } X\coloneqq\mathbb{R},\quad d(x,y)\coloneqq|x-y|",
-                           font_size=32).next_to(lewa, DOWN, buff=0.5).align_to(lewa, LEFT)
-        self.play(FadeOut(ramka), Write(przyklad))
-        self.next_slide()
