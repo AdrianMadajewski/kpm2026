@@ -32,9 +32,18 @@ class PrzykladMax(Slide):
         aks = VGroup(a1, a2, a3, a4).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         aks.next_to(szczegol, DOWN, buff=0.5).to_edge(LEFT, buff=1.2)
 
+        # Każdy aksjomat na kliknięcie, potem ptaszek na kolejne kliknięcie.
+        def ptaszek_przy(a):
+            return MathTex(r"\checkmark", font_size=44, color=KOLOR_METRYKA).next_to(a, RIGHT, buff=0.4)
+
+        ptaszki = VGroup()
         for a in (a1, a2, a3):
             self.play(FadeIn(a, shift=0.2 * RIGHT), run_time=0.6)
-        self.next_slide()
+            self.next_slide()
+            pt = ptaszek_przy(a)
+            ptaszki.add(pt)
+            self.play(FadeIn(pt, scale=1.5), run_time=0.5)
+            self.next_slide()
 
         self.play(FadeIn(a4, shift=0.2 * RIGHT))
         self.next_slide()
@@ -55,7 +64,7 @@ class PrzykladMax(Slide):
         ptaszek = MathTex(r"\checkmark", font_size=44, color=KOLOR_METRYKA).next_to(a4, RIGHT, buff=0.4)
         self.play(FadeIn(ptaszek, scale=1.5))
         self.next_slide()
-        self.play(FadeOut(VGroup(aks, dowod, ptaszek)))
+        self.play(FadeOut(VGroup(aks, dowod, ptaszek, ptaszki)))
 
         # Krok 2: punkt x jako przedział [0, x].
         os = NumberLine(x_range=[0, 5, 1], length=10, include_numbers=True,
