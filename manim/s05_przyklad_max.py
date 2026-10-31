@@ -18,6 +18,45 @@ class PrzykladMax(Slide):
         self.play(FadeIn(szczegol))
         self.next_slide()
 
+        # Krok 1a: sprawdzenie aksjomatów (P1)–(P4).
+        def wiersz(nazwa, *tex):
+            return VGroup(
+                Tex(nazwa, font_size=30, color=KOLOR_DRUGORZEDNY),
+                MathTex(*tex, font_size=34),
+            ).arrange(RIGHT, buff=0.3)
+
+        a1 = wiersz(r"(P1)", r"x=\max\{x,y\}=y \iff x=y")
+        a2 = wiersz(r"(P2)", r"x\le\max\{x,y\}")
+        a3 = wiersz(r"(P3)", r"\max\{x,y\}=\max\{y,x\}")
+        a4 = wiersz(r"(P4)", r"\max\{x,z\}\le\max\{x,y\}+\max\{y,z\}-y")
+        aks = VGroup(a1, a2, a3, a4).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        aks.next_to(szczegol, DOWN, buff=0.5).to_edge(LEFT, buff=1.2)
+
+        for a in (a1, a2, a3):
+            self.play(FadeIn(a, shift=0.2 * RIGHT), run_time=0.6)
+        self.next_slide()
+
+        self.play(FadeIn(a4, shift=0.2 * RIGHT))
+        self.next_slide()
+
+        bso = Tex(r"Bez straty ogólności $\max\{x,z\}=x$. Wtedy", font_size=32)
+        rach = MathTex(
+            r"\max\{x,y\}+\max\{y,z\}-y", r"\ge", r"x+y-y", r"=", r"x", r"=", r"\max\{x,z\}",
+            font_size=34,
+        )
+        bo = MathTex(r"\text{bo } \max\{x,y\}\ge x \text{ oraz } \max\{y,z\}\ge y.",
+                     font_size=30, color=KOLOR_DRUGORZEDNY)
+        dowod = VGroup(bso, rach, bo).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
+        dowod.next_to(aks, DOWN, buff=0.45).align_to(aks, LEFT).shift(0.6 * RIGHT)
+        self.play(FadeIn(bso))
+        self.play(FadeIn(rach[:3]))
+        self.play(FadeIn(bo))
+        self.play(FadeIn(rach[3:]))
+        ptaszek = MathTex(r"\checkmark", font_size=44, color=KOLOR_METRYKA).next_to(a4, RIGHT, buff=0.4)
+        self.play(FadeIn(ptaszek, scale=1.5))
+        self.next_slide()
+        self.play(FadeOut(VGroup(aks, dowod, ptaszek)))
+
         # Krok 2: punkt x jako przedział [0, x].
         os = NumberLine(x_range=[0, 5, 1], length=10, include_numbers=True,
                         font_size=28, include_tip=False).shift(0.2 * DOWN)
