@@ -12,7 +12,8 @@
 
 # Manim / manim-slides output
 media/
-slides/files/
+manim/slides/
+manim/podglad/
 __pycache__/
 *.pyc
 .venv/
