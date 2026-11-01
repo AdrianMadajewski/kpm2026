@@ -87,7 +87,16 @@ class Zbieznosc(Slide):
         # Na kliknięcie: kula wraca do czerni, a lemat znika z dołu.
         self.play(Q1[2].animate.set_color(KOLOR_TEKST), FadeOut(baza, shift=0.2 * DOWN), run_time=0.6)
         self.next_slide()
-        pokaz(Q2, 1)
+        # Skąd Q2: definicja zbieżności (u góry) dla U := B_p(x, eps).
+        Q2[1].set_color(O)
+        podkr = Underline(defn, color=O, stroke_width=3, buff=0.08)
+        self.play(defn.animate.set_color(O), Create(podkr), FadeIn(Q2, shift=0.2 * RIGHT))
+        self.next_slide()
+
+        self.play(defn.animate.set_color(KOLOR_DRUGORZEDNY), FadeOut(podkr), Q2[1].animate.set_color(KOLOR_TEKST),
+                  run_time=0.6)
+        self.next_slide()
+
         pokaz_przyp(kula)
         pokaz(Q2b, 1)
         schowaj_przyp(kula)
