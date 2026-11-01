@@ -109,6 +109,23 @@ class LematBaza(Slide):
     def construct(self):
         KOLOR_Y = ManimColor("#7B3FA0")
 
+        # Motywacja: po co nam lemat.
+        cel = Tex(r"Chcemy, żeby kule $B_p$ wyznaczały topologię", font_size=38)
+        cel2 = Tex(r"--- tak jak w przestrzeni metrycznej.", font_size=38)
+        pytanie = Tex(r"Jaki warunek musi być spełniony?", font_size=38, color=KOLOR_CZESCIOWA)
+        odp = VGroup(
+            Tex(r"Wokół każdego punktu kuli musi zmieścić się", font_size=36),
+            Tex(r"mniejsza kula, cała zawarta w tej pierwszej.", font_size=36),
+        ).arrange(DOWN, buff=0.12)
+        motywacja = VGroup(VGroup(cel, cel2).arrange(DOWN, buff=0.12), pytanie, odp).arrange(DOWN, buff=0.6)
+        self.play(FadeIn(motywacja[0], shift=0.2 * DOWN))
+        self.next_slide()
+        self.play(FadeIn(pytanie, shift=0.2 * UP))
+        self.next_slide()
+        self.play(FadeIn(odp, shift=0.2 * UP))
+        self.next_slide()
+        self.play(FadeOut(motywacja, shift=0.2 * UP))
+
         lemat = VGroup(
             Tex(r"\textbf{Lemat.} Jeżeli $y\in B_p(x,\varepsilon)$, to istnieje $\delta>0$ takie, że", font_size=32),
             MathTex(r"B_p(y,\delta)\subset B_p(x,\varepsilon).", font_size=34),
