@@ -247,3 +247,21 @@ class LematBaza(Slide):
         self.play(FadeIn(wniosek[1], shift=0.2 * UP))
         self.wait(0.2)
         self.next_slide()
+
+
+class WlasnosciTopologii(Slide):
+    """Własności topologii tau_p: tytuł na środku, potem do góry, potem stwierdzenie T_0."""
+
+    def construct(self):
+        tytul = Tex(r"Własności topologii $\tau_p$", font_size=48)
+        self.play(FadeIn(tytul))
+        self.next_slide()
+
+        self.play(tytul.animate.scale(44 / 48).to_edge(UP, buff=0.4), run_time=1.0)
+        self.next_slide()
+
+        stw = Tex(r"\textbf{Stwierdzenie.} Topologia $\tau_p$ spełnia aksjomat $T_0$.", font_size=36)
+        stw.next_to(tytul, DOWN, buff=0.6)
+        self.play(FadeIn(stw, shift=0.2 * DOWN))
+        self.wait(0.2)
+        self.next_slide()
