@@ -65,15 +65,21 @@ class MetrykaCzesciowa(Slide):
         self.play(FadeIn(pytanie, shift=0.2 * UP))
         self.next_slide()
 
-        # Krok 3: przemiana aksjomatów.
+        # Krok 3: przemiana aksjomatów — każde przejście na osobne kliknięcie.
         self.play(FadeOut(grafika))
         self.play(dopasuj_ramke(definicja, wstep_p, aks_p),
                   TransformMatchingShapes(wstep_d, wstep_p))
+        self.next_slide()
+
         # Najpierw zjeżdżają niższe wiersze, żeby zrobić miejsce na (P2).
         self.play(TransformMatchingShapes(m3, VGroup(p4[0], p4[1][0])), run_time=1.2)
+        self.next_slide()
         self.play(TransformMatchingShapes(m2, p3), run_time=1.0)
+        self.next_slide()
         self.play(TransformMatchingShapes(m1, p1), run_time=1.2)
+        self.next_slide()
         self.play(FadeIn(p2, shift=0.2 * RIGHT))
+        self.next_slide()
         self.play(FadeIn(p4[1][1], shift=0.3 * LEFT))
         self.play(Indicate(p4[1][1], color=KOLOR_CZESCIOWA, scale_factor=1.2))
         self.play(p4[1][1].animate.set_color(KOLOR_TEKST))
