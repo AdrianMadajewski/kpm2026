@@ -36,7 +36,7 @@ class Zbieznosc(Slide):
         self.wait(0.2)
         self.next_slide()
 
-        Q1 = MathTex(r"\textit{Dowód.}\ (\Rightarrow)\ \text{Ustalmy }\varepsilon>0.\ \text{Kula }",
+        Q1 = MathTex(r"\textit{Dowód.}\ (\Rightarrow)", r"\ \text{Ustalmy }\varepsilon>0.\ \text{Kula }",
                      r"B_p(x,\varepsilon)", r"\text{ jest otwarta i zawiera } x\text{,}", font_size=FS)
         Q2 = MathTex(r"\text{więc istnieje } N \text{ takie, że dla każdego } n\ge N \text{ mamy }",
                      r"x_n\in B_p(x,\varepsilon)", r"\text{,}", font_size=FS)
@@ -78,8 +78,14 @@ class Zbieznosc(Slide):
                               r"B_p(x,\varepsilon)\subseteq U")
 
         # (=>)
+        self.play(FadeIn(Q1[0], shift=0.2 * RIGHT))
+        self.next_slide()
         pokaz_przyp(baza)
-        pokaz(Q1, 1)
+        Q1[2].set_color(O)
+        self.play(FadeIn(Q1[1:], shift=0.2 * RIGHT))
+        self.wait(0.4)
+        self.play(Q1[2].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.next_slide()
         schowaj_przyp(baza)
         pokaz(Q2, 1)
         pokaz_przyp(kula)
