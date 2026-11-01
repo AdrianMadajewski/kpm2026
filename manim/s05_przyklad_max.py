@@ -338,6 +338,6 @@ class Interpretacja(Slide):
             self.next_slide()
 
         pytanie = Tex(r"A co, jeśli \emph{każdy} punkt jest w pełni określony?",
-                      font_size=36, color=KOLOR_CZESCIOWA).to_edge(DOWN, buff=0.45)
+                      font_size=36).to_edge(DOWN, buff=0.45)
         self.play(FadeIn(pytanie, shift=0.2 * UP))
         self.next_slide()
