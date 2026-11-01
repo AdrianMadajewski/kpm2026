@@ -201,12 +201,14 @@ class LematBaza(Slide):
 
         # Krok 1: (P4).
         self.play(FadeIn(L4[0]))
-        self.play(FadeIn(tag), tag.animate.set_color(O), FadeIn(tresc_p4, shift=0.2 * UP), run_time=0.7)
-        self.play(FadeIn(L4[1:4], shift=0.2 * RIGHT))
-        self.play(L4[3].animate.set_color(O), run_time=0.4)
-        self.wait(0.4)
-        self.play(*zgas(L4[3]), tag.animate.set_color(KOLOR_DRUGORZEDNY),
-                  FadeOut(tresc_p4, shift=0.2 * DOWN), run_time=0.6)
+        self.next_slide()
+        self.play(FadeIn(tresc_p4, shift=0.2 * UP))
+        self.next_slide()
+        tag.set_color(O)
+        self.play(FadeIn(L4[1]), FadeIn(tag))
+        self.play(FadeIn(L4[2:4], shift=0.2 * RIGHT))
+        self.next_slide()
+        self.play(FadeOut(tresc_p4, shift=0.2 * DOWN), tag.animate.set_color(KOLOR_DRUGORZEDNY), run_time=0.7)
         self.next_slide()
 
         # Krok 2: z w B_p(y, delta), czyli p(y,z) - p(y,y) < delta.
