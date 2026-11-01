@@ -192,7 +192,9 @@ class TwierdzenieMatthewsa(Slide):
         nieuj_b = przypomnienie(r"p(x_{n+2},x_{n+2})\ge 0")
         self.play(R3[3].animate.set_color(O), FadeIn(nieuj_b, shift=0.2 * UP), run_time=0.6)
         self.next_slide()
-        self.play(FadeOut(R3[3], shift=0.2 * DOWN), FadeOut(nieuj_b, shift=0.2 * DOWN), run_time=0.6)
+        czlon_b = R3[3]
+        self.play(FadeOut(czlon_b, shift=0.2 * DOWN), FadeOut(nieuj_b, shift=0.2 * DOWN), run_time=0.6)
+        R3.remove(czlon_b)  # inaczej wraca przy FadeOut całej strony
         self.next_slide()
 
         # Jeszcze raz (P4) dla p(x_{n+2}, x_m).
@@ -206,7 +208,9 @@ class TwierdzenieMatthewsa(Slide):
         nieuj_d = przypomnienie(r"p(x_{n+3},x_{n+3})\ge 0")
         self.play(R3b[2].animate.set_color(O), FadeIn(nieuj_d, shift=0.2 * UP), run_time=0.6)
         self.next_slide()
-        self.play(FadeOut(R3b[2], shift=0.2 * DOWN), FadeOut(nieuj_d, shift=0.2 * DOWN), run_time=0.6)
+        czlon_d = R3b[2]
+        self.play(FadeOut(czlon_d, shift=0.2 * DOWN), FadeOut(nieuj_d, shift=0.2 * DOWN), run_time=0.6)
+        R3b.remove(czlon_d)
         self.next_slide()
 
         # Suma i szereg geometryczny.
