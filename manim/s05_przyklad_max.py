@@ -133,12 +133,13 @@ class PrzykladMax(Slide):
         kropka_y1 = always_redraw(lambda: Dot(os.n2p(yy.get_value()), radius=0.08))
         etyk_y1 = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y1, UP, buff=0.15))
         POD2 = 1.45 * DOWN
+        KOLOR_Y = ManimColor("#7B3FA0")  # fiolet — odróżnia [0,y] od [0,x]
         odc_y1 = always_redraw(lambda: Line(
             os.n2p(0) + POD2, os.n2p(max(yy.get_value(), 1e-3)) + POD2,
-            color=KOLOR_CZESCIOWA, stroke_width=12).set_cap_style(CapStyleType.ROUND))
+            color=KOLOR_Y, stroke_width=12).set_cap_style(CapStyleType.ROUND))
         etyk_px = always_redraw(lambda: MathTex(r"[0,x]", font_size=30, color=KOLOR_CZESCIOWA)
                                 .next_to(odcinek, RIGHT, buff=0.25))
-        etyk_py = always_redraw(lambda: MathTex(r"[0,y]", font_size=30, color=KOLOR_CZESCIOWA)
+        etyk_py = always_redraw(lambda: MathTex(r"[0,y]", font_size=30, color=KOLOR_Y)
                                 .next_to(odc_y1, RIGHT, buff=0.25))
 
         self.play(FadeOut(opis), FadeOut(wartosc))
@@ -157,13 +158,17 @@ class PrzykladMax(Slide):
         objasnienie = Tex(r"długość najmniejszego przedziału zawierającego $[0,x]$ i $[0,y]$",
                           font_size=30).to_edge(DOWN, buff=0.5)
         self.play(Create(otoczka), FadeIn(etyk_pxy))
-        self.play(FadeIn(objasnienie))
         self.next_slide()
 
-        # y wędruje: dopóki y < x, liczy się x; gdy y > x, liczy się y.
-        self.play(yy.animate.set_value(4.5), run_time=2.0)
+        # Machamy oboma punktami: odległość to zawsze większy z przedziałów.
+        self.play(yy.animate.set_value(4.5), run_time=1.6)
+        self.play(x.animate.set_value(2.0), run_time=1.2)
+        self.play(yy.animate.set_value(1.0), run_time=1.6)
+        self.play(x.animate.set_value(3.5), run_time=1.2)
+        self.play(x.animate.set_value(3.0), yy.animate.set_value(1.5), run_time=1.0)
         self.next_slide()
-        self.play(yy.animate.set_value(1.5), run_time=2.0)
+
+        self.play(FadeIn(objasnienie))
         self.next_slide()
 
         self.play(FadeOut(VGroup(kropka_y1, etyk_y1, odc_y1, etyk_px, etyk_py,
