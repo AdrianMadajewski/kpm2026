@@ -131,7 +131,7 @@ class TwierdzenieMatthewsa(Slide):
                      r"x_{n+1}\coloneqq f(x_n)", r"\text{ dla } n=0,1,2,\dots", font_size=FS)
         A2 = MathTex(r"p(x_{n+1},x_n)", r"=p(f(x_n),f(x_{n-1}))", r"\le c\cdot p(x_n,x_{n-1})",
                      r"\le\dots\le c^n\cdot p(x_1,x_0)", r".", font_size=FS)
-        A3 = MathTex(r"\text{Niech } m>n.\ \text{Z (P4) dla } x=x_n,\ y=x_{n+1},\ z=x_m\text{ mamy}", font_size=FS)
+        A3 = MathTex(r"\text{Niech } m>n.\ \text{Dla } x=x_n,\ y=x_{n+1},\ z=x_m\text{ mamy}", font_size=FS)
         R1 = MathTex(r"p(x_n,x_m)", r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", r"-p(x_{n+1},x_{n+1})",
                      font_size=FS)
         R2 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", font_size=FS)
@@ -159,9 +159,10 @@ class TwierdzenieMatthewsa(Slide):
         wyszarz(A2[3], przyp=kontr)
 
         # (P4) dla trzech punktów x_n, x_{n+1}, x_m.
-        pokaz_przyp(p4)
         pokaz(A3)
-        pokaz(R1, pomaranczowe=[R1[1], R1[2], R1[3]])
+        pokaz(R1[0])
+        pokaz_przyp(p4)
+        pokaz(R1[1:], pomaranczowe=[R1[1], R1[2], R1[3]])
         wyszarz(R1[1], R1[2], R1[3], przyp=p4)
 
         # Odejmowany wyraz jest nieujemny: pomijamy go.
