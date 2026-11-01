@@ -38,59 +38,69 @@ class Zbieznosc(Slide):
 
         Q1 = MathTex(r"\textit{Dowód.}\ (\Rightarrow)\ \text{Ustalmy }\varepsilon>0.\ \text{Kula }",
                      r"B_p(x,\varepsilon)", r"\text{ jest otwarta i zawiera } x\text{,}", font_size=FS)
-        Q2 = MathTex(r"\text{więc }\exists\, N\ \forall\, n\ge N\colon\ ", r"x_n\in B_p(x,\varepsilon)",
-                     r"\text{, czyli }", r"p(x,x_n)<p(x,x)+\varepsilon", r".", font_size=FS)
+        Q2 = MathTex(r"\text{więc istnieje } N \text{ takie, że dla każdego } n\ge N \text{ mamy }",
+                     r"x_n\in B_p(x,\varepsilon)", r"\text{,}", font_size=FS)
+        Q2b = MathTex(r"\text{czyli }", r"p(x,x_n)<p(x,x)+\varepsilon", r".", font_size=FS)
         Q3 = MathTex(r"\text{Z (P2) mamy }", r"p(x,x)\le p(x,x_n)", r"\text{, zatem }",
                      r"0\le p(x,x_n)-p(x,x)<\varepsilon", r"\text{ dla } n\ge N.", font_size=FS)
         Q4 = MathTex(r"(\Leftarrow)\ \text{Niech } U\in\tau_p,\ x\in U.\ \text{Z lematu }",
                      r"B_p(x,\varepsilon)\subseteq U", r"\text{ dla pewnego } \varepsilon>0.", font_size=FS)
-        Q5 = MathTex(r"\text{Z założenia }\exists\, N\ \forall\, n\ge N\colon\ ", r"p(x,x_n)<p(x,x)+\varepsilon",
-                     r"\text{,}", font_size=FS)
+        Q5 = MathTex(r"\text{Z założenia istnieje } N \text{ takie, że dla każdego } n\ge N \text{ mamy }",
+                     r"p(x,x_n)<p(x,x)+\varepsilon", r"\text{,}", font_size=FS)
         Q6 = MathTex(r"\text{czyli }", r"x_n\in B_p(x,\varepsilon)\subseteq U", r"\text{ dla } n\ge N.\ \blacksquare",
                      font_size=FS)
-        dowod = VGroup(Q1, Q2, Q3, Q4, Q5, Q6).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        dowod = VGroup(Q1, Q2, Q2b, Q3, Q4, Q5, Q6).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
         dowod.next_to(stw, DOWN, buff=0.4).to_edge(LEFT, buff=0.7)
 
-        def pokaz(linia, *idx, pauza=True):
+        def pokaz(linia, *idx):
+            """Linia z podświetlonymi fragmentami, które potem wracają do czerni; na końcu pauza."""
             for k in idx:
                 linia[k].set_color(O)
             self.play(FadeIn(linia, shift=0.2 * RIGHT))
             self.wait(0.4)
             if idx:
                 self.play(*[linia[k].animate.set_color(KOLOR_TEKST) for k in idx], run_time=0.6)
-            if pauza:
-                self.next_slide()
+            self.next_slide()
+
+        def pokaz_przyp(przyp):
+            self.play(FadeIn(przyp, shift=0.2 * UP))
+            self.next_slide()
+
+        def schowaj_przyp(przyp):
+            # Podpowiedź znika dopiero na kliknięcie.
+            self.play(FadeOut(przyp, shift=0.2 * DOWN), run_time=0.6)
+            self.next_slide()
 
         baza = przypomnienie(r"\text{(Lemat)}\quad \text{kule } B_p \text{ tworzą bazę topologii } \tau_p")
+        kula = przypomnienie(r"B_p(x,\varepsilon)\coloneqq\{u\in X : p(x,u)<p(x,x)+\varepsilon\}")
         p2 = przypomnienie(r"\text{(P2)}\quad p(x,x)\le p(x,y)")
         lemat = przypomnienie(r"\text{(Lemat)}\quad x\in U\in\tau_p \implies \exists\,\varepsilon>0\colon\ "
                               r"B_p(x,\varepsilon)\subseteq U")
 
         # (=>)
-        self.play(FadeIn(baza, shift=0.2 * UP))
-        self.next_slide()
-        pokaz(Q1, 1, pauza=False)
-        self.play(FadeOut(baza, shift=0.2 * DOWN), run_time=0.6)
-        self.next_slide()
-        pokaz(Q2, 1, 3)
-        self.play(FadeIn(p2, shift=0.2 * UP))
-        self.next_slide()
-        pokaz(Q3, 1, pauza=False)
-        self.play(FadeOut(p2, shift=0.2 * DOWN), run_time=0.6)
-        self.next_slide()
+        pokaz_przyp(baza)
+        pokaz(Q1, 1)
+        schowaj_przyp(baza)
+        pokaz(Q2, 1)
+        pokaz_przyp(kula)
+        pokaz(Q2b, 1)
+        schowaj_przyp(kula)
+        pokaz_przyp(p2)
+        pokaz(Q3, 1)
+        schowaj_przyp(p2)
         self.play(Q3[3].animate.set_color(O), run_time=0.5)
         self.wait(0.3)
         self.play(Q3[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
 
         # (<=)
-        self.play(FadeIn(lemat, shift=0.2 * UP))
-        self.next_slide()
-        pokaz(Q4, 1, pauza=False)
-        self.play(FadeOut(lemat, shift=0.2 * DOWN), run_time=0.6)
-        self.next_slide()
+        pokaz_przyp(lemat)
+        pokaz(Q4, 1)
+        schowaj_przyp(lemat)
         pokaz(Q5, 1)
+        pokaz_przyp(kula)
         pokaz(Q6, 1)
+        schowaj_przyp(kula)
 
         # ================= Przykład: x_n = 0 w max =================
         self.play(*[FadeOut(m, shift=0.3 * LEFT) for m in self.mobjects], run_time=0.8)
