@@ -254,18 +254,16 @@ class WniosekOkreslonosc(Slide):
     """Wniosek po stwierdzeniu: metryki = metryki częściowe z w pełni określonymi punktami."""
 
     def construct(self):
-        tytul = Tex(r"\textbf{Wniosek.}", font_size=40)
         zd1 = VGroup(
-            Tex(r"Metryki to dokładnie te metryki częściowe,", font_size=36),
+            Tex(r"\textbf{Wniosek.} Metryki to dokładnie te metryki częściowe,", font_size=36),
             Tex(r"w których każdy punkt jest \emph{w pełni określony}.", font_size=36),
-        ).arrange(DOWN, buff=0.15)
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
         zd2 = VGroup(
-            Tex(r"Dodatnia wartość $p(x,x)$ mierzy,", font_size=36),
-            Tex(r"jak bardzo punkt $x$ jest \emph{niedookreślony}.", font_size=36),
-        ).arrange(DOWN, buff=0.15)
-        calosc = VGroup(tytul, zd1, zd2).arrange(DOWN, buff=0.6).move_to(ORIGIN)
+            Tex(r"Dodatnia wartość $p(x,x)$ mierzy, jak bardzo punkt $x$", font_size=36),
+            Tex(r"jest \emph{niedookreślony}.", font_size=36),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
+        calosc = VGroup(zd1, zd2).arrange(DOWN, aligned_edge=LEFT, buff=0.5).move_to(ORIGIN)
 
-        self.play(FadeIn(tytul, shift=0.2 * DOWN))
         self.play(FadeIn(zd1, shift=0.2 * UP))
         self.next_slide()
         self.play(FadeIn(zd2, shift=0.2 * UP))
