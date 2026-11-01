@@ -89,12 +89,10 @@ class Kule(Slide):
         self.next_slide()
 
         # Co zostaje: [0, x] = p(x,x).
-        odcinek = Line(os_p.n2p(0), os_p.n2p(x0), color=KOLOR_CZESCIOWA,
-                       stroke_width=7).set_cap_style(CapStyleType.ROUND)
-        odcinek.shift(0.75 * DOWN)
-        klamra = Brace(odcinek, DOWN, color=KOLOR_CZESCIOWA)
+        # Klamra pod tym, co zostało z kuli, czyli pod [0, x] (bez rysowania nowej kreski).
+        pod_kula = Line(os_p.n2p(0), os_p.n2p(x0))
+        klamra = Brace(pod_kula, DOWN, color=KOLOR_CZESCIOWA, buff=0.5)
         podpis = MathTex(r"p(x,x) = x", font_size=34, color=KOLOR_CZESCIOWA).next_to(klamra, DOWN, buff=0.1)
-        self.play(Create(odcinek))
         self.play(GrowFromCenter(klamra), FadeIn(podpis))
         self.next_slide()
         komentarz = Tex(r"każda kula wokół $x$ zawiera $[0,x]$", font_size=32)
