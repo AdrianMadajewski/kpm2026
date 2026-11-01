@@ -29,6 +29,7 @@ SCENY = [
     ("s08_kule.py", "Kule"),
     ("s06_topologia_czesciowa.py", "LematBaza"),
     ("s06_topologia_czesciowa.py", "WlasnosciTopologii"),
+    ("s07_zbieznosc.py", "Zbieznosc"),
 ]
 
 WYJSCIE = "prezentacja.html"
