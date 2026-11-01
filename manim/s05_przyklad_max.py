@@ -248,7 +248,7 @@ class PrzykladMax(Slide):
             Tex(r"O którym z punktów", font_size=36),
             Tex(r"wiemy więcej?", font_size=36),
         ).arrange(DOWN, buff=0.15)
-        pytanie.move_to([4.9, 0.3, 0])
+        pytanie.move_to([4.0, 0.3, 0])
         self.play(FadeIn(pytanie, shift=0.2 * UP))
         self.next_slide()
 
