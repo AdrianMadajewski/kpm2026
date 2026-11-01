@@ -119,7 +119,7 @@ class ZupelnoscMax(Slide):
         self.next_slide()
 
         L1 = MathTex(r"\textit{Dowód.}\ \text{Niech } (x_n)_{n\in\mathbb{N}}\subset[0,\infty) \text{ będzie ciągiem "
-                     r"Cauchy'ego i }", r"a\coloneqq\lim_{n,m\to\infty}\max\{x_n,x_m\}", r".", font_size=FS)
+                     r"Cauchy'ego}", r"\text{ i }", r"a\coloneqq\lim_{n,m\to\infty}\max\{x_n,x_m\}", r".", font_size=FS)
         K = MathTex(r"\textit{Kandydat.}\ \text{Dla } m=n\text{: }", r"x_n=\max\{x_n,x_n\}\xrightarrow[n\to\infty]{}a",
                     r"\text{, czyli }", r"\lim_{n\to\infty}x_n=a", r".", font_size=FS)
         Z1 = MathTex(r"\textit{Zbieżność.}\ ", r"p(a,x_n)=\max\{a,x_n\}\xrightarrow[n\to\infty]{}\max\{a,a\}=a=p(a,a)",
@@ -154,8 +154,9 @@ class ZupelnoscMax(Slide):
         war_zup = przypomnienie(r"p(x,x)=\lim_{n\to\infty}p(x,x_n)=\lim_{n,m\to\infty}p(x_n,x_m)")
 
         # Założenie i oznaczenie granicy.
-        pokaz(L1, pomaranczowe=[L1[1]])
-        wyszarz(L1[1])
+        pokaz(L1[0])
+        pokaz(L1[1:], pomaranczowe=[L1[2]])
+        wyszarz(L1[2])
 
         # 1. Kandydat na granicę.
         pokaz(K[:2], pomaranczowe=[K[1]])
