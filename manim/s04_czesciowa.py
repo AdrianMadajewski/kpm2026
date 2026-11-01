@@ -96,20 +96,28 @@ class MetrykaCzesciowa(Slide):
                   wstep_p[1][0].animate.set_color(KOLOR_TEKST), run_time=0.8)
         self.next_slide()
 
-        def zmien(stary, nowy, wzor_nowy, przesun=False):
-            """Podświetl stary wzór -> (przesuń) -> wymień na nowy -> zgaś podświetlenie."""
+        def zmien(stary, nowy, wzor_nowy, przesun=False, dopasuj=False):
+            """Podświetl stary wzór -> (przesuń) -> zamień na nowy -> zgaś podświetlenie.
+
+            dopasuj=True: wspólne znaki zostają na miejscu, zmieniają się tylko
+            różniące się (np. d -> p, M3 -> P4). W przeciwnym razie stary wzór
+            wyjeżdża w lewo, a nowy wjeżdża od lewej.
+            """
             wzor_nowy.set_color(KOLOR_CZESCIOWA)
             self.play(stary[1].animate.set_color(KOLOR_CZESCIOWA), run_time=0.7)
             self.wait(0.3)
             if przesun:
                 self.play(stary.animate.align_to(nowy, UL), run_time=1.0)
-            self.play(FadeOut(stary, shift=0.4 * LEFT), run_time=0.7)
-            self.play(FadeIn(nowy, shift=0.4 * RIGHT), run_time=0.8)
+            if dopasuj:
+                self.play(TransformMatchingShapes(stary, nowy), run_time=1.2)
+            else:
+                self.play(FadeOut(stary, shift=0.4 * LEFT), run_time=0.7)
+                self.play(FadeIn(nowy, shift=0.4 * RIGHT), run_time=0.8)
             self.wait(0.6)
             self.play(wzor_nowy.animate.set_color(KOLOR_TEKST), run_time=0.8)
 
         # Najpierw nierówność trójkąta zjeżdża na dół...
-        zmien(m3, VGroup(p4[0], p4[1][0]), p4[1][0], przesun=True)
+        zmien(m3, VGroup(p4[0], p4[1][0]), p4[1][0], przesun=True, dopasuj=True)
         self.next_slide()
         # ...i dostaje dodatkowy człon -p(y,y).
         self.play(FadeIn(p4[1][1], shift=0.3 * LEFT), run_time=1.0)
@@ -120,7 +128,7 @@ class MetrykaCzesciowa(Slide):
         self.next_slide()
 
         # Pozostałe aksjomaty.
-        zmien(m2, p3, p3[1], przesun=True)
+        zmien(m2, p3, p3[1], przesun=True, dopasuj=True)
         self.next_slide()
         zmien(m1, p1, p1[1])
         self.next_slide()
