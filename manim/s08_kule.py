@@ -14,7 +14,7 @@ def zamkniety(punkt, kolor):
 
 class Kule(Slide):
     def construct(self):
-        naglowek = Tex(r"Kule w obu przestrzeniach", font_size=44).to_edge(UP, buff=0.4)
+        naglowek = Tex(r"Topologia w przestrzeni częściowo metrycznej", font_size=44).to_edge(UP, buff=0.4)
 
         def os():
             return NumberLine(
@@ -33,12 +33,12 @@ class Kule(Slide):
         opis_p.next_to(os_p, UP, buff=0.55).to_edge(LEFT, buff=0.8)
 
         x0 = 2
-        punkt_d = Dot(os_d.n2p(x0), radius=0.07)
-        punkt_p = Dot(os_p.n2p(x0), radius=0.07)
+        punkt_d = Dot(os_d.n2p(x0), radius=0.09, color=KOLOR_METRYKA).set_z_index(10)
+        punkt_p = Dot(os_p.n2p(x0), radius=0.09, color=KOLOR_CZESCIOWA).set_z_index(10)
         etyk_d = MathTex("x", font_size=32).next_to(punkt_d, UP, buff=0.15)
         etyk_p = MathTex("x", font_size=32).next_to(punkt_p, UP, buff=0.15)
 
-        self.play(FadeIn(naglowek))
+        self.add(naglowek)
         self.play(Create(os_d), Create(os_p), FadeIn(opis_d), FadeIn(opis_p))
         self.play(FadeIn(punkt_d), FadeIn(punkt_p), FadeIn(etyk_d), FadeIn(etyk_p))
         self.next_slide()
@@ -50,7 +50,7 @@ class Kule(Slide):
             e = eps.get_value()
             a, b = os_d.n2p(x0 - e), os_d.n2p(x0 + e)
             return VGroup(
-                Line(a, b, color=KOLOR_METRYKA, stroke_width=10),
+                Line(a, b, color=KOLOR_METRYKA, stroke_width=12).set_cap_style(CapStyleType.ROUND),
                 otwarty(a, KOLOR_METRYKA),
                 otwarty(b, KOLOR_METRYKA),
             )
@@ -59,7 +59,7 @@ class Kule(Slide):
             e = eps.get_value()
             a, b = os_p.n2p(0), os_p.n2p(x0 + e)
             return VGroup(
-                Line(a, b, color=KOLOR_CZESCIOWA, stroke_width=10),
+                Line(a, b, color=KOLOR_CZESCIOWA, stroke_width=12).set_cap_style(CapStyleType.ROUND),
                 zamkniety(a, KOLOR_CZESCIOWA),
                 otwarty(b, KOLOR_CZESCIOWA),
             )
@@ -85,18 +85,20 @@ class Kule(Slide):
         self.next_slide()
 
         # eps -> 0
-        punkt_d.add_updater(lambda m: self.bring_to_front(m))
         self.play(eps.animate.set_value(0.03), run_time=4, rate_func=smooth)
         self.next_slide()
 
         # Co zostaje: [0, x] = p(x,x).
-        odcinek = Line(os_p.n2p(0), os_p.n2p(x0), color=KOLOR_SAMO, stroke_width=6)
-        odcinek.shift(0.35 * DOWN + 0.0 * UP)
-        odcinek.next_to(os_p, DOWN, buff=0.55).align_to(os_p.n2p(0), LEFT)
-        klamra = Brace(odcinek, DOWN, color=KOLOR_SAMO)
-        podpis = MathTex(r"p(x,x) = x", font_size=34, color=KOLOR_SAMO).next_to(klamra, DOWN, buff=0.1)
-        self.play(Create(odcinek), GrowFromCenter(klamra), FadeIn(podpis))
-        komentarz = Tex(r"każda kula zawiera $[0,x]$", font_size=32, color=KOLOR_SAMO)
-        komentarz.next_to(odcinek, RIGHT, buff=1.0)
+        odcinek = Line(os_p.n2p(0), os_p.n2p(x0), color=KOLOR_CZESCIOWA,
+                       stroke_width=12).set_cap_style(CapStyleType.ROUND)
+        odcinek.shift(0.75 * DOWN)
+        klamra = Brace(odcinek, DOWN, color=KOLOR_CZESCIOWA)
+        podpis = MathTex(r"p(x,x) = x", font_size=34, color=KOLOR_CZESCIOWA).next_to(klamra, DOWN, buff=0.1)
+        self.play(Create(odcinek))
+        self.play(GrowFromCenter(klamra), FadeIn(podpis))
+        self.next_slide()
+        komentarz = Tex(r"każda kula wokół $x$ zawiera $[0,x]$", font_size=32)
+        komentarz.move_to([2.4, -3.4, 0])
         self.play(FadeIn(komentarz, shift=0.2 * LEFT))
+        self.wait(0.2)
         self.next_slide()

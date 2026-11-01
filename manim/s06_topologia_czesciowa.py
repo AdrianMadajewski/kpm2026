@@ -83,3 +83,94 @@ class KulaCzesciowa(Slide):
         self.play(FadeIn(r3, shift=0.2 * RIGHT))
         self.wait(0.2)
         self.next_slide()
+
+
+def _koniec_otwarty(punkt, kolor):
+    return Circle(radius=0.08, color=kolor, stroke_width=4).set_fill(WHITE, 1).move_to(punkt).set_z_index(5)
+
+
+def _koniec_domkniety(punkt, kolor):
+    return Dot(punkt, radius=0.08, color=kolor).set_z_index(5)
+
+
+def _kula_na_osi(os, prawy, kolor, wys):
+    """Kula [0, prawy) w przykładzie max, narysowana nad osią na wysokości `wys`."""
+    a, b = os.n2p(0) + wys * UP, os.n2p(prawy) + wys * UP
+    return VGroup(
+        Line(a, b, color=kolor, stroke_width=10).set_cap_style(CapStyleType.ROUND),
+        _koniec_domkniety(a, kolor),
+        _koniec_otwarty(b, kolor),
+    )
+
+
+class LematBaza(Slide):
+    """Lemat: kule tworzą bazę topologii — treść, rysunek dla max i krótki dowód."""
+
+    def construct(self):
+        KOLOR_Y = ManimColor("#7B3FA0")
+
+        lemat = VGroup(
+            Tex(r"\textbf{Lemat.} Jeżeli $y\in B_p(x,\varepsilon)$, to istnieje $\delta>0$ takie, że", font_size=32),
+            MathTex(r"B_p(y,\delta)\subset B_p(x,\varepsilon).", font_size=34),
+        ).arrange(DOWN, buff=0.15).to_edge(UP, buff=0.45)
+        self.play(FadeIn(lemat, shift=0.2 * DOWN))
+        self.next_slide()
+
+        # Rysunek w przykładzie max: x = 2, eps = 1.5, y = 1, delta = 1.5.
+        os = NumberLine(x_range=[0, 5, 1], length=10, include_numbers=True,
+                        font_size=26, include_tip=False).move_to(0.75 * UP)
+        x0, eps, y0 = 2.0, 1.5, 1.0
+        delta = x0 + eps - max(x0, y0)
+        kx = Dot(os.n2p(x0), radius=0.09, color=KOLOR_CZESCIOWA).set_z_index(10)
+        ky = Dot(os.n2p(y0), radius=0.09, color=KOLOR_Y).set_z_index(10)
+        ex = MathTex("x", font_size=30).next_to(kx, DOWN, buff=0.45)
+        ey = MathTex("y", font_size=30).next_to(ky, DOWN, buff=0.45)
+        kula_x = _kula_na_osi(os, x0 + eps, KOLOR_CZESCIOWA, 0.35)
+        kula_y = _kula_na_osi(os, y0 + delta, KOLOR_Y, 0.7)
+        e_kx = MathTex(r"B_p(x,\varepsilon)", font_size=30, color=KOLOR_CZESCIOWA).next_to(kula_x[0], RIGHT, buff=0.3)
+        e_ky = MathTex(r"B_p(y,\delta)", font_size=30, color=KOLOR_Y).next_to(kula_y[0], RIGHT, buff=0.3)
+
+        self.play(Create(os))
+        self.play(FadeIn(kx), FadeIn(ex))
+        self.play(FadeIn(kula_x), FadeIn(e_kx))
+        self.next_slide()
+        self.play(FadeIn(ky), FadeIn(ey))
+        self.next_slide()
+        self.play(FadeIn(kula_y), FadeIn(e_ky))
+        self.next_slide()
+
+        # Dowód.
+        FS = 32
+        d1 = Tex(r"\textit{Dowód.} Niech $\delta\coloneqq p(x,x)+\varepsilon-p(x,y)>0$ i $z\in B_p(y,\delta)$.", font_size=FS)
+        d2 = MathTex(r"p(x,z)", r"\le", r"p(x,y)+p(y,z)", r"-p(y,y)", font_size=FS + 2)
+        d3 = MathTex(r"<", r"p(x,y)+\delta", r"=", r"p(x,x)+\varepsilon,", font_size=FS + 2)
+        d4 = Tex(r"czyli $z\in B_p(x,\varepsilon)$. \hfill $\blacksquare$", font_size=FS)
+        dowod = VGroup(d1, d2, d3, d4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
+        dowod.next_to(os, DOWN, buff=0.95).to_edge(LEFT, buff=0.8)
+        d2.shift(0.6 * RIGHT)
+        d3.next_to(d2, DOWN, buff=0.22).align_to(d2[1], LEFT)
+        d4.next_to(d3, DOWN, buff=0.22).align_to(d1, LEFT)
+        uwaga = Tex(r"(P4)", font_size=28, color=KOLOR_CZESCIOWA).next_to(d2, RIGHT, buff=0.5)
+
+        self.play(FadeIn(d1))
+        self.next_slide()
+        self.play(FadeIn(d2))
+        self.play(d2[3].animate.set_color(KOLOR_CZESCIOWA), FadeIn(uwaga))
+        self.next_slide()
+        self.play(FadeIn(d3))
+        self.next_slide()
+        self.play(FadeIn(d4))
+        self.next_slide()
+
+        # Wniosek.
+        self.play(FadeOut(VGroup(dowod, uwaga)))
+        wniosek = VGroup(
+            Tex(r"Zatem kule tworzą bazę topologii $\tau_p$.", font_size=34),
+            Tex(r"W przykładzie zbiory otwarte to $\emptyset$, $[0,\infty)$ oraz $[0,a)$ dla $a>0$.",
+                font_size=34, color=KOLOR_CZESCIOWA),
+        ).arrange(DOWN, buff=0.3).next_to(os, DOWN, buff=1.3)
+        self.play(FadeIn(wniosek[0], shift=0.2 * UP))
+        self.next_slide()
+        self.play(FadeIn(wniosek[1], shift=0.2 * UP))
+        self.wait(0.2)
+        self.next_slide()
