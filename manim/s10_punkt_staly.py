@@ -138,9 +138,10 @@ class TwierdzenieMatthewsa(Slide):
         R1 = MathTex(r"p(x_n,x_m)", r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", r"-p(x_{n+1},x_{n+1})",
                      font_size=FS)
         R2 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", font_size=FS)
-        R3 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_{n+2})+", r"p(x_{n+2},x_m)", font_size=FS)
+        R3 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_{n+2})+", r"p(x_{n+2},x_m)", r"-p(x_{n+2},x_{n+2})",
+                     font_size=FS)
         R3b = MathTex(r"\le p(x_n,x_{n+1})+p(x_{n+1},x_{n+2})+", r"p(x_{n+2},x_{n+3})+p(x_{n+3},x_m)",
-                      font_size=FS)
+                      r"-p(x_{n+3},x_{n+3})", font_size=FS)
         R4 = MathTex(r"\le\dots\le", r"\sum_{k=n}^{m-1}p(x_k,x_{k+1})", r"\le\sum_{k=n}^{m-1}c^k\, p(x_1,x_0)",
                      font_size=FS)
         R5 = MathTex(r"=p(x_1,x_0)\sum_{k=n}^{m-1}c^k", r"\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".", font_size=FS)
@@ -185,8 +186,14 @@ class TwierdzenieMatthewsa(Slide):
         p4_b = przypomnienie(r"\text{(P4)}\quad p(x_{n+1},x_m)\le p(x_{n+1},x_{n+2})+p(x_{n+2},x_m)"
                              r"-p(x_{n+2},x_{n+2})")
         pokaz_przyp(p4_b)
-        pokaz(R3, pomaranczowe=[R3[1], R3[2]])
-        wyszarz(R2[1], R3[1], R3[2], przyp=p4_b)
+        pokaz(R3, pomaranczowe=[R3[1], R3[2], R3[3]])
+        wyszarz(R2[1], R3[1], R3[2], R3[3], przyp=p4_b)
+        # Odejmowany wyraz jest nieujemny: zapominamy o nim.
+        nieuj_b = przypomnienie(r"p(x_{n+2},x_{n+2})\ge 0")
+        self.play(R3[3].animate.set_color(O), FadeIn(nieuj_b, shift=0.2 * UP), run_time=0.6)
+        self.next_slide()
+        self.play(FadeOut(R3[3], shift=0.2 * DOWN), FadeOut(nieuj_b, shift=0.2 * DOWN), run_time=0.6)
+        self.next_slide()
 
         # Jeszcze raz (P4) dla p(x_{n+2}, x_m).
         self.play(R3[2].animate.set_color(O), run_time=0.5)
@@ -194,8 +201,13 @@ class TwierdzenieMatthewsa(Slide):
         p4_d = przypomnienie(r"\text{(P4)}\quad p(x_{n+2},x_m)\le p(x_{n+2},x_{n+3})+p(x_{n+3},x_m)"
                              r"-p(x_{n+3},x_{n+3})")
         pokaz_przyp(p4_d)
-        pokaz(R3b, pomaranczowe=[R3b[1]])
-        wyszarz(R3[2], R3b[1], przyp=p4_d)
+        pokaz(R3b, pomaranczowe=[R3b[1], R3b[2]])
+        wyszarz(R3[2], R3b[1], R3b[2], przyp=p4_d)
+        nieuj_d = przypomnienie(r"p(x_{n+3},x_{n+3})\ge 0")
+        self.play(R3b[2].animate.set_color(O), FadeIn(nieuj_d, shift=0.2 * UP), run_time=0.6)
+        self.next_slide()
+        self.play(FadeOut(R3b[2], shift=0.2 * DOWN), FadeOut(nieuj_d, shift=0.2 * DOWN), run_time=0.6)
+        self.next_slide()
 
         # Suma i szereg geometryczny.
         pokaz(R4[:2], pomaranczowe=[R4[1]])
