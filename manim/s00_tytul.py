@@ -58,7 +58,8 @@ class Tytul(Slide):
         wzor_p.move_to(wzor_d, aligned_edge=LEFT)
         self.play(
             petla.animate.set_color(KOLOR_CZESCIOWA),
-            TransformMatchingShapes(wzor_d, wzor_p),
+            FadeOut(wzor_d, shift=0.2 * UP),
+            FadeIn(wzor_p, shift=0.2 * UP),
         )
         self.play(Wiggle(punkt, scale_value=1.6))
         self.next_slide()

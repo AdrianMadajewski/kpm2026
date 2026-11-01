@@ -69,18 +69,20 @@ class MetrykaCzesciowa(Slide):
         self.play(FadeOut(grafika))
         # Zmiany wyróżniamy na pomarańczowo, potem wracają do czerni.
         definicja[0].become(tlo_dla(definicja, wstep_p, aks_p))
-        # 1) wstawiamy „częściowa” (reszta wiersza się rozsuwa), d zamienia się w p,
+        # 1) „częściowa” wjeżdża w lukę (reszta wiersza się rozsuwa), d znika, p wjeżdża.
         wstep_p[0][1].set_color(KOLOR_CZESCIOWA)
         wstep_p[1][0].set_color(KOLOR_CZESCIOWA)
         self.play(
-            ReplacementTransform(wstep_d[0][0], wstep_p[0][0]),
-            ReplacementTransform(wstep_d[0][1], wstep_p[0][2]),
-            FadeIn(wstep_p[0][1], shift=0.25 * DOWN),
-            ReplacementTransform(wstep_d[1][0], wstep_p[1][0]),
-            ReplacementTransform(wstep_d[1][1], wstep_p[1][1]),
-            ReplacementTransform(wstep_d[2], wstep_p[2]),
-            run_time=1.2,
+            wstep_d[0][1].animate.move_to(wstep_p[0][2]),
+            wstep_d[1][1].animate.move_to(wstep_p[1][1]),
+            FadeIn(wstep_p[0][1], shift=0.2 * DOWN),
+            FadeOut(wstep_d[1][0], shift=0.2 * UP),
+            FadeIn(wstep_p[1][0], shift=0.2 * UP),
+            run_time=1.0,
         )
+        # Podmiana obiektów na docelowe (te same napisy w tych samych miejscach).
+        self.remove(wstep_d[0][0], wstep_d[0][1], wstep_d[1][1], wstep_d[2])
+        self.add(wstep_p[0][0], wstep_p[0][2], wstep_p[1][1], wstep_p[2])
         self.play(Indicate(wstep_p[0][1], color=KOLOR_CZESCIOWA, scale_factor=1.15),
                   Indicate(wstep_p[1][0], color=KOLOR_CZESCIOWA, scale_factor=1.3))
         # 2) powrót do czerni.
@@ -90,7 +92,8 @@ class MetrykaCzesciowa(Slide):
 
         # Najpierw nierówność trójkąta zjeżdża na dół...
         p4[1][0].set_color(KOLOR_CZESCIOWA)
-        self.play(TransformMatchingShapes(m3, VGroup(p4[0], p4[1][0])), run_time=1.2)
+        self.play(m3.animate.align_to(p4, UL), run_time=0.8)
+        self.play(FadeOut(m3, shift=0.15 * UP), FadeIn(VGroup(p4[0], p4[1][0]), shift=0.15 * UP))
         self.play(p4[1][0].animate.set_color(KOLOR_TEKST))
         self.next_slide()
         # ...i dostaje dodatkowy człon -p(y,y).
@@ -101,11 +104,12 @@ class MetrykaCzesciowa(Slide):
 
         # Pozostałe aksjomaty.
         p3[1].set_color(KOLOR_CZESCIOWA)
-        self.play(TransformMatchingShapes(m2, p3), run_time=1.0)
+        self.play(m2.animate.align_to(p3, UL), run_time=0.6)
+        self.play(FadeOut(m2, shift=0.15 * UP), FadeIn(p3, shift=0.15 * UP))
         self.play(p3[1].animate.set_color(KOLOR_TEKST))
         self.next_slide()
         p1[1].set_color(KOLOR_CZESCIOWA)
-        self.play(TransformMatchingShapes(m1, p1), run_time=1.2)
+        self.play(FadeOut(m1, shift=0.15 * UP), FadeIn(p1, shift=0.15 * UP))
         self.play(p1[1].animate.set_color(KOLOR_TEKST))
         self.next_slide()
         p2[1].set_color(KOLOR_CZESCIOWA)
@@ -158,8 +162,8 @@ class MetrykaJakoSzczegolny(Slide):
         w4.next_to(e4, RIGHT, buff=0.4)
         self.play(FadeIn(e4), FadeIn(w4))
         zero4 = MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w4[2])
-        self.play(Transform(w4[2], zero4))
-        self.play(FadeOut(w4[1]), FadeOut(w4[2]))
+        self.play(FadeOut(w4[2], shift=0.2 * UP), FadeIn(zero4, shift=0.2 * UP))
+        self.play(FadeOut(w4[1]), FadeOut(zero4))
         cel4 = etykieta(r"$=$ (M3)").next_to(w4[0], RIGHT, buff=0.5)
         self.play(FadeIn(cel4, shift=0.2 * LEFT))
         self.next_slide()
@@ -172,10 +176,15 @@ class MetrykaJakoSzczegolny(Slide):
         w1[6].set_color(KOLOR_SAMO)
         w1.next_to(e1, RIGHT, buff=0.4)
         self.play(FadeIn(e1), FadeIn(w1))
-        self.play(Transform(w1[2], MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w1[2])),
-                  Transform(w1[6], MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w1[6])))
-        wynik1 = MathTex(r"x=y", r"\iff", r"p(x,y)=0", font_size=38).next_to(e1, RIGHT, buff=0.4)
-        self.play(TransformMatchingShapes(w1, wynik1))
+        z2 = MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w1[2])
+        z6 = MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w1[6])
+        self.play(FadeOut(w1[2], shift=0.2 * UP), FadeIn(z2, shift=0.2 * UP),
+                  FadeOut(w1[6], shift=0.2 * UP), FadeIn(z6, shift=0.2 * UP))
+        wynik1 = MathTex(r"x=y", r"\iff", r"p(x,y)=0", font_size=38)
+        wynik1.shift(w1[0].get_left() - wynik1[0].get_left())
+        self.play(FadeOut(VGroup(z2, w1[3], w1[4], w1[5], z6)), FadeIn(wynik1[2]))
+        self.remove(w1[0], w1[1])
+        self.add(wynik1)
         cel1 = etykieta(r"$=$ (M1)").next_to(wynik1, RIGHT, buff=0.5)
         self.play(FadeIn(cel1, shift=0.2 * LEFT))
         self.next_slide()
