@@ -97,22 +97,7 @@ class TwierdzenieMatthewsa(Slide):
         self.play(tw[2][2].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
 
-        uwaga = MathTex(r"\text{Dla } p=d \text{ to twierdzenie Banacha; istnienie dowodzi się tak samo, "
-                        r"przez iteracje } x_{n+1}\coloneqq f(x_n).", font_size=28, color=KOLOR_DRUGORZEDNY)
-        uwaga.next_to(tw, DOWN, buff=0.35)
-        self.play(FadeIn(uwaga, shift=0.2 * RIGHT))
-        self.next_slide()
-
-        # ---- Dowód, że p(x*, x*) = 0 ----
-        L1 = MathTex(r"\textit{Dowód, że } p(x^*,x^*)=0.\ \text{Skoro }", r"f(x^*)=x^*", r"\text{, to}",
-                     font_size=FS)
-        L2 = MathTex(r"p(x^*,x^*)", r"=p(f(x^*),f(x^*))", r"\le c\cdot p(x^*,x^*)", r".", font_size=FS + 2)
-        L3 = MathTex(r"\text{Zatem }", r"(1-c)\cdot p(x^*,x^*)\le 0", r".", font_size=FS)
-        L4 = MathTex(r"\text{Ponieważ }", r"1-c>0", r"\text{ i }", r"p(x^*,x^*)\ge 0", r"\text{, to }",
-                     r"p(x^*,x^*)=0", r".", font_size=FS)
-        dowod = VGroup(L1, L2, L3, L4).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
-        dowod.next_to(uwaga, DOWN, buff=0.4).to_edge(LEFT, buff=0.8)
-        L2.shift(0.8 * RIGHT)
+        FS = 29
 
         def przypomnienie(tex):
             return MathTex(tex, font_size=30, color=O).to_edge(DOWN, buff=0.35)
@@ -135,24 +120,122 @@ class TwierdzenieMatthewsa(Slide):
             self.next_slide()
 
         kontr = przypomnienie(r"\text{(kontrakcja)}\quad p(f(x),f(y))\le c\cdot p(x,y),\quad c\in[0,1)")
+        p1 = przypomnienie(r"\text{(P1)}\quad x=y \iff p(x,x)=p(x,y)=p(y,y)")
+        p2 = przypomnienie(r"\text{(P2)}\quad p(x,x)\le p(x,y)")
+        p4 = przypomnienie(r"\text{(P4)}\quad p(x,z)\le p(x,y)+p(y,z)-p(y,y)")
+        zup = przypomnienie(r"\text{(zupełność)}\quad x_n\to x^*,\quad "
+                            r"p(x^*,x^*)=\lim_{n\to\infty}p(x^*,x_n)=\lim_{n,m\to\infty}p(x_n,x_m)")
 
-        pokaz(L1, pomaranczowe=[L1[1]])
-        wyszarz(L1[1])
+        # =============== Strona 1: ciąg iteracji jest ciągiem Cauchy'ego ===============
+        A1 = MathTex(r"\textit{Dowód.}\ \textit{Istnienie.}\ \text{Ustalmy } x_0\in X", r"\text{ i niech }",
+                     r"x_{n+1}\coloneqq f(x_n)", r"\text{ dla } n=0,1,2,\dots", font_size=FS)
+        A2 = MathTex(r"p(x_{n+1},x_n)", r"=p(f(x_n),f(x_{n-1}))", r"\le c\cdot p(x_n,x_{n-1})",
+                     r"\le\dots\le c^n\cdot p(x_1,x_0)", r".", font_size=FS)
+        A3 = MathTex(r"\text{Dla } m>n\text{, stosując wielokrotnie (P4) i pomijając odejmowane wyrazy "
+                     r"} p(x_k,x_k)\ge 0\text{:}", font_size=FS)
+        A4 = MathTex(r"p(x_n,x_m)", r"\le\sum_{k=n}^{m-1}p(x_k,x_{k+1})", r"\le\sum_{k=n}^{m-1}c^k\, p(x_1,x_0)",
+                     r"\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".", font_size=FS)
+        A5 = MathTex(r"\text{Z (P2) także }", r"p(x_n,x_n)\le p(x_n,x_{n+1})\le c^n\, p(x_1,x_0)", r".",
+                     font_size=FS)
+        A6 = MathTex(r"\text{Zatem }", r"\lim_{n,m\to\infty}p(x_n,x_m)=0", r"\text{, czyli }",
+                     r"(x_n)_{n\ge 0}\text{ jest ciągiem Cauchy'ego}", r".", font_size=FS)
+        strona1 = VGroup(A1, A2, A3, A4, A5, A6).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        strona1.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
+        A2.shift(0.6 * RIGHT)
+        A4.shift(0.6 * RIGHT)
 
-        pokaz(L2[0])
-        pokaz(L2[1], pomaranczowe=[L2[1]])
-        wyszarz(L2[1])
+        pokaz(A1[0])
+        pokaz(A1[1:], pomaranczowe=[A1[2]])
+        wyszarz(A1[2])
+
+        pokaz(A2[0])
+        pokaz(A2[1], pomaranczowe=[A2[1]])
+        wyszarz(A2[1])
         pokaz_przyp(kontr)
-        pokaz(L2[2:], pomaranczowe=[L2[2]])
-        wyszarz(L2[2], przyp=kontr)
+        pokaz(A2[2], pomaranczowe=[A2[2]])
+        wyszarz(A2[2], przyp=kontr)
+        pokaz(A2[3:], pomaranczowe=[A2[3]])
+        wyszarz(A2[3])
 
-        pokaz(L3, pomaranczowe=[L3[1]])
-        wyszarz(L3[1])
+        pokaz_przyp(p4)
+        pokaz(A3)
+        pokaz(A4[:2], pomaranczowe=[A4[1]])
+        wyszarz(A4[1], przyp=p4)
+        pokaz(A4[2], pomaranczowe=[A4[2]])
+        wyszarz(A4[2])
+        pokaz(A4[3:], pomaranczowe=[A4[3]])
+        wyszarz(A4[3])
 
-        pokaz(L4[:4], pomaranczowe=[L4[1], L4[3]])
-        wyszarz(L4[1], L4[3])
-        pokaz(L4[4:], pomaranczowe=[L4[5]])
-        wyszarz(L4[5])
-        kwadrat = MathTex(r"\blacksquare", font_size=FS).next_to(L4, RIGHT, buff=0.15)
+        pokaz_przyp(p2)
+        pokaz(A5, pomaranczowe=[A5[1]])
+        wyszarz(A5[1], przyp=p2)
+
+        pokaz(A6[:2], pomaranczowe=[A6[1]])
+        wyszarz(A6[1])
+        pokaz(A6[2:])
+
+        self.play(FadeOut(strona1, shift=0.3 * LEFT), run_time=0.7)
+        self.next_slide()
+
+        # =============== Strona 2: granica jest punktem stałym; jednoznaczność ===============
+        B1 = MathTex(r"\text{Z zupełności istnieje } x^*\in X\text{ taki, że }", r"x_n\to x^*", r"\text{ oraz }",
+                     r"p(x^*,x^*)=\lim_{n,m\to\infty}p(x_n,x_m)=0", r".", font_size=FS)
+        B2 = MathTex(r"\textit{Punkt stały.}\ \text{Z (P4) i kontrakcji, skoro } x_{n+1}=f(x_n)\text{:}", font_size=FS)
+        B3 = MathTex(r"p(x^*,f(x^*))", r"\le p(x^*,x_{n+1})+p(f(x_n),f(x^*))", r"\le p(x^*,x_{n+1})+c\cdot p(x_n,x^*)",
+                     r"\xrightarrow[n\to\infty]{}0", r".", font_size=FS)
+        B4 = MathTex(r"\text{Zatem }", r"p(x^*,f(x^*))=0", r"\text{, a z (P2) }",
+                     r"p(x^*,x^*)=p(f(x^*),f(x^*))=0", r"\text{, więc z (P1) }", r"f(x^*)=x^*", r".", font_size=FS)
+        B5 = MathTex(r"\textit{Jednoznaczność.}\ \text{Jeśli } f(y)=y\text{, to }",
+                     r"p(x^*,y)=p(f(x^*),f(y))\le c\cdot p(x^*,y)", r"\text{, więc }", r"p(x^*,y)=0", r".",
+                     font_size=FS)
+        B6 = MathTex(r"\text{Z (P2) }", r"p(x^*,x^*)=p(x^*,y)=p(y,y)=0", r"\text{, więc z (P1) }", r"y=x^*",
+                     r".", font_size=FS)
+        strona2 = VGroup(B1, B2, B3, B4, B5, B6).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
+        strona2.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
+        B3.shift(0.6 * RIGHT)
+
+        # Zupełność: granica x* i od razu p(x*, x*) = 0.
+        pokaz_przyp(zup)
+        pokaz(B1[:2], pomaranczowe=[B1[1]])
+        pokaz(B1[2:], pomaranczowe=[B1[3]])
+        wyszarz(B1[1], B1[3], przyp=zup)
+        # To już jest druga część tezy.
+        self.play(B1[3].animate.set_color(O), tw[2][2].animate.set_color(O), run_time=0.6)
+        self.next_slide()
+        wyszarz(B1[3], tw[2][2])
+
+        # f(x*) = x*.
+        pokaz(B2)
+        pokaz_przyp(p4)
+        pokaz(B3[:2], pomaranczowe=[B3[1]])
+        wyszarz(B3[1], przyp=p4)
+        pokaz_przyp(kontr)
+        pokaz(B3[2], pomaranczowe=[B3[2]])
+        wyszarz(B3[2], przyp=kontr)
+        pokaz(B3[3:], pomaranczowe=[B3[3]])
+        wyszarz(B3[3])
+        pokaz(B4[:2], pomaranczowe=[B4[1]])
+        wyszarz(B4[1])
+        pokaz_przyp(p2)
+        pokaz(B4[2:4], pomaranczowe=[B4[3]])
+        wyszarz(B4[3], przyp=p2)
+        pokaz_przyp(p1)
+        pokaz(B4[4:], pomaranczowe=[B4[5]])
+        wyszarz(B4[5], przyp=p1)
+
+        # Jednoznaczność.
+        pokaz(B5[0])
+        pokaz_przyp(kontr)
+        pokaz(B5[1], pomaranczowe=[B5[1]])
+        wyszarz(B5[1], przyp=kontr)
+        pokaz(B5[2:], pomaranczowe=[B5[3]])
+        wyszarz(B5[3])
+        pokaz_przyp(p2)
+        pokaz(B6[:2], pomaranczowe=[B6[1]])
+        wyszarz(B6[1], przyp=p2)
+        pokaz_przyp(p1)
+        pokaz(B6[2:], pomaranczowe=[B6[3]])
+        wyszarz(B6[3], przyp=p1)
+        kwadrat = MathTex(r"\blacksquare", font_size=FS).next_to(B6, RIGHT, buff=0.15)
         self.play(FadeIn(kwadrat))
         self.next_slide()
