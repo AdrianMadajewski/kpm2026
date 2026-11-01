@@ -175,9 +175,9 @@ class PrzykladMax(Slide):
         self.play(FadeIn(objasnienie))
         self.next_slide()
 
+        # Sprzątamy wszystko poza osią i punktem x (bez kreski [0,x] i jej podpisu).
         self.play(FadeOut(VGroup(kropka_y1, etyk_y1, odc_y1, etyk_px, etyk_py,
-                                 otoczka, etyk_pxy, objasnienie)))
-        self.play(FadeIn(wartosc))
+                                 otoczka, etyk_pxy, objasnienie, odcinek)))
 
         # Układ współrzędnych: na OX punkty (bez liczb), na OY wartości p(., .).
         ax = Axes(
@@ -195,8 +195,7 @@ class PrzykladMax(Slide):
         self.remove(kropka, etyk_x)
         self.add(kropka_s, etyk_s)
 
-        # 1) Kreska znika, oś (bez liczb) zjeżdża i staje się osią OX, wyrasta OY.
-        self.play(FadeOut(wartosc), FadeOut(odcinek))
+        # 1) Oś zjeżdża i staje się osią OX, wyrasta OY.
         cel_x = ax.c2p(3, 0)
         self.play(
             Transform(os, ax.x_axis),
