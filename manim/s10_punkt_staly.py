@@ -290,9 +290,10 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(C2[2:], pomaranczowe=[C2[2]])
         wyszarz(C2[2], przyp=cN)
         # Granica.
-        pokaz_przyp(cn0)
+        cN0 = przypomnienie(r"c\in[0,1)\implies c^N\xrightarrow[N\to\infty]{}0")
+        pokaz_przyp(cN0)
         pokaz(C3[:2], pomaranczowe=[C3[1]])
-        wyszarz(C3[1], przyp=cn0)
+        wyszarz(C3[1], przyp=cN0)
         pokaz(C3[2:], pomaranczowe=[C3[3]])
         wyszarz(C3[3])
         pokaz(C4)
@@ -303,9 +304,13 @@ class TwierdzenieMatthewsa(Slide):
         # =============== Strona 3: granica jest punktem stałym; jednoznaczność ===============
         B1 = MathTex(r"\text{Z zupełności istnieje } x^*\in X\text{ taki, że }", r"x_n\to x^*", r"\text{ oraz }",
                      r"p(x^*,x^*)=\lim_{n,m\to\infty}p(x_n,x_m)=0", r".", font_size=FS)
-        B2 = MathTex(r"\textit{Punkt stały.}\ \text{Z (P4) i kontrakcji, skoro } x_{n+1}=f(x_n)\text{:}", font_size=FS)
-        B3 = MathTex(r"p(x^*,f(x^*))", r"\le p(x^*,x_{n+1})+p(f(x_n),f(x^*))", r"\le p(x^*,x_{n+1})+c\cdot p(x_n,x^*)",
-                     r"\xrightarrow[n\to\infty]{}0", r".", font_size=FS)
+        B2 = MathTex(r"\textit{Punkt stały.}\ \text{Dla } n\in\mathbb{N}\text{ mamy}", font_size=FS)
+        B3 = MathTex(r"p(x^*,f(x^*))", r"\le p(x^*,x_{n+1})+p(x_{n+1},f(x^*))", r"-p(x_{n+1},x_{n+1})",
+                     font_size=FS)
+        B3b = MathTex(r"\le p(x^*,x_{n+1})+p(x_{n+1},f(x^*))", font_size=FS)
+        B3c = MathTex(r"=p(x^*,x_{n+1})+", r"p(f(x_n),f(x^*))", font_size=FS)
+        B3d = MathTex(r"\le p(x^*,x_{n+1})+", r"c\cdot p(x_n,x^*)", r"\xrightarrow[n\to\infty]{}0", r".",
+                      font_size=FS)
         B4 = MathTex(r"\text{Zatem }", r"p(x^*,f(x^*))=0", r"\text{, a z (P2) }",
                      r"p(x^*,x^*)=p(f(x^*),f(x^*))=0", r"\text{, więc z (P1) }", r"f(x^*)=x^*", r".", font_size=FS)
         B5 = MathTex(r"\textit{Jednoznaczność.}\ \text{Jeśli } f(y)=y\text{, to }",
@@ -313,9 +318,11 @@ class TwierdzenieMatthewsa(Slide):
                      font_size=FS)
         B6 = MathTex(r"\text{Z (P2) }", r"p(x^*,x^*)=p(x^*,y)=p(y,y)=0", r"\text{, więc z (P1) }", r"y=x^*",
                      r".", font_size=FS)
-        strona3 = VGroup(B1, B2, B3, B4, B5, B6).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
-        strona3.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
+        strona3 = VGroup(B1, B2, B3, B3b, B3c, B3d, B4, B5, B6).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
+        strona3.next_to(tw, DOWN, buff=0.35).to_edge(LEFT, buff=0.6)
         B3.shift(0.6 * RIGHT)
+        for r in (B3b, B3c, B3d):
+            r.align_to(B3[1], LEFT)
 
         # Zupełność: granica x* i od razu p(x*, x*) = 0.
         pokaz_przyp(zup)
@@ -331,14 +338,30 @@ class TwierdzenieMatthewsa(Slide):
         p4_c = przypomnienie(r"\text{(P4)}\quad p(x^*,f(x^*))\le p(x^*,x_{n+1})+p(x_{n+1},f(x^*))"
                              r"-p(x_{n+1},x_{n+1})")
         pokaz(B2)
+        pokaz(B3[0])
         pokaz_przyp(p4_c)
-        pokaz(B3[:2], pomaranczowe=[B3[1]])
-        wyszarz(B3[1], przyp=p4_c)
+        pokaz(B3[1:], pomaranczowe=[B3[1], B3[2]])
+        wyszarz(B3[1], B3[2], przyp=p4_c)
+        # Odejmowany wyraz jest nieujemny: pomijamy go.
+        nieuj_c = przypomnienie(r"p(x_{n+1},x_{n+1})\ge 0")
+        self.play(B3[2].animate.set_color(O), FadeIn(nieuj_c, shift=0.2 * UP), run_time=0.6)
+        self.next_slide()
+        pokaz(B3b)
+        wyszarz(B3[2], przyp=nieuj_c)
+        # x_{n+1} = f(x_n).
+        iter_c = przypomnienie(r"x_{n+1}=f(x_n)")
+        pokaz_przyp(iter_c)
+        pokaz(B3c, pomaranczowe=[B3c[1]])
+        wyszarz(B3c[1], przyp=iter_c)
+        # Kontrakcja.
         pokaz_przyp(kontr)
-        pokaz(B3[2], pomaranczowe=[B3[2]])
-        wyszarz(B3[2], przyp=kontr)
-        pokaz(B3[3:], pomaranczowe=[B3[3]])
-        wyszarz(B3[3])
+        pokaz(B3d[:2], pomaranczowe=[B3d[1]])
+        wyszarz(B3d[1], przyp=kontr)
+        # Zbieżność do x*.
+        zb_c = przypomnienie(r"x_n\to x^*\implies p(x^*,x_n)\xrightarrow[n\to\infty]{}p(x^*,x^*)=0")
+        pokaz_przyp(zb_c)
+        pokaz(B3d[2:], pomaranczowe=[B3d[2]])
+        wyszarz(B3d[2], przyp=zb_c)
         pokaz(B4[:2], pomaranczowe=[B4[1]])
         wyszarz(B4[1])
         pokaz_przyp(p2)
