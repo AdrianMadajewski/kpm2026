@@ -22,6 +22,7 @@ SCENY = [
     ("s05_przyklad_max.py", "PrzykladMax"),
     ("s05_przyklad_max.py", "Interpretacja"),
     ("s04_czesciowa.py", "MetrykaJakoSzczegolny"),
+    ("s04_czesciowa.py", "WniosekOkreslonosc"),
     ("s08_kule.py", "Kule"),
 ]
 
