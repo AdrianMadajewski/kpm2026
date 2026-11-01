@@ -128,8 +128,50 @@ class PrzykladMax(Slide):
         self.play(FadeIn(opis))
         self.next_slide()
 
+        # Co oznacza p(x,y)? Drugi punkt y na tej samej osi.
+        yy = ValueTracker(1.5)
+        kropka_y1 = always_redraw(lambda: Dot(os.n2p(yy.get_value()), radius=0.08))
+        etyk_y1 = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y1, UP, buff=0.15))
+        POD2 = 1.45 * DOWN
+        odc_y1 = always_redraw(lambda: Line(
+            os.n2p(0) + POD2, os.n2p(max(yy.get_value(), 1e-3)) + POD2,
+            color=KOLOR_CZESCIOWA, stroke_width=12).set_cap_style(CapStyleType.ROUND))
+        etyk_px = always_redraw(lambda: MathTex(r"[0,x]", font_size=30, color=KOLOR_CZESCIOWA)
+                                .next_to(odcinek, RIGHT, buff=0.25))
+        etyk_py = always_redraw(lambda: MathTex(r"[0,y]", font_size=30, color=KOLOR_CZESCIOWA)
+                                .next_to(odc_y1, RIGHT, buff=0.25))
+
+        self.play(FadeOut(opis), FadeOut(wartosc))
+        self.play(FadeIn(kropka_y1), FadeIn(etyk_y1), FadeIn(etyk_px))
+        self.play(Create(odc_y1), FadeIn(etyk_py))
+        self.next_slide()
+
+        NAD = 0.8 * UP
+        otoczka = always_redraw(lambda: Line(
+            os.n2p(0) + NAD, os.n2p(max(x.get_value(), yy.get_value())) + NAD,
+            color=KOLOR_TEKST, stroke_width=12).set_cap_style(CapStyleType.ROUND))
+        etyk_pxy = always_redraw(lambda: VGroup(
+            MathTex(r"p(x,y)=\max\{x,y\}=", font_size=34),
+            DecimalNumber(max(x.get_value(), yy.get_value()), num_decimal_places=2, font_size=34),
+        ).arrange(RIGHT, buff=0.15).next_to(os.n2p(0) + NAD, UP, buff=0.25, aligned_edge=LEFT))
+        objasnienie = Tex(r"długość najmniejszego przedziału zawierającego $[0,x]$ i $[0,y]$",
+                          font_size=30).to_edge(DOWN, buff=0.5)
+        self.play(Create(otoczka), FadeIn(etyk_pxy))
+        self.play(FadeIn(objasnienie))
+        self.next_slide()
+
+        # y wędruje: dopóki y < x, liczy się x; gdy y > x, liczy się y.
+        self.play(yy.animate.set_value(4.5), run_time=2.0)
+        self.next_slide()
+        self.play(yy.animate.set_value(1.5), run_time=2.0)
+        self.next_slide()
+
+        self.play(FadeOut(VGroup(kropka_y1, etyk_y1, odc_y1, etyk_px, etyk_py,
+                                 otoczka, etyk_pxy, objasnienie)))
+        self.play(FadeIn(wartosc))
+
         # Druga oś: punkt y, który staje się coraz lepiej określony.
-        self.play(FadeOut(opis), os.animate.shift(1.6 * UP), run_time=1.0)
+        self.play(os.animate.shift(1.6 * UP), run_time=1.0)
 
         os2 = NumberLine(x_range=[0, 5, 1], length=10, include_numbers=True,
                          font_size=28, include_tip=False).shift(1.15 * DOWN)
