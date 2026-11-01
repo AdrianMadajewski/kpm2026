@@ -117,6 +117,13 @@ class PrzykladMax(Slide):
         self.next_slide()
         self.play(Create(odcinek), FadeIn(wartosc))
         self.next_slide()
+
+        # Ruszamy x w prawo i w lewo — kreska i p(x,x) idą za nim.
+        self.play(x.animate.set_value(4.0), run_time=1.2)
+        self.play(x.animate.set_value(1.5), run_time=1.6)
+        self.play(x.animate.set_value(3.0), run_time=1.2)
+        self.next_slide()
+
         self.play(FadeIn(opis))
         self.next_slide()
 
