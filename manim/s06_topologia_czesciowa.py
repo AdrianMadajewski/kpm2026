@@ -383,13 +383,14 @@ class WlasnosciTopologii(Slide):
         mx = MathTex("x", font_size=28).next_to(qx, DOWN, buff=0.1)
         my = MathTex("y", font_size=28).next_to(qy, DOWN, buff=0.1)
 
-        def otocz(punkt, kolor):
-            o = Ellipse(width=1.2, height=1.2).move_to(punkt)
+        def otocz(srodek, kolor):
+            # Owale nachodzą na siebie, ale każdy zawiera tylko swój punkt (jak w scenie Oddzielanie).
+            o = Ellipse(width=1.5, height=1.3).move_to(srodek)
             return VGroup(o.copy().set_stroke(width=0).set_fill(kolor, 0.15),
                           DashedVMobject(o.copy().set_stroke(kolor, 2.5), num_dashes=30))
 
-        ox_ = otocz(qx.get_center(), KOLOR_METRYKA)
-        oy_ = otocz(qy.get_center(), KOLOR_CZESCIOWA)
+        ox_ = otocz(ramka1.get_center() + 0.4 * LEFT, KOLOR_METRYKA)
+        oy_ = otocz(ramka1.get_center() + 0.4 * RIGHT, KOLOR_CZESCIOWA)
         naz1 = MathTex(r"T_1", font_size=34).next_to(ramka1, UP, buff=0.12)
         self.play(FadeIn(VGroup(ramka1, qx, qy, mx, my, naz1)))
         self.play(FadeIn(ox_))
