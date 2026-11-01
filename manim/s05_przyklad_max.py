@@ -341,16 +341,17 @@ class Interpretacja(Slide):
         self.next_slide()
 
         def punkt(*linie):
-            kropka = MathTex(r"\bullet", font_size=22).shift(0.08 * DOWN)
             tekst = VGroup(*[Tex(l, font_size=32) for l in linie]).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
-            return VGroup(kropka, tekst).arrange(RIGHT, aligned_edge=UP, buff=0.25)
+            # Kropka na wysokości środka pierwszej linii.
+            y = tekst[0].get_center()[1]
+            kropka = Dot(radius=0.045).move_to([tekst.get_left()[0] - 0.3, y, 0])
+            return VGroup(kropka, tekst)
 
         punkty = VGroup(
             punkt(r"Element $x$ to \emph{przybliżenie} --- znamy o nim tylko część informacji."),
             punkt(r"$p(x,x)$ mierzy niedookreśloność $x$ --- im większe, tym mniej o nim wiemy."),
             punkt(r"$p(x,x)=0$ --- element $x$ jest \emph{w pełni określony}."),
-            punkt(r"$p(x,y)$ to łączna niepewność $x$ i $y$ (w przykładzie to długość",
-                  r"najmniejszego przedziału zawierającego $[0,x]$ i $[0,y]$)."),
+            punkt(r"$p(x,y)$ to łączna niepewność $x$ i $y$."),
             punkt(r"$p(x,y)\ge p(x,x)$ --- odległość nie jest mniejsza niż niepewność",
                   r"żadnego z punktów (P2)."),
             punkt(r"$x=y \iff p(x,x)=p(x,y)=p(y,y)$ --- porównanie z $y$ nie wnosi",
