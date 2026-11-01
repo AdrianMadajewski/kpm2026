@@ -126,6 +126,9 @@ class TwierdzenieMatthewsa(Slide):
         zup = przypomnienie(r"\text{(zupełność)}\quad x_n\to x^*,\quad "
                             r"p(x^*,x^*)=\lim_{n\to\infty}p(x^*,x_n)=\lim_{n,m\to\infty}p(x_n,x_m)")
 
+        # Twierdzenie zmniejsza się, żeby zrobić miejsce na dowód.
+        self.play(tw.animate.scale(0.8).next_to(naglowek, DOWN, buff=0.3), run_time=0.7)
+
         # =============== Strona 1: oszacowanie p(x_n, x_m) ===============
         A1 = MathTex(r"\textit{Dowód.}\ \textit{Istnienie.}\ \text{Ustalmy } x_0\in X", r"\text{ i niech }",
                      r"x_{n+1}\coloneqq f(x_n)", r"\text{ dla } n=0,1,2,\dots", font_size=FS)
@@ -137,12 +140,13 @@ class TwierdzenieMatthewsa(Slide):
         R2 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", font_size=FS)
         R3 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_{n+2})+p(x_{n+2},x_m)", font_size=FS)
         R4 = MathTex(r"\le\dots\le", r"\sum_{k=n}^{m-1}p(x_k,x_{k+1})", r"\le\sum_{k=n}^{m-1}c^k\, p(x_1,x_0)",
-                     r"\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".", font_size=FS)
-        strona1 = VGroup(A1, A2, A3, R1, R2, R3, R4).arrange(DOWN, aligned_edge=LEFT, buff=0.13)
-        strona1.next_to(tw, DOWN, buff=0.25).to_edge(LEFT, buff=0.6)
+                     font_size=FS)
+        R5 = MathTex(r"=p(x_1,x_0)\sum_{k=n}^{m-1}c^k", r"\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".", font_size=FS)
+        strona1 = VGroup(A1, A2, A3, R1, R2, R3, R4, R5).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
+        strona1.next_to(tw, DOWN, buff=0.2).to_edge(LEFT, buff=0.6)
         A2.shift(0.6 * RIGHT)
         R1.shift(0.6 * RIGHT)
-        for r in (R2, R3, R4):
+        for r in (R2, R3, R4, R5):
             r.align_to(R1[1], LEFT)
 
         pokaz(A1[0])
@@ -191,11 +195,13 @@ class TwierdzenieMatthewsa(Slide):
         self.next_slide()
         pokaz(R4[2], pomaranczowe=[R4[2]])
         wyszarz(R4[2], A2[3])
+        # Wyłączenie stałej przed sumę (bez kolorów).
+        pokaz(R5[0])
         geom = MathTex(r"\sum_{k=n}^{m-1}c^k\le\sum_{k=n}^{\infty}c^k=\frac{c^n}{1-c}", font_size=26, color=O)
-        geom.to_corner(DR, buff=0.3)
+        geom.to_edge(DOWN, buff=0.2)
         pokaz_przyp(geom)
-        pokaz(R4[3:], pomaranczowe=[R4[3]])
-        wyszarz(R4[3], przyp=geom)
+        pokaz(R5[1:], pomaranczowe=[R5[1]])
+        wyszarz(R5[1], przyp=geom)
 
         self.play(FadeOut(strona1, shift=0.3 * LEFT), run_time=0.7)
         self.next_slide()
@@ -219,7 +225,7 @@ class TwierdzenieMatthewsa(Slide):
         B6 = MathTex(r"\text{Z (P2) }", r"p(x^*,x^*)=p(x^*,y)=p(y,y)=0", r"\text{, więc z (P1) }", r"y=x^*",
                      r".", font_size=FS)
         strona2 = VGroup(A5, A6, B1, B2, B3, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
-        strona2.next_to(tw, DOWN, buff=0.35).to_edge(LEFT, buff=0.6)
+        strona2.next_to(tw, DOWN, buff=0.3).to_edge(LEFT, buff=0.6)
         B3.shift(0.6 * RIGHT)
         strona3 = VGroup(B5, B6).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
         strona3.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
