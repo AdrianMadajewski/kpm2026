@@ -58,10 +58,7 @@ class KulaCzesciowa(Slide):
         self.play(FadeOut(podpis_d, shift=0.4 * LEFT), run_time=0.5)
         self.play(FadeIn(podpis_p, shift=0.4 * RIGHT), run_time=0.6)
         self.wait(0.5)
-        self.play(*[kula_p[i].animate.set_color(KOLOR_TEKST) for i in (0, 3)], run_time=0.7)
-        self.play(Indicate(kula_p[5], color=KOLOR_CZESCIOWA, scale_factor=1.15))
-        self.wait(0.4)
-        self.play(kula_p[5].animate.set_color(KOLOR_TEKST), run_time=0.7)
+        self.play(*[kula_p[i].animate.set_color(KOLOR_TEKST) for i in (0, 3, 5)], run_time=0.7)
         self.next_slide()
 
         # Krok 3: rachunek dla p = max.
