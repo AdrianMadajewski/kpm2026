@@ -44,14 +44,15 @@ class Zbieznosc(Slide):
         Q2b = MathTex(r"\text{czyli }", r"p(x,x_n)<p(x,x)+\varepsilon", r".", font_size=FS)
         Q3 = MathTex(r"\text{Z (P2) mamy }", r"p(x,x)\le p(x,x_n)", r"\text{, zatem }",
                      r"0\le p(x,x_n)-p(x,x)<\varepsilon", r"\text{ dla } n\ge N.", font_size=FS)
+        Q3b = MathTex(r"\text{Zatem }", r"\lim_{n\to\infty} p(x,x_n)=p(x,x)", r".", font_size=FS)
         Q4 = MathTex(r"(\Leftarrow)\ \text{Niech } U\in\tau_p,\ x\in U.", r"\ \text{Z lematu }",
                      r"B_p(x,\varepsilon)\subseteq U", r"\text{ dla pewnego } \varepsilon>0.", font_size=FS)
         Q5 = MathTex(r"\text{Z założenia istnieje } N \text{ takie, że dla każdego } n\ge N \text{ mamy }",
                      r"p(x,x_n)<p(x,x)+\varepsilon", r"\text{,}", font_size=FS)
         Q6 = MathTex(r"\text{czyli }", r"x_n\in B_p(x,\varepsilon)\subseteq U", r"\text{ dla } n\ge N.\ \blacksquare",
                      font_size=FS)
-        dowod = VGroup(Q1, Q2, Q2b, Q3, Q4, Q5, Q6).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
-        dowod.next_to(stw, DOWN, buff=0.4).to_edge(LEFT, buff=0.7)
+        dowod = VGroup(Q1, Q2, Q2b, Q3, Q3b, Q4, Q5, Q6).arrange(DOWN, aligned_edge=LEFT, buff=0.17)
+        dowod.next_to(stw, DOWN, buff=0.35).to_edge(LEFT, buff=0.7)
 
         def pokaz(*czesci, pomaranczowe=()):
             """Pokaż fragmenty linii; wskazane od razu na pomarańczowo. Potem pauza."""
@@ -102,6 +103,8 @@ class Zbieznosc(Slide):
         wyszarz(Q3[1], przyp=p2)
         pokaz(Q3[2:], pomaranczowe=[Q3[3]])
         wyszarz(Q3[3])
+        pokaz(Q3b, pomaranczowe=[Q3b[1]])
+        wyszarz(Q3b[1])
 
         # (<=)
         pokaz(Q4[0])
