@@ -19,16 +19,9 @@ class Tytul(Slide):
             Tex(r"OMatKo!!! 2026, Wrocław", font_size=26, color=KOLOR_DRUGORZEDNY),
         ).arrange(DOWN, buff=0.15).to_edge(DOWN, buff=0.6)
 
-        # Pusty ekran na start.
+        # Autor i tytuł widoczne od razu.
+        self.add(autor, tytul)
         self.wait(0.5)
-        self.next_slide()
-
-        # Autor.
-        self.play(FadeIn(autor, shift=0.2 * UP))
-        self.next_slide()
-
-        # Tytuł.
-        self.play(FadeIn(tytul), run_time=2)
         self.next_slide()
 
         # Podtytuł.
