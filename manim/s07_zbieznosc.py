@@ -30,8 +30,8 @@ class Zbieznosc(Slide):
         self.play(FadeIn(defn, shift=0.2 * DOWN))
         self.next_slide()
 
-        stw = Tex(r"\textbf{Stwierdzenie.} $x_n\to x$ w $\tau_p$ wtedy i tylko wtedy, gdy "
-                  r"$\displaystyle\lim_{n\to\infty} p(x,x_n)=p(x,x)$.", font_size=34)
+        stw = Tex(r"\textbf{Stwierdzenie.} $x_n\to x$ w $\tau_p$ wtedy i tylko wtedy, gdy ",
+                  r"$\displaystyle\lim_{n\to\infty} p(x,x_n)=p(x,x)$", r".", font_size=34)
         stw.next_to(defn, DOWN, buff=0.35)
         self.play(FadeIn(stw, shift=0.2 * DOWN))
         self.wait(0.2)
@@ -111,8 +111,12 @@ class Zbieznosc(Slide):
         pokaz_przyp(lemat)
         pokaz(Q4[1:], pomaranczowe=[Q4[2]])
         wyszarz(Q4[2], przyp=lemat)
-        pokaz(Q5, pomaranczowe=[Q5[1]])
-        wyszarz(Q5[1])
+        # Korzystamy z założenia (prawa strona stwierdzenia): podkreślenie.
+        podkr_z = Underline(stw[1], color=O, stroke_width=3, buff=0.05)
+        Q5[1].set_color(O)
+        self.play(stw[1].animate.set_color(O), Create(podkr_z), FadeIn(Q5, shift=0.2 * RIGHT))
+        self.next_slide()
+        wyszarz(Q5[1], stw[1], extra=[FadeOut(podkr_z)])
         pokaz_przyp(kula)
         pokaz(Q6, pomaranczowe=[Q6[1]])
         wyszarz(Q6[1], przyp=kula)
