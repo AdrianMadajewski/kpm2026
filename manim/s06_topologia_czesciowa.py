@@ -156,28 +156,73 @@ class LematBaza(Slide):
         self.play(FadeIn(kula_y), FadeIn(e_ky))
         self.next_slide()
 
-        # Dowód.
+        # Dowód — każde przejście na kliknięcie, z podświetleniem tego, z czego korzystamy.
         FS = 32
-        d1 = Tex(r"\textit{Dowód.} Niech $\delta\coloneqq p(x,x)+\varepsilon-p(x,y)>0$ i $z\in B_p(y,\delta)$.", font_size=FS)
-        d2 = MathTex(r"p(x,z)", r"\le", r"p(x,y)+p(y,z)", r"-p(y,y)", font_size=FS + 2)
-        d3 = MathTex(r"<", r"p(x,y)+\delta", r"=", r"p(x,x)+\varepsilon,", font_size=FS + 2)
-        d4 = Tex(r"czyli $z\in B_p(x,\varepsilon)$. \hfill $\blacksquare$", font_size=FS)
-        dowod = VGroup(d1, d2, d3, d4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
-        dowod.next_to(os, DOWN, buff=0.95).to_edge(LEFT, buff=0.8)
-        d2.shift(0.6 * RIGHT)
-        d3.next_to(d2, DOWN, buff=0.22).align_to(d2[1], LEFT)
-        d4.next_to(d3, DOWN, buff=0.22).align_to(d1, LEFT)
-        uwaga = Tex(r"(P4)", font_size=28, color=KOLOR_CZESCIOWA).next_to(d2, RIGHT, buff=0.5)
+        O = KOLOR_CZESCIOWA
 
-        self.play(FadeIn(d1))
+        L1 = MathTex(r"\text{\textit{Dowód.} Ustalmy }", r"y\in B_p(x,\varepsilon)",
+                     r"\coloneqq\{u\in X :", r"p(x,u)<p(x,x)+\varepsilon", r"\}.", font_size=FS)
+        L2 = MathTex(r"\text{Niech }", r"\delta\coloneqq p(x,x)+\varepsilon-p(x,y)", r">0", r".", font_size=FS)
+        L3 = MathTex(r"\text{Niech }", r"z\in B_p(y,\delta)", r".\ \text{Wtedy}", font_size=FS)
+        L4 = MathTex(r"p(x,z)", r"\le", r"p(x,y)+", r"p(y,z)-p(y,y)", r"<", r"p(x,y)+\delta",
+                     r"=", r"p(x,x)+\varepsilon", r",", font_size=FS + 2)
+        L5 = Tex(r"czyli $z\in B_p(x,\varepsilon)$. \hfill $\blacksquare$", font_size=FS)
+        dowod = VGroup(L1, L2, L3, L4, L5).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
+        dowod.next_to(os, DOWN, buff=0.85).to_edge(LEFT, buff=0.8)
+        L4.shift(0.6 * RIGHT + 0.2 * DOWN)
+        L5.shift(0.2 * DOWN)
+        tag = Tex(r"(P4)", font_size=24, color=KOLOR_DRUGORZEDNY).next_to(L4[1], UP, buff=0.1)
+
+        def zaswiec(*m):
+            return [x.animate.set_color(O) for x in m]
+
+        def zgas(*m):
+            return [x.animate.set_color(KOLOR_TEKST) for x in m]
+
+        # Ustalmy y.
+        self.play(FadeIn(L1))
         self.next_slide()
-        self.play(FadeIn(d2))
-        self.play(d2[3].animate.set_color(KOLOR_CZESCIOWA), FadeIn(uwaga))
+
+        # Niech delta := ...  (pauza)  > 0 — bo y jest w kuli, czyli p(x,y) < p(x,x)+eps.
+        self.play(FadeIn(L2[:2]), FadeIn(L2[3]))
         self.next_slide()
-        self.play(FadeIn(d3))
+        self.play(*zaswiec(L1[1], L1[3]), run_time=0.6)
+        self.play(FadeIn(L2[2], shift=0.2 * RIGHT))
+        self.wait(0.4)
+        self.play(*zgas(L1[1], L1[3]), run_time=0.6)
         self.next_slide()
-        self.play(FadeIn(d4))
+
+        # Niech z w kuli wokół y.
+        self.play(FadeIn(L3))
         self.next_slide()
+
+        # Krok 1: (P4).
+        self.play(FadeIn(L4[0]))
+        self.play(FadeIn(tag), tag.animate.set_color(O), run_time=0.6)
+        self.play(FadeIn(L4[1:4], shift=0.2 * RIGHT))
+        self.play(L4[3].animate.set_color(O), run_time=0.4)
+        self.wait(0.4)
+        self.play(*zgas(L4[3]), tag.animate.set_color(KOLOR_DRUGORZEDNY), run_time=0.6)
+        self.next_slide()
+
+        # Krok 2: z w B_p(y, delta), czyli p(y,z) - p(y,y) < delta.
+        self.play(*zaswiec(L3[1], L4[3]), run_time=0.6)
+        self.play(FadeIn(L4[4:6], shift=0.2 * RIGHT))
+        self.play(L4[5].animate.set_color(O), run_time=0.4)
+        self.wait(0.4)
+        self.play(*zgas(L3[1], L4[3], L4[5]), run_time=0.6)
+        self.next_slide()
+
+        # Krok 3: definicja delta.
+        self.play(*zaswiec(L2[1], L4[5]), run_time=0.6)
+        self.play(FadeIn(L4[6:], shift=0.2 * RIGHT))
+        self.wait(0.4)
+        self.play(*zgas(L2[1], L4[5]), run_time=0.6)
+        self.next_slide()
+
+        self.play(FadeIn(L5))
+        self.next_slide()
+        uwaga = tag
 
         # Wniosek.
         self.play(FadeOut(VGroup(dowod, uwaga)))
