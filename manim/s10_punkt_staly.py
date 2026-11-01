@@ -153,9 +153,9 @@ class TwierdzenieMatthewsa(Slide):
         wyszarz(A2[1])
         pokaz_przyp(kontr)
         pokaz(A2[2], pomaranczowe=[A2[2]])
-        wyszarz(A2[2], przyp=kontr)
+        wyszarz(A2[2])
         pokaz(A2[3:], pomaranczowe=[A2[3]])
-        wyszarz(A2[3])
+        wyszarz(A2[3], przyp=kontr)
 
         pokaz_przyp(p4)
         pokaz(A3)
