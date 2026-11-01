@@ -228,44 +228,100 @@ class Oddzielanie(Slide):
 
 
 class ZbieznoscMetryczna(Slide):
-    """Zbieżność w przestrzeni metrycznej (po aksjomatach oddzielania)."""
+    """Zbieżność w przestrzeni metrycznej: wersja z d i wersja topologiczna (otoczenia)."""
     def construct(self):
         naglowek, ax, J, P, kolumna = przygotuj()
-
-        # ---------------- Krok 3: zbieżność ----------------
-        tekst3 = kolumna(
-            Tex(r"Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest zbieżny do $a$, gdy", font_size=32),
-            MathTex(r"\lim_{n\to\infty} d(a,x_n)=0.", font_size=34),
-        )
-        komentarz3 = VGroup(
-            Tex(r"Każda kula wokół $a$ zawiera", font_size=32),
-            Tex(r"prawie wszystkie wyrazy ciągu.", font_size=32),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2).next_to(tekst3, DOWN, buff=0.4).align_to(tekst3, LEFT)
-        a = np.array([2.4, 1.5])
-        wyrazy = []
-        for n in range(1, 16):
-            r = 1.25 * 0.8 ** n
-            th = 0.9 * n
-            wyrazy.append(a + r * np.array([np.cos(th), np.sin(th)]))
-        kropki = VGroup(*[Dot(P(u), radius=0.05, color=KOLOR_TEKST) for u in wyrazy])
-        da = Dot(P(a), radius=0.07, color=KOLOR_TEKST)
-        ea = MathTex("a", font_size=32).next_to(da, DL, buff=0.3)
-        ea.add_background_rectangle(color=WHITE, opacity=0.85, buff=0.04)
-
         self.add(naglowek)
-        self.play(Create(ax))
-        self.play(FadeIn(tekst3, shift=0.2 * RIGHT), FadeIn(da), FadeIn(ea))
-        self.play(FadeIn(komentarz3))
-        self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki], lag_ratio=0.25), run_time=2.5)
+        B = KOLOR_METRYKA
 
-        kula_a = kula(P(a), 0.9 * J)
-        self.play(FadeIn(kula_a))
-        for e in [0.9, 0.45, 0.2]:
-            nowa = kula(P(a), e * J)
-            self.play(Transform(kula_a, nowa), run_time=0.8)
-            self.play(*[
-                k.animate.set_color(KOLOR_METRYKA if np.linalg.norm(u - a) < e else GRAY_B)
-                for k, u in zip(kropki, wyrazy)
-            ], run_time=0.6)
-            self.wait(0.3)
+        # ---- Lewa kolumna ----
+        tekst_d = VGroup(
+            Tex(r"Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest zbieżny do $a\in X$, gdy", font_size=30),
+            MathTex(r"\lim_{n\to\infty} d(a,x_n)=0", r",", font_size=32),
+            Tex(r"tzn. $\forall\,\varepsilon>0\ \exists\,N\ \forall\,n\ge N\colon\ x_n\in B_d(a,\varepsilon)$.",
+                font_size=30),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        tekst_top = VGroup(
+            Tex(r"Topologicznie:", font_size=30, color=KOLOR_DRUGORZEDNY),
+            MathTex(r"x_n\to a", r"\iff", r"\forall\,U\in\tau_d,\ a\in U\ \ \exists\,N\ \forall\,n\ge N\colon\ x_n\in U",
+                    font_size=30),
+            Tex(r"(każde otoczenie $a$ zawiera prawie wszystkie wyrazy ciągu)", font_size=26,
+                color=KOLOR_DRUGORZEDNY),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        lewa = VGroup(tekst_d, tekst_top).arrange(DOWN, aligned_edge=LEFT, buff=0.6)
+        lewa.to_edge(LEFT, buff=0.4).shift(0.2 * DOWN)
+        if lewa.get_right()[0] > ax.get_left()[0] - 0.2:
+            lewa.scale_to_fit_width(ax.get_left()[0] - 0.2 - lewa.get_left()[0]).to_edge(LEFT, buff=0.4)
+
+        # ---- Rysunek: ciąg spiralą zbiega do a ----
+        a = np.array([2.1, 1.45])
+        wyrazy = [a + 1.45 * 0.83 ** n * np.array([np.cos(1.15 * n), np.sin(1.15 * n)]) for n in range(1, 21)]
+        kropki = VGroup(*[Dot(P(u), radius=0.055, color=KOLOR_TEKST).set_z_index(5) for u in wyrazy])
+        etykiety = VGroup(*[
+            MathTex(rf"x_{{{n}}}", font_size=24).next_to(kropki[n - 1], kier, buff=0.06)
+            for n, kier in [(1, UP), (2, LEFT), (3, DOWN)]
+        ])
+        da = Dot(P(a), radius=0.07, color=B).set_z_index(6)
+        ea = MathTex("a", font_size=30, color=B).move_to(da.get_center() + np.array([-0.6, -0.5, 0])).set_z_index(6)
+        strz_a = Line(ea.get_corner(UR), da.get_center(), buff=0.08, color=B, stroke_width=2).set_z_index(6)
+        ea = VGroup(ea, strz_a)
+
+        self.play(Create(ax))
+        self.play(FadeIn(tekst_d[:2], shift=0.2 * RIGHT), FadeIn(da), FadeIn(ea))
+        self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki], lag_ratio=0.15), FadeIn(etykiety),
+                  run_time=2.0)
+        self.next_slide()
+
+        # ---- Wersja z kulami: eps maleje, N rośnie ----
+        self.play(FadeIn(tekst_d[2], shift=0.2 * RIGHT))
+
+        def N_dla(e):
+            return next(n for n in range(1, 21) if all(np.linalg.norm(u - a) < e for u in wyrazy[n - 1:]))
+
+        def opis(e):
+            return MathTex(rf"\varepsilon={e:.2f},\quad N={N_dla(e)}", font_size=30, color=B) \
+                .next_to(ax, DOWN, buff=0.35)
+
+        def koloruj(czy_w_srodku):
+            return [k.animate.set_color(B if czy_w_srodku(u) else GRAY_B) for k, u in zip(kropki, wyrazy)]
+
+        eps_lista = [1.0, 0.6, 0.3]
+        kula_a = kula(P(a), eps_lista[0] * J)
+        napis = opis(eps_lista[0])
+        self.play(FadeIn(kula_a), FadeIn(napis), *koloruj(lambda u: np.linalg.norm(u - a) < eps_lista[0]))
+        self.next_slide()
+        for e in eps_lista[1:]:
+            nowy = opis(e)
+            self.play(Transform(kula_a, kula(P(a), e * J)), FadeOut(napis), FadeIn(nowy),
+                      *koloruj(lambda u, e=e: np.linalg.norm(u - a) < e), run_time=1.0)
+            napis = nowy
+            self.next_slide()
+
+        # ---- Wersja topologiczna: dowolny zbiór otwarty U wokół a ----
+        self.play(FadeOut(kula_a), FadeOut(napis), *[k.animate.set_color(KOLOR_TEKST) for k in kropki])
+        self.play(FadeIn(tekst_top, shift=0.2 * RIGHT))
+        self.next_slide()
+
+        def zbior_U(srodek, szer, wys, kat):
+            ksztalt = Ellipse(width=szer * J, height=wys * J).rotate(kat).move_to(P(srodek))
+            return VGroup(ksztalt.copy().set_stroke(width=0).set_fill(GRAY, 0.15),
+                          DashedVMobject(ksztalt.copy().set_stroke(KOLOR_TEKST, 3), num_dashes=40))
+
+        def w_elipsie(u, srodek, szer, wys, kat):
+            v = u - srodek
+            c, s_ = np.cos(-kat), np.sin(-kat)
+            x, y = c * v[0] - s_ * v[1], s_ * v[0] + c * v[1]
+            return (x / (szer / 2)) ** 2 + (y / (wys / 2)) ** 2 < 1
+
+        zbiory = [
+            (a + np.array([0.4, 0.2]), 2.4, 1.3, 0.5),
+            (a + np.array([-0.18, 0.08]), 1.0, 0.55, -0.4),
+        ]
+        U = zbior_U(*zbiory[0])
+        eU = MathTex("U", font_size=30).next_to(U, UR, buff=0.0)
+        self.play(FadeIn(U), FadeIn(eU), *koloruj(lambda u: w_elipsie(u, *zbiory[0])))
+        self.next_slide()
+        U2 = zbior_U(*zbiory[1])
+        self.play(Transform(U, U2), eU.animate.next_to(U2, UR, buff=0.0),
+                  *koloruj(lambda u: w_elipsie(u, *zbiory[1])), run_time=1.0)
         self.next_slide()
