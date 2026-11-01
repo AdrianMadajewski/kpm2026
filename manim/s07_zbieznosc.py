@@ -23,7 +23,8 @@ class Zbieznosc(Slide):
         self.next_slide()
 
         # Przypomnienie definicji topologicznej.
-        defn = MathTex(r"x_n\to x \iff \forall\, U\in\tau_p,\ x\in U\ \ \exists\, N\ \forall\, n\ge N\colon\ x_n\in U",
+        defn = MathTex(r"x_n\to x \iff", r"\forall\, U\in\tau_p,\ x\in U",
+                       r"\ \ \exists\, N\ \forall\, n\ge N\colon\ x_n\in U",
                        font_size=32, color=KOLOR_DRUGORZEDNY)
         defn.next_to(pytanie, DOWN, buff=0.35)
         self.play(FadeIn(defn, shift=0.2 * DOWN))
@@ -84,11 +85,11 @@ class Zbieznosc(Slide):
         wyszarz(Q1[2], przyp=baza)
 
         # Skąd Q2: definicja zbieżności (u góry) dla U := B_p(x, eps).
-        podkr = Underline(defn, color=O, stroke_width=3, buff=0.08)
+        podkr = Underline(defn[1], color=O, stroke_width=3, buff=0.08)
         Q2[1].set_color(O)
-        self.play(defn.animate.set_color(O), Create(podkr), FadeIn(Q2, shift=0.2 * RIGHT))
+        self.play(defn[1].animate.set_color(O), Create(podkr), FadeIn(Q2, shift=0.2 * RIGHT))
         self.next_slide()
-        self.play(defn.animate.set_color(KOLOR_DRUGORZEDNY), FadeOut(podkr), Q2[1].animate.set_color(KOLOR_TEKST),
+        self.play(defn[1].animate.set_color(KOLOR_DRUGORZEDNY), FadeOut(podkr), Q2[1].animate.set_color(KOLOR_TEKST),
                   run_time=0.6)
         self.next_slide()
 
