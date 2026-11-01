@@ -15,8 +15,8 @@ class PytaniaCzesciowa(Slide):
 
         pytania = VGroup(
             Tex(r"1. Jak wyglądają zbiory otwarte?", font_size=38),
-            Tex(r"2. Co możemy powiedzieć o zbieżności?", font_size=38),
-            Tex(r"3. Jakie aksjomaty oddzielania spełnia nasza przestrzeń?", font_size=38),
+            Tex(r"2. Jakie aksjomaty oddzielania spełnia nasza przestrzeń?", font_size=38),
+            Tex(r"3. Co możemy powiedzieć o zbieżności?", font_size=38),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.5).move_to(0.2 * DOWN)
         for pyt in pytania:
             self.play(FadeIn(pyt, shift=0.2 * RIGHT))

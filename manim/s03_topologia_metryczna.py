@@ -57,8 +57,8 @@ class TopologiaMetryczna(Slide):
         # Podstawowe pytania o topologię — każde na osobne kliknięcie.
         pytania = VGroup(
             Tex(r"1. Jak wyglądają zbiory otwarte?", font_size=38),
-            Tex(r"2. Co możemy powiedzieć o zbieżności?", font_size=38),
-            Tex(r"3. Jakie aksjomaty oddzielania spełnia nasza przestrzeń?", font_size=38),
+            Tex(r"2. Jakie aksjomaty oddzielania spełnia nasza przestrzeń?", font_size=38),
+            Tex(r"3. Co możemy powiedzieć o zbieżności?", font_size=38),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.5).move_to(0.2 * DOWN)
         for pyt in pytania:
             self.play(FadeIn(pyt, shift=0.2 * RIGHT))
@@ -121,43 +121,6 @@ class TopologiaMetryczna(Slide):
         self.play(LaggedStart(*[FadeIn(m) for m in male_kule], lag_ratio=0.4))
         self.play(FadeIn(ruch))
         self.play(t.animate.set_value(1.30), run_time=3, rate_func=smooth)
-        self.next_slide()
-
-        # ---------------- Krok 3: zbieżność ----------------
-        tekst3 = kolumna(
-            Tex(r"Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest zbieżny do $a$, gdy", font_size=32),
-            MathTex(r"\lim_{n\to\infty} d(a,x_n)=0.", font_size=34),
-        )
-        komentarz3 = VGroup(
-            Tex(r"Każda kula wokół $a$ zawiera", font_size=32),
-            Tex(r"prawie wszystkie wyrazy ciągu.", font_size=32),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2).next_to(tekst3, DOWN, buff=0.4).align_to(tekst3, LEFT)
-        a = np.array([2.4, 1.5])
-        wyrazy = []
-        for n in range(1, 16):
-            r = 1.25 * 0.8 ** n
-            th = 0.9 * n
-            wyrazy.append(a + r * np.array([np.cos(th), np.sin(th)]))
-        kropki = VGroup(*[Dot(P(u), radius=0.05, color=KOLOR_TEKST) for u in wyrazy])
-        da = Dot(P(a), radius=0.07, color=KOLOR_TEKST)
-        ea = MathTex("a", font_size=32).next_to(da, DL, buff=0.3)
-        ea.add_background_rectangle(color=WHITE, opacity=0.85, buff=0.04)
-
-        self.play(FadeOut(VGroup(tekst2, U, U_tlo, etyk_U, male_kule, ruch)))
-        self.play(FadeIn(tekst3, shift=0.2 * RIGHT), FadeIn(da), FadeIn(ea))
-        self.play(FadeIn(komentarz3))
-        self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki], lag_ratio=0.25), run_time=2.5)
-
-        kula_a = kula(P(a), 0.9 * J)
-        self.play(FadeIn(kula_a))
-        for e in [0.9, 0.45, 0.2]:
-            nowa = kula(P(a), e * J)
-            self.play(Transform(kula_a, nowa), run_time=0.8)
-            self.play(*[
-                k.animate.set_color(KOLOR_METRYKA if np.linalg.norm(u - a) < e else GRAY_B)
-                for k, u in zip(kropki, wyrazy)
-            ], run_time=0.6)
-            self.wait(0.3)
         self.next_slide()
 
 
@@ -262,3 +225,46 @@ class Oddzielanie(Slide):
         self.play(FadeIn(ptaszki, shift=0.2 * UP))
         self.next_slide()
 
+
+class ZbieznoscMetryczna(Slide):
+    """Zbieżność w przestrzeni metrycznej (po aksjomatach oddzielania)."""
+    def construct(self):
+        naglowek, ax, J, P, kolumna = przygotuj()
+
+        # ---------------- Krok 3: zbieżność ----------------
+        tekst3 = kolumna(
+            Tex(r"Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest zbieżny do $a$, gdy", font_size=32),
+            MathTex(r"\lim_{n\to\infty} d(a,x_n)=0.", font_size=34),
+        )
+        komentarz3 = VGroup(
+            Tex(r"Każda kula wokół $a$ zawiera", font_size=32),
+            Tex(r"prawie wszystkie wyrazy ciągu.", font_size=32),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2).next_to(tekst3, DOWN, buff=0.4).align_to(tekst3, LEFT)
+        a = np.array([2.4, 1.5])
+        wyrazy = []
+        for n in range(1, 16):
+            r = 1.25 * 0.8 ** n
+            th = 0.9 * n
+            wyrazy.append(a + r * np.array([np.cos(th), np.sin(th)]))
+        kropki = VGroup(*[Dot(P(u), radius=0.05, color=KOLOR_TEKST) for u in wyrazy])
+        da = Dot(P(a), radius=0.07, color=KOLOR_TEKST)
+        ea = MathTex("a", font_size=32).next_to(da, DL, buff=0.3)
+        ea.add_background_rectangle(color=WHITE, opacity=0.85, buff=0.04)
+
+        self.add(naglowek)
+        self.play(Create(ax))
+        self.play(FadeIn(tekst3, shift=0.2 * RIGHT), FadeIn(da), FadeIn(ea))
+        self.play(FadeIn(komentarz3))
+        self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki], lag_ratio=0.25), run_time=2.5)
+
+        kula_a = kula(P(a), 0.9 * J)
+        self.play(FadeIn(kula_a))
+        for e in [0.9, 0.45, 0.2]:
+            nowa = kula(P(a), e * J)
+            self.play(Transform(kula_a, nowa), run_time=0.8)
+            self.play(*[
+                k.animate.set_color(KOLOR_METRYKA if np.linalg.norm(u - a) < e else GRAY_B)
+                for k, u in zip(kropki, wyrazy)
+            ], run_time=0.6)
+            self.wait(0.3)
+        self.next_slide()
