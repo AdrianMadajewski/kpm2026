@@ -206,9 +206,11 @@ class LematBaza(Slide):
         self.next_slide()
         tag.set_color(O)
         self.play(FadeIn(L4[1]), FadeIn(tag))
+        L4[2:4].set_color(O)
         self.play(FadeIn(L4[2:4], shift=0.2 * RIGHT))
         self.next_slide()
-        self.play(FadeOut(tresc_p4, shift=0.2 * DOWN), tag.animate.set_color(KOLOR_DRUGORZEDNY), run_time=0.7)
+        self.play(FadeOut(tresc_p4, shift=0.2 * DOWN), tag.animate.set_color(KOLOR_DRUGORZEDNY),
+                  L4[2:4].animate.set_color(KOLOR_TEKST), run_time=0.7)
         self.next_slide()
 
         # Krok 2: z w B_p(y, delta), czyli p(y,z) - p(y,y) < delta.
