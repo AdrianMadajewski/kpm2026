@@ -181,12 +181,12 @@ class PrzykladMax(Slide):
 
         # Układ współrzędnych: na OX punkty (bez liczb), na OY wartości p(., .).
         ax = Axes(
-            x_range=[0, 5, 1], y_range=[0, 5, 1],
-            x_length=4.5, y_length=4.5,
+            x_range=[0, 5, 1], y_range=[0, 4, 1],
+            x_length=4.5, y_length=3.6,
             tips=False,
             axis_config={"include_numbers": True, "font_size": 24},
         )
-        ax.shift(np.array([-2.0, -2.85, 0]) - ax.c2p(0, 0))
+        ax.shift(np.array([-2.0, -2.6, 0]) - ax.c2p(0, 0))
         etyk_p = MathTex(r"p", font_size=34).next_to(ax.y_axis, UP, buff=0.15)
 
         # Statyczne kopie punktu x i jego podpisu, żeby jechały razem z osią.
