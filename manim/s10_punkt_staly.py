@@ -126,23 +126,24 @@ class TwierdzenieMatthewsa(Slide):
         zup = przypomnienie(r"\text{(zupełność)}\quad x_n\to x^*,\quad "
                             r"p(x^*,x^*)=\lim_{n\to\infty}p(x^*,x_n)=\lim_{n,m\to\infty}p(x_n,x_m)")
 
-        # =============== Strona 1: ciąg iteracji jest ciągiem Cauchy'ego ===============
+        # =============== Strona 1: oszacowanie p(x_n, x_m) ===============
         A1 = MathTex(r"\textit{Dowód.}\ \textit{Istnienie.}\ \text{Ustalmy } x_0\in X", r"\text{ i niech }",
                      r"x_{n+1}\coloneqq f(x_n)", r"\text{ dla } n=0,1,2,\dots", font_size=FS)
         A2 = MathTex(r"p(x_{n+1},x_n)", r"=p(f(x_n),f(x_{n-1}))", r"\le c\cdot p(x_n,x_{n-1})",
                      r"\le\dots\le c^n\cdot p(x_1,x_0)", r".", font_size=FS)
-        A3 = MathTex(r"\text{Dla } m>n\text{, stosując wielokrotnie (P4) i pomijając odejmowane wyrazy "
-                     r"} p(x_k,x_k)\ge 0\text{:}", font_size=FS)
-        A4 = MathTex(r"p(x_n,x_m)", r"\le\sum_{k=n}^{m-1}p(x_k,x_{k+1})", r"\le\sum_{k=n}^{m-1}c^k\, p(x_1,x_0)",
-                     r"\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".", font_size=FS)
-        A5 = MathTex(r"\text{Z (P2) także }", r"p(x_n,x_n)\le p(x_n,x_{n+1})\le c^n\, p(x_1,x_0)", r".",
+        A3 = MathTex(r"\text{Niech } m>n.\ \text{Z (P4) dla } x=x_n,\ y=x_{n+1},\ z=x_m\text{ mamy}", font_size=FS)
+        R1 = MathTex(r"p(x_n,x_m)", r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", r"-p(x_{n+1},x_{n+1})",
                      font_size=FS)
-        A6 = MathTex(r"\text{Zatem }", r"\lim_{n,m\to\infty}p(x_n,x_m)=0", r"\text{, czyli }",
-                     r"(x_n)_{n\ge 0}\text{ jest ciągiem Cauchy'ego}", r".", font_size=FS)
-        strona1 = VGroup(A1, A2, A3, A4, A5, A6).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
-        strona1.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
+        R2 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", font_size=FS)
+        R3 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_{n+2})+p(x_{n+2},x_m)", font_size=FS)
+        R4 = MathTex(r"\le\dots\le", r"\sum_{k=n}^{m-1}p(x_k,x_{k+1})", r"\le\sum_{k=n}^{m-1}c^k\, p(x_1,x_0)",
+                     r"\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".", font_size=FS)
+        strona1 = VGroup(A1, A2, A3, R1, R2, R3, R4).arrange(DOWN, aligned_edge=LEFT, buff=0.13)
+        strona1.next_to(tw, DOWN, buff=0.25).to_edge(LEFT, buff=0.6)
         A2.shift(0.6 * RIGHT)
-        A4.shift(0.6 * RIGHT)
+        R1.shift(0.6 * RIGHT)
+        for r in (R2, R3, R4):
+            r.align_to(R1[1], LEFT)
 
         pokaz(A1[0])
         pokaz(A1[1:], pomaranczowe=[A1[2]])
@@ -157,27 +158,47 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(A2[3:], pomaranczowe=[A2[3]])
         wyszarz(A2[3], przyp=kontr)
 
+        # (P4) dla trzech punktów x_n, x_{n+1}, x_m.
         pokaz_przyp(p4)
         pokaz(A3)
-        pokaz(A4[:2], pomaranczowe=[A4[1]])
-        wyszarz(A4[1], przyp=p4)
-        pokaz(A4[2], pomaranczowe=[A4[2]])
-        wyszarz(A4[2])
-        pokaz(A4[3:], pomaranczowe=[A4[3]])
-        wyszarz(A4[3])
+        pokaz(R1, pomaranczowe=[R1[1], R1[2], R1[3]])
+        wyszarz(R1[1], R1[2], R1[3], przyp=p4)
 
-        pokaz_przyp(p2)
-        pokaz(A5, pomaranczowe=[A5[1]])
-        wyszarz(A5[1], przyp=p2)
+        # Odejmowany wyraz jest nieujemny: pomijamy go.
+        nieuj = przypomnienie(r"p(x_{n+1},x_{n+1})\ge 0")
+        self.play(R1[3].animate.set_color(O), FadeIn(nieuj, shift=0.2 * UP), run_time=0.6)
+        self.next_slide()
+        pokaz(R2)
+        wyszarz(R1[3], przyp=nieuj)
 
-        pokaz(A6[:2], pomaranczowe=[A6[1]])
-        wyszarz(A6[1])
-        pokaz(A6[2:])
+        # To samo dla p(x_{n+1}, x_m): (P4) z y = x_{n+2}.
+        self.play(R2[1].animate.set_color(O), run_time=0.5)
+        self.next_slide()
+        pokaz(R3, pomaranczowe=[R3[1]])
+        wyszarz(R2[1], R3[1])
+
+        # Suma i szereg geometryczny.
+        pokaz(R4[:2], pomaranczowe=[R4[1]])
+        wyszarz(R4[1])
+        self.play(A2[3].animate.set_color(O), run_time=0.5)
+        self.next_slide()
+        pokaz(R4[2], pomaranczowe=[R4[2]])
+        wyszarz(R4[2], A2[3])
+        geom = MathTex(r"\sum_{k=n}^{m-1}c^k\le\sum_{k=n}^{\infty}c^k=\frac{c^n}{1-c}", font_size=26, color=O)
+        geom.to_corner(DR, buff=0.3)
+        pokaz_przyp(geom)
+        pokaz(R4[3:], pomaranczowe=[R4[3]])
+        wyszarz(R4[3], przyp=geom)
 
         self.play(FadeOut(strona1, shift=0.3 * LEFT), run_time=0.7)
         self.next_slide()
 
-        # =============== Strona 2: granica jest punktem stałym; jednoznaczność ===============
+        # =============== Strona 2: ciąg Cauchy'ego, granica, punkt stały ===============
+        A5 = MathTex(r"\text{Z (P2) także }", r"p(x_n,x_n)\le p(x_n,x_{n+1})\le c^n\, p(x_1,x_0)", r".",
+                     font_size=FS)
+        A6 = MathTex(r"\text{Zatem }", r"\lim_{n,m\to\infty}p(x_n,x_m)=0", r"\text{, czyli }",
+                     r"(x_n)_{n\ge 0}\text{ jest ciągiem Cauchy'ego}", r".", font_size=FS)
+
         B1 = MathTex(r"\text{Z zupełności istnieje } x^*\in X\text{ taki, że }", r"x_n\to x^*", r"\text{ oraz }",
                      r"p(x^*,x^*)=\lim_{n,m\to\infty}p(x_n,x_m)=0", r".", font_size=FS)
         B2 = MathTex(r"\textit{Punkt stały.}\ \text{Z (P4) i kontrakcji, skoro } x_{n+1}=f(x_n)\text{:}", font_size=FS)
@@ -190,9 +211,18 @@ class TwierdzenieMatthewsa(Slide):
                      font_size=FS)
         B6 = MathTex(r"\text{Z (P2) }", r"p(x^*,x^*)=p(x^*,y)=p(y,y)=0", r"\text{, więc z (P1) }", r"y=x^*",
                      r".", font_size=FS)
-        strona2 = VGroup(B1, B2, B3, B4, B5, B6).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
-        strona2.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
+        strona2 = VGroup(A5, A6, B1, B2, B3, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
+        strona2.next_to(tw, DOWN, buff=0.35).to_edge(LEFT, buff=0.6)
         B3.shift(0.6 * RIGHT)
+        strona3 = VGroup(B5, B6).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
+        strona3.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
+
+        pokaz_przyp(p2)
+        pokaz(A5, pomaranczowe=[A5[1]])
+        wyszarz(A5[1], przyp=p2)
+        pokaz(A6[:2], pomaranczowe=[A6[1]])
+        wyszarz(A6[1])
+        pokaz(A6[2:])
 
         # Zupełność: granica x* i od razu p(x*, x*) = 0.
         pokaz_przyp(zup)
@@ -222,6 +252,9 @@ class TwierdzenieMatthewsa(Slide):
         pokaz_przyp(p1)
         pokaz(B4[4:], pomaranczowe=[B4[5]])
         wyszarz(B4[5], przyp=p1)
+
+        self.play(FadeOut(strona2, shift=0.3 * LEFT), run_time=0.7)
+        self.next_slide()
 
         # Jednoznaczność.
         pokaz(B5[0])
