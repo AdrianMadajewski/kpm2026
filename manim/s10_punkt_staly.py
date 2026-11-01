@@ -164,6 +164,9 @@ class TwierdzenieMatthewsa(Slide):
         wyszarz(A2[2])
         pokaz(A2[3:], pomaranczowe=[A2[3]])
         wyszarz(A2[3], przyp=kontr)
+        gw1 = MathTex(r"(*)", font_size=FS).next_to(A2, RIGHT, buff=0.4)
+        self.play(FadeIn(gw1))
+        self.next_slide()
 
         # (P4) dla trzech punktów x_n, x_{n+1}, x_m.
         p4_a = przypomnienie(r"\text{(P4)}\quad p(x_n,x_m)\le p(x_n,x_{n+1})+p(x_{n+1},x_m)-p(x_{n+1},x_{n+1})")
@@ -228,10 +231,11 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(R5[1:], pomaranczowe=[R5[1]])
         wyszarz(R5[1], przyp=geom)
 
-        self.play(FadeOut(strona1, shift=0.3 * LEFT), run_time=0.7)
+        self.play(FadeOut(strona1, shift=0.3 * LEFT), FadeOut(gw1, shift=0.3 * LEFT), run_time=0.7)
         self.next_slide()
 
         # =============== Strona 2: ciąg Cauchy'ego, granica, punkt stały ===============
+        A0r = MathTex(r"(*)\quad", r"p(x_{n+1},x_n)\le c^n\cdot p(x_1,x_0)", r"\text{ dla } n\ge 0.", font_size=FS)
         A4r = MathTex(r"\text{Dla } m>n \text{ mamy }", r"p(x_n,x_m)\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".",
                       font_size=FS)
         A5 = MathTex(r"\text{Dla } m=n \text{ mamy }", r"p(x_n,x_n)", r"\le p(x_n,x_{n+1})",
@@ -251,23 +255,28 @@ class TwierdzenieMatthewsa(Slide):
                      font_size=FS)
         B6 = MathTex(r"\text{Z (P2) }", r"p(x^*,x^*)=p(x^*,y)=p(y,y)=0", r"\text{, więc z (P1) }", r"y=x^*",
                      r".", font_size=FS)
-        strona2 = VGroup(A4r, A5, A6, B1, B2, B3, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
+        strona2 = VGroup(A0r, A4r, A5, A6, B1, B2, B3, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
         strona2.next_to(tw, DOWN, buff=0.3).to_edge(LEFT, buff=0.6)
         B3.shift(0.6 * RIGHT)
         strona3 = VGroup(B5, B6).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
         strona3.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
 
-        # Przypomnienie wyniku z poprzedniej strony.
+        # Przypomnienie wyników z poprzedniej strony.
+        pokaz(A0r)
         pokaz(A4r)
         # Przypadek m = n.
         pokaz(A5[:2])
         pokaz_przyp(p2)
         pokaz(A5[2], pomaranczowe=[A5[2]])
         wyszarz(A5[2], przyp=p2)
-        kontr_n = przypomnienie(r"\text{(kontrakcja)}\quad p(x_{n+1},x_n)\le c^n\cdot p(x_1,x_0)")
-        pokaz_przyp(kontr_n)
+        # Korzystamy z (*): podkreślenie.
+        podkr_g = Underline(A0r[1], color=O, stroke_width=3, buff=0.05)
+        self.play(A0r[1].animate.set_color(O), Create(podkr_g), run_time=0.6)
+        self.next_slide()
         pokaz(A5[3:], pomaranczowe=[A5[3]])
-        wyszarz(A5[3], przyp=kontr_n)
+        self.play(A5[3].animate.set_color(KOLOR_TEKST), A0r[1].animate.set_color(KOLOR_TEKST), FadeOut(podkr_g),
+                  run_time=0.6)
+        self.next_slide()
         pokaz(A6[:2], pomaranczowe=[A6[1]])
         wyszarz(A6[1])
         pokaz(A6[2:])
