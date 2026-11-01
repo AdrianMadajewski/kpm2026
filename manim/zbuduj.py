@@ -32,6 +32,7 @@ SCENY = [
     ("s07_zbieznosc.py", "Zbieznosc"),
     ("s01_plan.py", "PlanSekcja4"),
     ("s09_zupelnosc.py", "CiagCauchyego"),
+    ("s09_zupelnosc.py", "ZupelnoscMax"),
 ]
 
 WYJSCIE = "prezentacja.html"
