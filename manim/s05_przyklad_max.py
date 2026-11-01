@@ -7,6 +7,7 @@ class PrzykladMax(Slide):
 
     def construct(self):
         naglowek = Tex(r"Przykład", font_size=44).to_edge(UP, buff=0.4)
+        KOLOR_Y = ManimColor("#7B3FA0")  # fiolet — punkt y i [0,y]
 
         # Krok 1: przykład.
         wzor = MathTex(r"X\coloneqq[0,\infty),\qquad p(x,y)\coloneqq\max\{x,y\}", font_size=40)
@@ -99,7 +100,7 @@ class PrzykladMax(Slide):
         POD = 0.75 * DOWN  # odsunięcie odcinków pod oś (poniżej liczb)
 
         x = ValueTracker(3.0)
-        kropka = always_redraw(lambda: Dot(os.n2p(x.get_value()), radius=0.08))
+        kropka = always_redraw(lambda: Dot(os.n2p(x.get_value()), radius=0.09, color=KOLOR_CZESCIOWA))
         etyk_x = always_redraw(lambda: MathTex("x", font_size=34).next_to(kropka, UP, buff=0.15))
         odcinek = always_redraw(lambda: Line(
             os.n2p(0) + POD, os.n2p(max(x.get_value(), 1e-3)) + POD,
@@ -130,10 +131,9 @@ class PrzykladMax(Slide):
 
         # Co oznacza p(x,y)? Drugi punkt y na tej samej osi.
         yy = ValueTracker(1.5)
-        kropka_y1 = always_redraw(lambda: Dot(os.n2p(yy.get_value()), radius=0.08))
+        kropka_y1 = always_redraw(lambda: Dot(os.n2p(yy.get_value()), radius=0.09, color=KOLOR_Y))
         etyk_y1 = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y1, UP, buff=0.15))
         POD2 = 1.45 * DOWN
-        KOLOR_Y = ManimColor("#7B3FA0")  # fiolet — odróżnia [0,y] od [0,x]
         odc_y1 = always_redraw(lambda: Line(
             os.n2p(0) + POD2, os.n2p(max(yy.get_value(), 1e-3)) + POD2,
             color=KOLOR_Y, stroke_width=12).set_cap_style(CapStyleType.ROUND))
@@ -185,15 +185,15 @@ class PrzykladMax(Slide):
         os2 = NumberLine(x_range=[0, 5, 1], length=10, include_numbers=True,
                          font_size=28, include_tip=False).shift(1.15 * DOWN)
         y = ValueTracker(3.0)
-        kropka_y = always_redraw(lambda: Dot(os2.n2p(y.get_value()), radius=0.08))
+        kropka_y = always_redraw(lambda: Dot(os2.n2p(y.get_value()), radius=0.09, color=KOLOR_Y))
         etyk_y = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y, UP, buff=0.15))
         odcinek_y = always_redraw(lambda: Line(
             os2.n2p(0) + POD, os2.n2p(max(y.get_value(), 1e-3)) + POD,
-            color=KOLOR_CZESCIOWA, stroke_width=12,
+            color=KOLOR_Y, stroke_width=12,
             stroke_opacity=1 if y.get_value() > 0.02 else 0).set_cap_style(CapStyleType.ROUND))
         wartosc_y = always_redraw(lambda: VGroup(
-            MathTex(r"p(y,y) =", font_size=34, color=KOLOR_CZESCIOWA),
-            DecimalNumber(y.get_value(), num_decimal_places=2, font_size=34, color=KOLOR_CZESCIOWA),
+            MathTex(r"p(y,y) =", font_size=34, color=KOLOR_Y),
+            DecimalNumber(y.get_value(), num_decimal_places=2, font_size=34, color=KOLOR_Y),
         ).arrange(RIGHT, buff=0.15).next_to(os2.n2p(0) + POD, DOWN, buff=0.35, aligned_edge=LEFT))
 
         self.play(Create(os2))
