@@ -126,8 +126,8 @@ class TwierdzenieMatthewsa(Slide):
         zup = przypomnienie(r"\text{(zupełność)}\quad x_n\to x^*,\quad "
                             r"p(x^*,x^*)=\lim_{n\to\infty}p(x^*,x_n)=\lim_{n,m\to\infty}p(x_n,x_m)")
 
-        # Twierdzenie zmniejsza się, żeby zrobić miejsce na dowód.
-        self.play(tw.animate.scale(0.8).next_to(naglowek, DOWN, buff=0.3), run_time=0.7)
+        # Nagłówek znika, a twierdzenie idzie do góry, żeby zrobić miejsce na dowód.
+        self.play(FadeOut(naglowek, shift=0.3 * UP), tw.animate.to_edge(UP, buff=0.35), run_time=0.7)
 
         # =============== Strona 1: oszacowanie p(x_n, x_m) ===============
         A1 = MathTex(r"\textit{Dowód.}\ \textit{Istnienie.}\ \text{Ustalmy } x_0\in X", r"\text{ i niech }",
@@ -142,8 +142,8 @@ class TwierdzenieMatthewsa(Slide):
         R4 = MathTex(r"\le\dots\le", r"\sum_{k=n}^{m-1}p(x_k,x_{k+1})", r"\le\sum_{k=n}^{m-1}c^k\, p(x_1,x_0)",
                      font_size=FS)
         R5 = MathTex(r"=p(x_1,x_0)\sum_{k=n}^{m-1}c^k", r"\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".", font_size=FS)
-        strona1 = VGroup(A1, A2, A3, R1, R2, R3, R4, R5).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
-        strona1.next_to(tw, DOWN, buff=0.2).to_edge(LEFT, buff=0.6)
+        strona1 = VGroup(A1, A2, A3, R1, R2, R3, R4, R5).arrange(DOWN, aligned_edge=LEFT, buff=0.12)
+        strona1.next_to(tw, DOWN, buff=0.3).to_edge(LEFT, buff=0.6)
         A2.shift(0.6 * RIGHT)
         R1.shift(0.6 * RIGHT)
         for r in (R2, R3, R4, R5):
@@ -203,7 +203,7 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(R5[1:], pomaranczowe=[R5[1]])
         wyszarz(R5[1], przyp=geom)
 
-        self.play(FadeOut(strona1, shift=0.3 * LEFT), run_time=0.7)
+        self.play(FadeOut(strona1, shift=0.3 * LEFT), FadeOut(notka, shift=0.3 * LEFT), run_time=0.7)
         self.next_slide()
 
         # =============== Strona 2: ciąg Cauchy'ego, granica, punkt stały ===============
