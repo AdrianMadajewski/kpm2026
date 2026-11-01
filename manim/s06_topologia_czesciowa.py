@@ -364,3 +364,122 @@ class WlasnosciTopologii(Slide):
         self.play(FadeIn(kula), FadeIn(e_k))
         self.wait(0.2)
         self.next_slide()
+
+        # ================= Uwaga: T_1 nie musi zachodzić =================
+        self.play(*[FadeOut(m, shift=0.3 * LEFT) for m in self.mobjects if m is not tytul], run_time=0.8)
+        self.next_slide()
+
+        uwaga = Tex(r"\textbf{Uwaga.} Topologia $\tau_p$ \emph{nie musi} spełniać aksjomatu $T_1$.", font_size=36)
+        uwaga.next_to(tytul, DOWN, buff=0.5)
+        self.play(FadeIn(uwaga, shift=0.2 * DOWN))
+        self.wait(0.2)
+        self.next_slide()
+
+        # ---- Przypomnienie T_1 (rysunek po prawej) ----
+        ramka1 = RoundedRectangle(width=3.4, height=1.9, corner_radius=0.15, color=GRAY_C, stroke_width=2)
+        ramka1.move_to(np.array([4.6, 0.55, 0]))
+        qx = Dot(ramka1.get_center() + 0.7 * LEFT, radius=0.07)
+        qy = Dot(ramka1.get_center() + 0.7 * RIGHT, radius=0.07)
+        mx = MathTex("x", font_size=28).next_to(qx, DOWN, buff=0.1)
+        my = MathTex("y", font_size=28).next_to(qy, DOWN, buff=0.1)
+
+        def otocz(punkt, kolor):
+            o = Ellipse(width=1.2, height=1.2).move_to(punkt)
+            return VGroup(o.copy().set_stroke(width=0).set_fill(kolor, 0.15),
+                          DashedVMobject(o.copy().set_stroke(kolor, 2.5), num_dashes=30))
+
+        ox_ = otocz(qx.get_center(), KOLOR_METRYKA)
+        oy_ = otocz(qy.get_center(), KOLOR_CZESCIOWA)
+        naz1 = MathTex(r"T_1", font_size=34).next_to(ramka1, UP, buff=0.12)
+        self.play(FadeIn(VGroup(ramka1, qx, qy, mx, my, naz1)))
+        self.play(FadeIn(ox_))
+        self.play(FadeIn(oy_))
+        self.next_slide()
+
+        # ---- Dowód (kontrprzykład max) ----
+        M1 = MathTex(r"\textit{Dowód.}\ \text{Niech }", r"X=[0,\infty)", r",\ ", r"p(x,y)=\max\{x,y\}",
+                     r"\text{ oraz }", r"0\le x<y", r".", font_size=FS)
+        M2 = MathTex(r"\text{Każdy zbiór otwarty }", r"U\ni y", r"\text{ zawiera pewną kulę }",
+                     r"B_p(y,\varepsilon)", r".", font_size=FS)
+        M3 = MathTex(r"\text{Ale }", r"B_p(y,\varepsilon)=[0,\,y+\varepsilon)", r"\ni", r"x", r",",
+                     font_size=FS)
+        M4 = MathTex(r"\text{więc każde otoczenie } y \text{ zawiera } x", r"\text{, czyli brak } T_1.\ \blacksquare",
+                     font_size=FS)
+        dowod1 = VGroup(M1, M2, M3, M4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
+        dowod1.next_to(uwaga, DOWN, buff=0.45).to_edge(LEFT, buff=0.8)
+
+        baza = przypomnienie(r"\text{(Lemat)}\quad \text{kule } B_p \text{ tworzą bazę topologii } \tau_p")
+        kula_max = przypomnienie(r"\text{(max)}\quad B_p(u,\varepsilon)=[0,\,u+\varepsilon)")
+
+        self.play(FadeIn(M1, shift=0.2 * RIGHT))
+        self.next_slide()
+
+        # Lemat o bazie.
+        self.play(FadeIn(baza, shift=0.2 * UP))
+        self.next_slide()
+        M2[3].set_color(O)
+        self.play(FadeIn(M2, shift=0.2 * RIGHT))
+        self.next_slide()
+        self.play(FadeOut(baza, shift=0.2 * DOWN), M2[3].animate.set_color(KOLOR_TEKST), run_time=0.7)
+        self.next_slide()
+
+        # Kula w przykładzie max.
+        self.play(FadeIn(kula_max, shift=0.2 * UP))
+        self.next_slide()
+        M3[1].set_color(O)
+        self.play(FadeIn(M3[:2], shift=0.2 * RIGHT))
+        self.next_slide()
+        self.play(FadeOut(kula_max, shift=0.2 * DOWN), M3[1].animate.set_color(KOLOR_TEKST), run_time=0.7)
+        self.next_slide()
+        # x < y < y + eps, więc x należy do kuli.
+        M3[3].set_color(O)
+        self.play(FadeIn(M3[2:], shift=0.2 * RIGHT))
+        self.wait(0.4)
+        self.play(M3[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.next_slide()
+
+        self.play(FadeIn(M4, shift=0.2 * RIGHT))
+        self.wait(0.2)
+        self.next_slide()
+
+        # ---- Rysunek: x = 1.5, y = 3, kula wokół y kurczy się, a x wciąż w niej jest ----
+        os1 = NumberLine(x_range=[0, 5, 1], length=8, include_numbers=True,
+                         font_size=24, include_tip=False).move_to(np.array([0, -2.75, 0]))
+        x1, y1 = 1.5, 3.0
+        sx = Dot(os1.n2p(x1), radius=0.08, color=O).set_z_index(10)
+        sy = Dot(os1.n2p(y1), radius=0.08, color=KOLOR_Y).set_z_index(10)
+        fx = MathTex("x", font_size=28).next_to(sx, DOWN, buff=0.4)
+        fy = MathTex("y", font_size=28).next_to(sy, DOWN, buff=0.4)
+        self.play(Create(os1))
+        self.play(FadeIn(sx), FadeIn(fx), FadeIn(sy), FadeIn(fy))
+        self.next_slide()
+
+        eps_t = ValueTracker(1.5)
+        kula_y = always_redraw(lambda: _kula_na_osi(os1, y1 + eps_t.get_value(), KOLOR_Y, 0.35))
+        e_ky = always_redraw(lambda: MathTex(r"B_p(y,\varepsilon)", font_size=28, color=KOLOR_Y)
+                             .next_to(kula_y[0], UP, buff=0.15).align_to(kula_y[0], RIGHT))
+        eps_lab = MathTex(r"\varepsilon=", font_size=30)
+        eps_num = DecimalNumber(1.5, num_decimal_places=2, font_size=30)
+        eps_grp = VGroup(eps_lab, eps_num).arrange(RIGHT, buff=0.12).move_to(np.array([5.2, -1.9, 0]))
+        eps_num.add_updater(lambda m: m.set_value(eps_t.get_value()).next_to(eps_lab, RIGHT, buff=0.12))
+        self.play(FadeIn(kula_y), FadeIn(e_ky), FadeIn(eps_grp))
+        self.wait(0.2)
+        self.next_slide()
+
+        self.play(eps_t.animate.set_value(0.6), run_time=1.5)
+        self.next_slide()
+        self.play(eps_t.animate.set_value(0.15), run_time=1.5)
+        self.next_slide()
+        self.play(Indicate(sx, color=O, scale_factor=1.6))
+        self.next_slide()
+
+        # ---- Charakteryzacja ----
+        eps_num.clear_updaters()
+        self.play(FadeOut(VGroup(os1, sx, sy, fx, fy, kula_y, e_ky, eps_grp), shift=0.3 * LEFT), run_time=0.8)
+        self.next_slide()
+        ogolnie = MathTex(r"\text{Ogólnie: }\ \tau_p \text{ spełnia } T_1", r"\iff",
+                          r"p(x,x)<p(x,y)\ \text{ i }\ p(y,y)<p(x,y)\ \text{ dla } x\neq y.",
+                          font_size=32).move_to(np.array([0, -2.6, 0]))
+        self.play(FadeIn(ogolnie, shift=0.2 * RIGHT))
+        self.wait(0.2)
+        self.next_slide()
