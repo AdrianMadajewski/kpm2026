@@ -50,7 +50,7 @@ class Kule(Slide):
             e = eps.get_value()
             a, b = os_d.n2p(x0 - e), os_d.n2p(x0 + e)
             return VGroup(
-                Line(a, b, color=KOLOR_METRYKA, stroke_width=12).set_cap_style(CapStyleType.ROUND),
+                Line(a, b, color=KOLOR_METRYKA, stroke_width=7).set_cap_style(CapStyleType.ROUND),
                 otwarty(a, KOLOR_METRYKA),
                 otwarty(b, KOLOR_METRYKA),
             )
@@ -59,7 +59,7 @@ class Kule(Slide):
             e = eps.get_value()
             a, b = os_p.n2p(0), os_p.n2p(x0 + e)
             return VGroup(
-                Line(a, b, color=KOLOR_CZESCIOWA, stroke_width=12).set_cap_style(CapStyleType.ROUND),
+                Line(a, b, color=KOLOR_CZESCIOWA, stroke_width=7).set_cap_style(CapStyleType.ROUND),
                 zamkniety(a, KOLOR_CZESCIOWA),
                 otwarty(b, KOLOR_CZESCIOWA),
             )
@@ -90,7 +90,7 @@ class Kule(Slide):
 
         # Co zostaje: [0, x] = p(x,x).
         odcinek = Line(os_p.n2p(0), os_p.n2p(x0), color=KOLOR_CZESCIOWA,
-                       stroke_width=12).set_cap_style(CapStyleType.ROUND)
+                       stroke_width=7).set_cap_style(CapStyleType.ROUND)
         odcinek.shift(0.75 * DOWN)
         klamra = Brace(odcinek, DOWN, color=KOLOR_CZESCIOWA)
         podpis = MathTex(r"p(x,x) = x", font_size=34, color=KOLOR_CZESCIOWA).next_to(klamra, DOWN, buff=0.1)

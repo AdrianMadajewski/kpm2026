@@ -104,7 +104,7 @@ class PrzykladMax(Slide):
         etyk_x = always_redraw(lambda: MathTex("x", font_size=34).next_to(kropka, UP, buff=0.15))
         odcinek = always_redraw(lambda: Line(
             os.n2p(0) + POD, os.n2p(max(x.get_value(), 1e-3)) + POD,
-            color=KOLOR_CZESCIOWA, stroke_width=12).set_cap_style(CapStyleType.ROUND))
+            color=KOLOR_CZESCIOWA, stroke_width=7).set_cap_style(CapStyleType.ROUND))
         wartosc = always_redraw(lambda: VGroup(
             MathTex(r"p(x,x) =", font_size=34, color=KOLOR_CZESCIOWA),
             DecimalNumber(x.get_value(), num_decimal_places=2, font_size=34, color=KOLOR_CZESCIOWA),
@@ -136,7 +136,7 @@ class PrzykladMax(Slide):
         POD2 = 1.45 * DOWN
         odc_y1 = always_redraw(lambda: Line(
             os.n2p(0) + POD2, os.n2p(max(yy.get_value(), 1e-3)) + POD2,
-            color=KOLOR_Y, stroke_width=12).set_cap_style(CapStyleType.ROUND))
+            color=KOLOR_Y, stroke_width=7).set_cap_style(CapStyleType.ROUND))
         etyk_px = always_redraw(lambda: MathTex(r"[0,x]", font_size=30, color=KOLOR_CZESCIOWA)
                                 .next_to(odcinek, RIGHT, buff=0.25))
         etyk_py = always_redraw(lambda: MathTex(r"[0,y]", font_size=30, color=KOLOR_Y)
@@ -150,7 +150,7 @@ class PrzykladMax(Slide):
         NAD = 0.8 * UP
         otoczka = always_redraw(lambda: Line(
             os.n2p(0) + NAD, os.n2p(max(x.get_value(), yy.get_value())) + NAD,
-            color=KOLOR_TEKST, stroke_width=12).set_cap_style(CapStyleType.ROUND))
+            color=KOLOR_TEKST, stroke_width=7).set_cap_style(CapStyleType.ROUND))
         etyk_pxy = always_redraw(lambda: VGroup(
             MathTex(r"p(x,y)=\max\{x,y\}=", font_size=34),
             DecimalNumber(max(x.get_value(), yy.get_value()), num_decimal_places=2, font_size=34),
@@ -208,7 +208,7 @@ class PrzykladMax(Slide):
 
         # 2) Pomarańczowa kreska z x do góry, do wysokości p(x,x).
         slupek_x = Line(ax.c2p(3, 0), ax.c2p(3, 3), color=KOLOR_CZESCIOWA,
-                        stroke_width=12).set_cap_style(CapStyleType.ROUND)
+                        stroke_width=7).set_cap_style(CapStyleType.ROUND)
         linia_x = DashedLine(ax.c2p(3, 3), ax.c2p(0, 3), color=KOLOR_CZESCIOWA, stroke_width=2)
         podpis_x = MathTex(r"p(x,x)=3.00", font_size=30, color=KOLOR_CZESCIOWA)
         podpis_x.next_to(ax.c2p(0, 3), LEFT, buff=0.55)
@@ -224,7 +224,7 @@ class PrzykladMax(Slide):
         etyk_y = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y, DOWN, buff=0.62))
         slupek_y = always_redraw(lambda: Line(
             ax.c2p(y.get_value(), 0), ax.c2p(y.get_value(), max(y.get_value(), 1e-3)),
-            color=KOLOR_Y, stroke_width=12,
+            color=KOLOR_Y, stroke_width=7,
             stroke_opacity=1 if y.get_value() > 0.02 else 0).set_cap_style(CapStyleType.ROUND))
         linia_y = always_redraw(lambda: DashedLine(
             ax.c2p(y.get_value(), y.get_value()), ax.c2p(0, y.get_value()),

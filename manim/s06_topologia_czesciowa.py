@@ -97,7 +97,7 @@ def _kula_na_osi(os, prawy, kolor, wys):
     """Kula [0, prawy) w przykładzie max, narysowana nad osią na wysokości `wys`."""
     a, b = os.n2p(0) + wys * UP, os.n2p(prawy) + wys * UP
     return VGroup(
-        Line(a, b, color=kolor, stroke_width=10).set_cap_style(CapStyleType.ROUND),
+        Line(a, b, color=kolor, stroke_width=7).set_cap_style(CapStyleType.ROUND),
         _koniec_domkniety(a, kolor),
         _koniec_otwarty(b, kolor),
     )
