@@ -29,7 +29,7 @@ class CiagCauchyego(Slide):
         D = MathTex(r"\forall\,\varepsilon>0\ \ \exists\,N\in\mathbb{N}\ \ \forall\,n,m\ge N\colon\ \ "
                     r"d(x_n,x_m)<\varepsilon.", font_size=FS + 2)
         wiersz2 = VGroup(D)
-        definicja = VGroup(wiersz1, wiersz2).arrange(DOWN, buff=0.35).next_to(naglowek, DOWN, buff=0.45)
+        definicja = VGroup(wiersz1, wiersz2).arrange(DOWN, buff=0.35).next_to(naglowek, DOWN, buff=0.35)
         self.play(FadeIn(wiersz1, shift=0.2 * DOWN))
         self.play(FadeIn(wiersz2, shift=0.2 * DOWN))
         self.next_slide()
@@ -49,7 +49,7 @@ class CiagCauchyego(Slide):
         self.next_slide()
 
         piszemy = MathTex(r"\text{Piszemy wtedy }", r"\lim_{n,m\to\infty} p(x_n,x_m)=a", r".", font_size=FS)
-        piszemy.next_to(definicja, DOWN, buff=0.3)
+        piszemy.next_to(definicja, DOWN, buff=0.22)
         piszemy[1].set_color(O)
         self.play(FadeIn(piszemy, shift=0.2 * RIGHT))
         self.next_slide()
@@ -60,13 +60,13 @@ class CiagCauchyego(Slide):
         prz = MathTex(r"\textbf{Przykład.}\ \ X=[0,\infty),\quad p(x,y)=\max\{x,y\},\quad",
                       r"x_n\coloneqq 1+\tfrac{1}{n}", r"\ \text{ dla } n\in\mathbb{N}.", font_size=32)
         prz[1].set_color(KOLOR_Y)
-        prz.next_to(piszemy, DOWN, buff=0.45)
+        prz.next_to(piszemy, DOWN, buff=0.35)
         self.play(FadeIn(prz, shift=0.2 * RIGHT))
         self.next_slide()
 
         R = MathTex(r"p(x_n,x_m)", r"=\max\Bigl\{1+\tfrac{1}{n},\,1+\tfrac{1}{m}\Bigr\}",
                     r"=1+\frac{1}{\min\{n,m\}}", r"\xrightarrow[n,m\to\infty]{}1", font_size=34)
-        R.next_to(prz, DOWN, buff=0.3)
+        R.next_to(prz, DOWN, buff=0.22)
         self.play(FadeIn(R[0], shift=0.2 * RIGHT))
         self.next_slide()
         for k in (1, 2, 3):
@@ -76,7 +76,7 @@ class CiagCauchyego(Slide):
             self.play(R[k].animate.set_color(KOLOR_TEKST), run_time=0.5)
         wn = Tex(r"więc $(x_n)_{n\in\mathbb{N}}$ jest ciągiem Cauchy'ego i $\lim_{n,m\to\infty} p(x_n,x_m)=1\neq 0$.",
                  font_size=32)
-        wn.next_to(R, DOWN, buff=0.3)
+        wn.next_to(R, DOWN, buff=0.22)
         self.play(FadeIn(wn, shift=0.2 * RIGHT))
         self.wait(0.2)
         self.next_slide()
@@ -85,12 +85,12 @@ class CiagCauchyego(Slide):
         zup = VGroup(
             MathTex(r"\textbf{Definicja.}\ \text{Przestrzeń } (X,p) \text{ jest \emph{zupełna}, gdy każdy ciąg "
                     r"Cauchy'ego } (x_n)_{n\in\mathbb{N}}\subset X", font_size=31),
-            MathTex(r"\text{jest zbieżny w } \tau_p \text{ do pewnego } x\in X \text{ takiego, że }",
-                    r"p(x,x)=\lim_{n,m\to\infty} p(x_n,x_m)", r".", font_size=31),
-        ).arrange(DOWN, buff=0.15)
-        zup.next_to(wn, DOWN, buff=0.4)
-        zup[1][1].set_color(O)
+            MathTex(r"\text{jest zbieżny w } \tau_p \text{ do pewnego } x\in X \text{ takiego, że}", font_size=31),
+            MathTex(r"p(x,x)=\lim_{n\to\infty} p(x,x_n)=\lim_{n,m\to\infty} p(x_n,x_m).", font_size=31),
+        ).arrange(DOWN, buff=0.12)
+        zup.next_to(wn, DOWN, buff=0.3)
+        zup[2].set_color(O)
         self.play(FadeIn(zup, shift=0.2 * RIGHT))
         self.next_slide()
-        self.play(zup[1][1].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.play(zup[2].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
