@@ -215,6 +215,7 @@ class LematBaza(Slide):
 
         # Krok 2: z w B_p(y, delta), czyli p(y,z) - p(y,y) < delta.
         self.play(*zaswiec(L3[1], L3[3], L4[3]), run_time=0.6)
+        self.next_slide()
         self.play(FadeIn(L4[4:6], shift=0.2 * RIGHT))
         self.play(L4[5].animate.set_color(O), run_time=0.4)
         self.wait(0.4)
