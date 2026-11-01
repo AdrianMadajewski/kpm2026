@@ -136,10 +136,7 @@ class Oddzielanie(Slide):
             Tex(r"wokół $x$ i wokół $y$ są rozłączne.", font_size=32),
             rodzaj="Stwierdzenie",
         )
-        wniosek4 = VGroup(
-            Tex(r"Przestrzeń metryczna jest Hausdorffa ($T_2$),", font_size=32, color=KOLOR_METRYKA),
-            Tex(r"więc granica ciągu jest jedyna.", font_size=32, color=KOLOR_METRYKA),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        wniosek4 = Tex(r"Przestrzeń metryczna jest Hausdorffa ($T_2$).", font_size=32, color=KOLOR_METRYKA)
         wniosek4.next_to(tekst4, DOWN, buff=0.4).align_to(tekst4, LEFT)
         hx, hy = np.array([1.1, 1.3]), np.array([2.9, 1.9])
         r = np.linalg.norm(hy - hx) / 2
@@ -219,11 +216,15 @@ class Oddzielanie(Slide):
         self.play(Create(odc))
         self.play(GrowFromCenter(kx), GrowFromCenter(ky))
         self.play(FadeIn(wniosek4))
-        ptaszki = MathTex(r"T_0\ \checkmark \qquad T_1\ \checkmark \qquad T_2\ \checkmark",
-                          font_size=36, color=KOLOR_METRYKA)
-        ptaszki.next_to(wniosek4, DOWN, buff=0.4).align_to(wniosek4, LEFT)
-        self.play(FadeIn(ptaszki, shift=0.2 * UP))
         self.next_slide()
+        self.play(wniosek4.animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.next_slide()
+        ptaszki = VGroup(*[MathTex(t + r"\ \checkmark", font_size=36, color=KOLOR_METRYKA)
+                           for t in (r"T_2", r"T_1", r"T_0")]).arrange(RIGHT, buff=0.8)
+        ptaszki.next_to(wniosek4, DOWN, buff=0.4).align_to(wniosek4, LEFT)
+        for i, pt in enumerate(ptaszki):
+            self.play(FadeIn(pt, shift=0.2 * UP))
+            self.next_slide()
 
 
 class ZbieznoscMetryczna(Slide):
