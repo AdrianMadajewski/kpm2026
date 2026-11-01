@@ -68,10 +68,8 @@ class MetrykaCzesciowa(Slide):
         # Krok 3: przemiana aksjomatów — każde przejście na osobne kliknięcie.
         self.play(FadeOut(grafika))
         # Zmiany wyróżniamy na pomarańczowo, potem wracają do czerni.
-        # 1) d robi się pomarańczowe,
-        self.play(dopasuj_ramke(definicja, wstep_p, aks_p),
-                  wstep_d[1][0].animate.set_color(KOLOR_CZESCIOWA).scale(1.3), run_time=0.6)
-        # 2) wstawiamy „częściowa” (reszta wiersza się rozsuwa), d zamienia się w p,
+        definicja[0].become(tlo_dla(definicja, wstep_p, aks_p))
+        # 1) wstawiamy „częściowa” (reszta wiersza się rozsuwa), d zamienia się w p,
         wstep_p[0][1].set_color(KOLOR_CZESCIOWA)
         wstep_p[1][0].set_color(KOLOR_CZESCIOWA)
         self.play(
@@ -85,7 +83,7 @@ class MetrykaCzesciowa(Slide):
         )
         self.play(Indicate(wstep_p[0][1], color=KOLOR_CZESCIOWA, scale_factor=1.15),
                   Indicate(wstep_p[1][0], color=KOLOR_CZESCIOWA, scale_factor=1.3))
-        # 3) powrót do czerni.
+        # 2) powrót do czerni.
         self.play(wstep_p[0][1].animate.set_color(KOLOR_TEKST),
                   wstep_p[1][0].animate.set_color(KOLOR_TEKST))
         self.next_slide()
