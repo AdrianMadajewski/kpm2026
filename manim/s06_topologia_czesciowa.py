@@ -163,7 +163,8 @@ class LematBaza(Slide):
         L1 = MathTex(r"\text{\textit{Dowód.} Ustalmy }", r"y\in B_p(x,\varepsilon)",
                      r"\coloneqq\{u\in X :", r"p(x,u)<p(x,x)+\varepsilon", r"\}.", font_size=FS)
         L2 = MathTex(r"\text{Niech }", r"\delta\coloneqq p(x,x)+\varepsilon-p(x,y)", r">0", r".", font_size=FS)
-        L3 = MathTex(r"\text{Niech }", r"z\in B_p(y,\delta)", r".\ \text{Wtedy}", font_size=FS)
+        L3 = MathTex(r"\text{Niech }", r"z\in B_p(y,\delta)", r"\coloneqq\{u\in X :",
+                     r"p(y,u)<p(y,y)+\delta", r"\}.\ \text{Wtedy}", font_size=FS)
         L4 = MathTex(r"p(x,z)", r"\le", r"p(x,y)+", r"p(y,z)-p(y,y)", r"<", r"p(x,y)+\delta",
                      r"=", r"p(x,x)+\varepsilon", r",", font_size=FS + 2)
         L5 = Tex(r"czyli $z\in B_p(x,\varepsilon)$. \hfill $\blacksquare$", font_size=FS)
@@ -172,6 +173,8 @@ class LematBaza(Slide):
         L4.shift(0.6 * RIGHT + 0.2 * DOWN)
         L5.shift(0.2 * DOWN)
         tag = Tex(r"(P4)", font_size=24, color=KOLOR_DRUGORZEDNY).next_to(L4[1], UP, buff=0.1)
+        tresc_p4 = MathTex(r"\text{(P4)}\quad p(a,c)\le p(a,b)+p(b,c)-p(b,b)",
+                           font_size=30, color=KOLOR_CZESCIOWA).to_edge(DOWN, buff=0.3)
 
         def zaswiec(*m):
             return [x.animate.set_color(O) for x in m]
@@ -198,19 +201,20 @@ class LematBaza(Slide):
 
         # Krok 1: (P4).
         self.play(FadeIn(L4[0]))
-        self.play(FadeIn(tag), tag.animate.set_color(O), run_time=0.6)
+        self.play(FadeIn(tag), tag.animate.set_color(O), FadeIn(tresc_p4, shift=0.2 * UP), run_time=0.7)
         self.play(FadeIn(L4[1:4], shift=0.2 * RIGHT))
         self.play(L4[3].animate.set_color(O), run_time=0.4)
         self.wait(0.4)
-        self.play(*zgas(L4[3]), tag.animate.set_color(KOLOR_DRUGORZEDNY), run_time=0.6)
+        self.play(*zgas(L4[3]), tag.animate.set_color(KOLOR_DRUGORZEDNY),
+                  FadeOut(tresc_p4, shift=0.2 * DOWN), run_time=0.6)
         self.next_slide()
 
         # Krok 2: z w B_p(y, delta), czyli p(y,z) - p(y,y) < delta.
-        self.play(*zaswiec(L3[1], L4[3]), run_time=0.6)
+        self.play(*zaswiec(L3[1], L3[3], L4[3]), run_time=0.6)
         self.play(FadeIn(L4[4:6], shift=0.2 * RIGHT))
         self.play(L4[5].animate.set_color(O), run_time=0.4)
         self.wait(0.4)
-        self.play(*zgas(L3[1], L4[3], L4[5]), run_time=0.6)
+        self.play(*zgas(L3[1], L3[3], L4[3], L4[5]), run_time=0.6)
         self.next_slide()
 
         # Krok 3: definicja delta.
