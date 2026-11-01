@@ -25,6 +25,7 @@ class Kontrakcja(Slide):
                     font_size=FS + 2)
         definicja = VGroup(wiersz1, D).arrange(DOWN, buff=0.35).next_to(naglowek, DOWN, buff=0.5)
         self.play(FadeIn(wiersz1, shift=0.2 * DOWN))
+        self.next_slide()
         self.play(FadeIn(D, shift=0.2 * DOWN))
         self.next_slide()
 
