@@ -86,35 +86,42 @@ class MetrykaCzesciowa(Slide):
         self.play(Indicate(wstep_p[0][1], color=KOLOR_CZESCIOWA, scale_factor=1.15),
                   Indicate(wstep_p[1][0], color=KOLOR_CZESCIOWA, scale_factor=1.3))
         # 2) powrót do czerni.
+        self.wait(0.6)
         self.play(wstep_p[0][1].animate.set_color(KOLOR_TEKST),
-                  wstep_p[1][0].animate.set_color(KOLOR_TEKST))
+                  wstep_p[1][0].animate.set_color(KOLOR_TEKST), run_time=0.8)
         self.next_slide()
 
+        def zmien(stary, nowy, wzor_nowy, przesun=False):
+            """Podświetl stary wzór -> (przesuń) -> wymień na nowy -> zgaś podświetlenie."""
+            wzor_nowy.set_color(KOLOR_CZESCIOWA)
+            self.play(stary[1].animate.set_color(KOLOR_CZESCIOWA), run_time=0.7)
+            self.wait(0.3)
+            if przesun:
+                self.play(stary.animate.align_to(nowy, UL), run_time=1.0)
+            self.play(FadeOut(stary, shift=0.15 * UP), FadeIn(nowy, shift=0.15 * UP), run_time=1.0)
+            self.wait(0.6)
+            self.play(wzor_nowy.animate.set_color(KOLOR_TEKST), run_time=0.8)
+
         # Najpierw nierówność trójkąta zjeżdża na dół...
-        p4[1][0].set_color(KOLOR_CZESCIOWA)
-        self.play(m3.animate.align_to(p4, UL), run_time=0.8)
-        self.play(FadeOut(m3, shift=0.15 * UP), FadeIn(VGroup(p4[0], p4[1][0]), shift=0.15 * UP))
-        self.play(p4[1][0].animate.set_color(KOLOR_TEKST))
+        zmien(m3, VGroup(p4[0], p4[1][0]), p4[1][0], przesun=True)
         self.next_slide()
         # ...i dostaje dodatkowy człon -p(y,y).
-        self.play(FadeIn(p4[1][1], shift=0.3 * LEFT))
-        self.play(Indicate(p4[1][1], color=KOLOR_CZESCIOWA, scale_factor=1.2))
-        self.play(p4[1][1].animate.set_color(KOLOR_TEKST))
+        self.play(FadeIn(p4[1][1], shift=0.3 * LEFT), run_time=1.0)
+        self.wait(0.4)
+        self.play(Indicate(p4[1][1], color=KOLOR_CZESCIOWA, scale_factor=1.2), run_time=1.0)
+        self.wait(0.6)
+        self.play(p4[1][1].animate.set_color(KOLOR_TEKST), run_time=0.8)
         self.next_slide()
 
         # Pozostałe aksjomaty.
-        p3[1].set_color(KOLOR_CZESCIOWA)
-        self.play(m2.animate.align_to(p3, UL), run_time=0.6)
-        self.play(FadeOut(m2, shift=0.15 * UP), FadeIn(p3, shift=0.15 * UP))
-        self.play(p3[1].animate.set_color(KOLOR_TEKST))
+        zmien(m2, p3, p3[1], przesun=True)
         self.next_slide()
-        p1[1].set_color(KOLOR_CZESCIOWA)
-        self.play(FadeOut(m1, shift=0.15 * UP), FadeIn(p1, shift=0.15 * UP))
-        self.play(p1[1].animate.set_color(KOLOR_TEKST))
+        zmien(m1, p1, p1[1])
         self.next_slide()
         p2[1].set_color(KOLOR_CZESCIOWA)
-        self.play(FadeIn(p2, shift=0.2 * RIGHT))
-        self.play(p2[1].animate.set_color(KOLOR_TEKST))
+        self.play(FadeIn(p2, shift=0.2 * RIGHT), run_time=1.0)
+        self.wait(0.6)
+        self.play(p2[1].animate.set_color(KOLOR_TEKST), run_time=0.8)
         self.next_slide()
 
         # Krok 4: komentarze przy zmienionych aksjomatach.
