@@ -43,7 +43,7 @@ class Zbieznosc(Slide):
         Q2b = MathTex(r"\text{czyli }", r"p(x,x_n)<p(x,x)+\varepsilon", r".", font_size=FS)
         Q3 = MathTex(r"\text{Z (P2) mamy }", r"p(x,x)\le p(x,x_n)", r"\text{, zatem }",
                      r"0\le p(x,x_n)-p(x,x)<\varepsilon", r"\text{ dla } n\ge N.", font_size=FS)
-        Q4 = MathTex(r"(\Leftarrow)\ \text{Niech } U\in\tau_p,\ x\in U.\ \text{Z lematu }",
+        Q4 = MathTex(r"(\Leftarrow)\ \text{Niech } U\in\tau_p,\ x\in U.", r"\ \text{Z lematu }",
                      r"B_p(x,\varepsilon)\subseteq U", r"\text{ dla pewnego } \varepsilon>0.", font_size=FS)
         Q5 = MathTex(r"\text{Z założenia istnieje } N \text{ takie, że dla każdego } n\ge N \text{ mamy }",
                      r"p(x,x_n)<p(x,x)+\varepsilon", r"\text{,}", font_size=FS)
@@ -52,23 +52,23 @@ class Zbieznosc(Slide):
         dowod = VGroup(Q1, Q2, Q2b, Q3, Q4, Q5, Q6).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
         dowod.next_to(stw, DOWN, buff=0.4).to_edge(LEFT, buff=0.7)
 
-        def pokaz(linia, *idx):
-            """Linia z podświetlonymi fragmentami, które potem wracają do czerni; na końcu pauza."""
-            for k in idx:
-                linia[k].set_color(O)
-            self.play(FadeIn(linia, shift=0.2 * RIGHT))
-            self.wait(0.4)
-            if idx:
-                self.play(*[linia[k].animate.set_color(KOLOR_TEKST) for k in idx], run_time=0.6)
+        def pokaz(*czesci, pomaranczowe=()):
+            """Pokaż fragmenty linii; wskazane od razu na pomarańczowo. Potem pauza."""
+            for c in pomaranczowe:
+                c.set_color(O)
+            self.play(*[FadeIn(c, shift=0.2 * RIGHT) for c in czesci])
+            self.next_slide()
+
+        def wyszarz(*czesci, przyp=None, extra=()):
+            """Na kliknięcie: pomarańczowe wracają do czerni, podpowiedź z dołu znika."""
+            anims = [c.animate.set_color(KOLOR_TEKST) for c in czesci] + list(extra)
+            if przyp is not None:
+                anims.append(FadeOut(przyp, shift=0.2 * DOWN))
+            self.play(*anims, run_time=0.6)
             self.next_slide()
 
         def pokaz_przyp(przyp):
             self.play(FadeIn(przyp, shift=0.2 * UP))
-            self.next_slide()
-
-        def schowaj_przyp(przyp):
-            # Podpowiedź znika dopiero na kliknięcie.
-            self.play(FadeOut(przyp, shift=0.2 * DOWN), run_time=0.6)
             self.next_slide()
 
         baza = przypomnienie(r"\text{(Lemat)}\quad \text{kule } B_p \text{ tworzą bazę topologii } \tau_p")
@@ -78,44 +78,40 @@ class Zbieznosc(Slide):
                               r"B_p(x,\varepsilon)\subseteq U")
 
         # (=>)
-        self.play(FadeIn(Q1[0], shift=0.2 * RIGHT))
-        self.next_slide()
+        pokaz(Q1[0])
         pokaz_przyp(baza)
-        Q1[2].set_color(O)
-        self.play(FadeIn(Q1[1:], shift=0.2 * RIGHT))
-        self.next_slide()
-        # Na kliknięcie: kula wraca do czerni, a lemat znika z dołu.
-        self.play(Q1[2].animate.set_color(KOLOR_TEKST), FadeOut(baza, shift=0.2 * DOWN), run_time=0.6)
-        self.next_slide()
+        pokaz(Q1[1:], pomaranczowe=[Q1[2]])
+        wyszarz(Q1[2], przyp=baza)
+
         # Skąd Q2: definicja zbieżności (u góry) dla U := B_p(x, eps).
-        Q2[1].set_color(O)
         podkr = Underline(defn, color=O, stroke_width=3, buff=0.08)
+        Q2[1].set_color(O)
         self.play(defn.animate.set_color(O), Create(podkr), FadeIn(Q2, shift=0.2 * RIGHT))
         self.next_slide()
-
         self.play(defn.animate.set_color(KOLOR_DRUGORZEDNY), FadeOut(podkr), Q2[1].animate.set_color(KOLOR_TEKST),
                   run_time=0.6)
         self.next_slide()
 
         pokaz_przyp(kula)
-        pokaz(Q2b, 1)
-        schowaj_przyp(kula)
+        pokaz(Q2b, pomaranczowe=[Q2b[1]])
+        wyszarz(Q2b[1], przyp=kula)
+
         pokaz_przyp(p2)
-        pokaz(Q3, 1)
-        schowaj_przyp(p2)
-        self.play(Q3[3].animate.set_color(O), run_time=0.5)
-        self.wait(0.3)
-        self.play(Q3[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
-        self.next_slide()
+        pokaz(Q3[:2], pomaranczowe=[Q3[1]])
+        wyszarz(Q3[1], przyp=p2)
+        pokaz(Q3[2:], pomaranczowe=[Q3[3]])
+        wyszarz(Q3[3])
 
         # (<=)
+        pokaz(Q4[0])
         pokaz_przyp(lemat)
-        pokaz(Q4, 1)
-        schowaj_przyp(lemat)
-        pokaz(Q5, 1)
+        pokaz(Q4[1:], pomaranczowe=[Q4[2]])
+        wyszarz(Q4[2], przyp=lemat)
+        pokaz(Q5, pomaranczowe=[Q5[1]])
+        wyszarz(Q5[1])
         pokaz_przyp(kula)
-        pokaz(Q6, 1)
-        schowaj_przyp(kula)
+        pokaz(Q6, pomaranczowe=[Q6[1]])
+        wyszarz(Q6[1], przyp=kula)
 
         # ================= Przykład: x_n = 0 w max =================
         self.play(*[FadeOut(m, shift=0.3 * LEFT) for m in self.mobjects], run_time=0.8)
