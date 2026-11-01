@@ -305,3 +305,39 @@ class PrzykladMax(Slide):
         self.play(FadeIn(moral[0], shift=0.2 * UP))
         self.play(FadeIn(moral[1], shift=0.2 * UP))
         self.next_slide()
+
+
+class Interpretacja(Slide):
+    """Jak rozumieć odległość w metryce częściowej — punkty na kolejne kliknięcia."""
+
+    def construct(self):
+        naglowek = Tex(r"Interpretacja", font_size=44).to_edge(UP, buff=0.4)
+        self.play(FadeIn(naglowek))
+        self.next_slide()
+
+        def punkt(*linie):
+            kropka = MathTex(r"\bullet", font_size=22).shift(0.08 * DOWN)
+            tekst = VGroup(*[Tex(l, font_size=32) for l in linie]).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
+            return VGroup(kropka, tekst).arrange(RIGHT, aligned_edge=UP, buff=0.25)
+
+        punkty = VGroup(
+            punkt(r"Element $x$ to \emph{przybliżenie} --- znamy o nim tylko część informacji."),
+            punkt(r"$p(x,x)$ mierzy niedookreśloność $x$ --- im większe, tym mniej o nim wiemy."),
+            punkt(r"$p(x,x)=0$ --- element $x$ jest \emph{w pełni określony}."),
+            punkt(r"$p(x,y)$ to łączna niepewność $x$ i $y$ (w przykładzie to długość",
+                  r"najmniejszego przedziału zawierającego $[0,x]$ i $[0,y]$)."),
+            punkt(r"$p(x,y)\ge p(x,x)$ --- odległość nie jest mniejsza niż niepewność",
+                  r"żadnego z punktów (P2)."),
+            punkt(r"$x=y \iff p(x,x)=p(x,y)=p(y,y)$ --- porównanie z $y$ nie wnosi",
+                  r"żadnej nowej niepewności (P1)."),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.32)
+        punkty.next_to(naglowek, DOWN, buff=0.5).to_edge(LEFT, buff=0.6)
+
+        for p in punkty:
+            self.play(FadeIn(p, shift=0.2 * RIGHT), run_time=0.6)
+            self.next_slide()
+
+        pytanie = Tex(r"A co, jeśli \emph{każdy} punkt jest w pełni określony?",
+                      font_size=36, color=KOLOR_CZESCIOWA).to_edge(DOWN, buff=0.45)
+        self.play(FadeIn(pytanie, shift=0.2 * UP))
+        self.next_slide()
