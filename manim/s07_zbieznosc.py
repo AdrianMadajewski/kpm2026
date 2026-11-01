@@ -146,11 +146,11 @@ class Zbieznosc(Slide):
         self.next_slide()
 
         # Rachunek: p(x, x_n) = max{x, 0} = x = p(x, x).
-        R = MathTex(r"p(x,x_n)", r"=\max\{x,0\}", r"=x", r"=p(x,x)", font_size=36)
+        R = MathTex(r"p(x,x_n)", r"=\max\{x,0\}", r"=x", r"=\max\{x,x\}", r"=p(x,x)", font_size=36)
         R.next_to(prz, DOWN, buff=0.5)
         self.play(FadeIn(R[0], shift=0.2 * RIGHT))
         self.next_slide()
-        for k in (1, 2, 3):
+        for k in (1, 2, 3, 4):
             R[k].set_color(O)
             self.play(FadeIn(R[k], shift=0.2 * RIGHT))
             self.wait(0.3)
