@@ -120,11 +120,40 @@ class PrzykladMax(Slide):
 
         # Ruszamy x w prawo i w lewo — kreska i p(x,x) idą za nim.
         self.play(x.animate.set_value(4.0), run_time=1.2)
+        self.next_slide()
         self.play(x.animate.set_value(1.5), run_time=1.6)
         self.play(x.animate.set_value(3.0), run_time=1.2)
         self.next_slide()
 
         self.play(FadeIn(opis))
+        self.next_slide()
+
+        # Druga oś: punkt y, który staje się coraz lepiej określony.
+        self.play(FadeOut(opis), os.animate.shift(1.6 * UP), run_time=1.0)
+
+        os2 = NumberLine(x_range=[0, 5, 1], length=10, include_numbers=True,
+                         font_size=28, include_tip=False).shift(1.15 * DOWN)
+        y = ValueTracker(3.0)
+        kropka_y = always_redraw(lambda: Dot(os2.n2p(y.get_value()), radius=0.08))
+        etyk_y = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y, UP, buff=0.15))
+        odcinek_y = always_redraw(lambda: Line(
+            os2.n2p(0) + POD, os2.n2p(max(y.get_value(), 1e-3)) + POD,
+            color=KOLOR_CZESCIOWA, stroke_width=12,
+            stroke_opacity=1 if y.get_value() > 0.02 else 0).set_cap_style(CapStyleType.ROUND))
+        wartosc_y = always_redraw(lambda: VGroup(
+            MathTex(r"p(y,y) =", font_size=34, color=KOLOR_CZESCIOWA),
+            DecimalNumber(y.get_value(), num_decimal_places=2, font_size=34, color=KOLOR_CZESCIOWA),
+        ).arrange(RIGHT, buff=0.15).next_to(os2.n2p(0) + POD, DOWN, buff=0.35, aligned_edge=LEFT))
+
+        self.play(Create(os2))
+        self.play(FadeIn(kropka_y), FadeIn(etyk_y), Create(odcinek_y), FadeIn(wartosc_y))
+        self.next_slide()
+
+        self.play(y.animate.set_value(0.0), run_time=2.5)
+        self.next_slide()
+
+        pytanie = Tex(r"O którym z punktów wiemy więcej?", font_size=36).to_edge(DOWN, buff=0.35)
+        self.play(FadeIn(pytanie, shift=0.2 * UP))
         self.next_slide()
 
         # Na razie scena kończy się tutaj; dalsza część (kurczenie odcinka,
