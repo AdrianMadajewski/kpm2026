@@ -257,14 +257,25 @@ class WniosekOkreslonosc(Slide):
         zd1 = VGroup(
             Tex(r"\textbf{Wniosek.} Metryki to dokładnie te metryki częściowe,", font_size=36),
             Tex(r"w których każdy punkt jest \emph{w pełni określony}.", font_size=36),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
-        zd2 = VGroup(
-            Tex(r"Dodatnia wartość $p(x,x)$ mierzy, jak bardzo punkt $x$", font_size=36),
-            Tex(r"jest \emph{niedookreślony}.", font_size=36),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
-        calosc = VGroup(zd1, zd2).arrange(DOWN, aligned_edge=LEFT, buff=0.5).move_to(ORIGIN)
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.15).to_edge(UP, buff=0.8)
 
         self.play(FadeIn(zd1, shift=0.2 * UP))
         self.next_slide()
-        self.play(FadeIn(zd2, shift=0.2 * UP))
+
+        # Diagram zawierania: metryki ⊂ metryki częściowe.
+        srodek = np.array([0, -1.2, 0])
+        duzy = Ellipse(width=8.0, height=4.0, color=KOLOR_CZESCIOWA, stroke_width=4)
+        duzy.set_fill(KOLOR_CZESCIOWA, 0.08).move_to(srodek)
+        maly = Ellipse(width=3.4, height=1.9, color=KOLOR_METRYKA, stroke_width=4)
+        maly.set_fill(KOLOR_METRYKA, 0.15).move_to(srodek + np.array([-1.7, -0.3, 0]))
+        etyk_duzy = Tex(r"metryki częściowe", font_size=34, color=KOLOR_CZESCIOWA)
+        etyk_duzy.move_to(srodek + np.array([1.8, 0.9, 0]))
+        etyk_maly = VGroup(
+            Tex(r"metryki", font_size=34, color=KOLOR_METRYKA),
+            MathTex(r"p(x,x)=0", font_size=28, color=KOLOR_METRYKA),
+        ).arrange(DOWN, buff=0.1).move_to(maly)
+
+        self.play(Create(duzy), FadeIn(etyk_duzy))
+        self.next_slide()
+        self.play(Create(maly), FadeIn(etyk_maly))
         self.next_slide()
