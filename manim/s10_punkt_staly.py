@@ -175,8 +175,14 @@ class TwierdzenieMatthewsa(Slide):
         # To samo dla p(x_{n+1}, x_m): (P4) z y = x_{n+2}.
         self.play(R2[1].animate.set_color(O), run_time=0.5)
         self.next_slide()
+        notka = MathTex(r"(x=x_{n+1},\ y=x_{n+2},\ z=x_m)", font_size=26, color=O)
+        notka.next_to(R3, RIGHT, buff=0.5)
+        self.play(FadeIn(p4, shift=0.2 * UP), FadeIn(notka, shift=0.2 * LEFT))
+        self.next_slide()
         pokaz(R3, pomaranczowe=[R3[1]])
-        wyszarz(R2[1], R3[1])
+        self.play(R2[1].animate.set_color(KOLOR_TEKST), R3[1].animate.set_color(KOLOR_TEKST),
+                  notka.animate.set_color(KOLOR_DRUGORZEDNY), FadeOut(p4, shift=0.2 * DOWN), run_time=0.6)
+        self.next_slide()
 
         # Suma i szereg geometryczny.
         pokaz(R4[:2], pomaranczowe=[R4[1]])
