@@ -247,7 +247,7 @@ class TwierdzenieMatthewsa(Slide):
                      r".", font_size=FS)
         C3 = MathTex(r"\text{Ponieważ }", r"\frac{c^N}{1-c}\,p(x_1,x_0)\xrightarrow[N\to\infty]{}0",
                      r"\text{, to }", r"\lim_{n,m\to\infty}p(x_n,x_m)=0", r",", font_size=FS)
-        C4 = MathTex(r"\text{czyli }", r"(x_n)_{n\ge 0}\text{ jest ciągiem Cauchy'ego}", r".", font_size=FS)
+        C4 = MathTex(r"\text{czyli }", r"(x_n)_{n\in\mathbb{N}}\text{ jest ciągiem Cauchy'ego}", r".", font_size=FS)
         strona2 = VGroup(A0r, A4r, A5, A5b, C1, C2, C3, C4).arrange(DOWN, aligned_edge=LEFT, buff=0.16)
         strona2.next_to(tw, DOWN, buff=0.3).to_edge(LEFT, buff=0.6)
 
