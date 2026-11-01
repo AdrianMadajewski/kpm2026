@@ -482,13 +482,99 @@ class WlasnosciTopologii(Slide):
         self.play(Indicate(sx, color=O, scale_factor=1.6))
         self.next_slide()
 
-        # ---- Charakteryzacja ----
+        # ================= Stwierdzenie: charakteryzacja T_1 =================
         eps_num.clear_updaters()
-        self.play(FadeOut(VGroup(os1, sx, sy, fx, fy, kula_y, e_ky, eps_grp), shift=0.3 * LEFT), run_time=0.8)
+        zostaje = {tytul, ramka1, qx, qy, mx, my, ox_, oy_, naz1, def_t1}
+        self.play(*[FadeOut(m, shift=0.3 * LEFT) for m in self.mobjects if m not in zostaje], run_time=0.8)
         self.next_slide()
-        ogolnie = MathTex(r"\text{Ogólnie: }\ \tau_p \text{ spełnia } T_1", r"\iff",
-                          r"p(x,x)<p(x,y)\ \text{ i }\ p(y,y)<p(x,y)\ \text{ dla } x\neq y.",
-                          font_size=32).move_to(np.array([0, -2.6, 0]))
-        self.play(FadeIn(ogolnie, shift=0.2 * RIGHT))
+
+        stw1 = VGroup(
+            Tex(r"\textbf{Stwierdzenie.} Topologia $\tau_p$ spełnia aksjomat $T_1$ wtedy i tylko wtedy, gdy",
+                font_size=34),
+            MathTex(r"\forall\, x\neq y\colon\quad p(x,x)<p(x,y)\ \ \text{i}\ \ p(y,y)<p(x,y).", font_size=34),
+        ).arrange(DOWN, buff=0.15)
+        stw1.next_to(tytul, DOWN, buff=0.4)
+        self.play(FadeIn(stw1, shift=0.2 * DOWN))
         self.wait(0.2)
         self.next_slide()
+
+        # Ramka T_1 z definicją schodzi niżej, żeby zrobić miejsce na dowód.
+        panel_t1 = VGroup(ramka1, qx, qy, mx, my, ox_, oy_, naz1, def_t1)
+        self.play(panel_t1.animate.scale(0.85).to_edge(RIGHT, buff=0.35).shift(1.1 * DOWN), run_time=0.8)
+        self.next_slide()
+
+        N1 = MathTex(r"\textit{Dowód.}\ (\Leftarrow)\ \text{Ustalmy } x\neq y", r"\text{ i niech }",
+                     r"\varepsilon\coloneqq p(x,y)-p(x,x)>0", r".", font_size=FS)
+        N2 = MathTex(r"\text{Wtedy }", r"p(x,y)=p(x,x)+\varepsilon", r"\text{, więc }",
+                     r"y\notin B_p(x,\varepsilon)\ni x", r".", font_size=FS)
+        N3 = MathTex(r"\text{Analogicznie dla }", r"\delta\coloneqq p(x,y)-p(y,y)>0", r"\text{ mamy }",
+                     r"x\notin B_p(y,\delta)\ni y", r".", font_size=FS)
+        N4 = MathTex(r"(\Rightarrow)\ \text{Ustalmy } x\neq y", r"\text{. Z }T_1\text{ istnieje }",
+                     r"U\in\tau_p", r"\text{, że }", r"y\in U\not\ni x", r".", font_size=FS)
+        N5 = MathTex(r"\text{Z lematu }", r"B_p(y,\varepsilon)\subseteq U", r"\text{ dla pewnego }\varepsilon>0",
+                     r"\text{, więc }", r"x\notin B_p(y,\varepsilon)", r".", font_size=FS)
+        N6 = MathTex(r"\text{Zatem }", r"p(x,y)", r"=p(y,x)", r"\ge p(y,y)+\varepsilon", r">p(y,y)", r".",
+                     font_size=FS)
+        N7 = MathTex(r"\text{Analogicznie }", r"p(x,x)<p(x,y)", r".\ \blacksquare", font_size=FS)
+        dowod2 = VGroup(N1, N2, N3, N4, N5, N6, N7).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        dowod2.next_to(stw1, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
+
+        def pokaz(linia, *idx, pauza=True):
+            for k in idx:
+                linia[k].set_color(O)
+            self.play(FadeIn(linia, shift=0.2 * RIGHT))
+            self.wait(0.4)
+            if idx:
+                self.play(*[linia[k].animate.set_color(KOLOR_TEKST) for k in idx], run_time=0.6)
+            if pauza:
+                self.next_slide()
+
+        def_kuli = przypomnienie(r"B_p(x,\varepsilon)\coloneqq\{u\in X : p(x,u)<p(x,x)+\varepsilon\}")
+        lemat = przypomnienie(r"\text{(Lemat)}\quad y\in U\in\tau_p \implies \exists\,\varepsilon>0\colon\ B_p(y,\varepsilon)\subseteq U")
+        p3 = przypomnienie(r"\text{(P3)}\quad p(x,y)=p(y,x)")
+
+        # (<=)
+        pokaz(N1, 2)
+        self.play(FadeIn(def_kuli, shift=0.2 * UP))
+        self.next_slide()
+        pokaz(N2, 1, 3, pauza=False)
+        self.play(FadeOut(def_kuli, shift=0.2 * DOWN), run_time=0.6)
+        self.next_slide()
+        pokaz(N3, 1, 3)
+        uwaga_otw = przypomnienie(r"\text{kule są otwarte, więc } \tau_p \text{ spełnia } T_1")
+        self.play(FadeIn(uwaga_otw, shift=0.2 * UP))
+        self.next_slide()
+        self.play(FadeOut(uwaga_otw, shift=0.2 * DOWN), run_time=0.6)
+        self.next_slide()
+
+        # (=>)
+        pokaz(N4, 2, 4)
+        self.play(FadeIn(lemat, shift=0.2 * UP))
+        self.next_slide()
+        pokaz(N5, 1, pauza=False)
+        self.play(FadeOut(lemat, shift=0.2 * DOWN), run_time=0.6)
+        self.next_slide()
+
+        # Łańcuch: p(x,y) (P3) = p(y,x) >= p(y,y) + eps > p(y,y).
+        self.play(FadeIn(N6[:2], shift=0.2 * RIGHT))
+        self.next_slide()
+        self.play(FadeIn(p3, shift=0.2 * UP))
+        self.next_slide()
+        N6[2].set_color(O)
+        self.play(FadeIn(N6[2], shift=0.2 * RIGHT))
+        self.wait(0.3)
+        self.play(FadeOut(p3, shift=0.2 * DOWN), N6[2].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.next_slide()
+        self.play(N5[4].animate.set_color(O), run_time=0.5)
+        self.next_slide()
+        N6[3].set_color(O)
+        self.play(FadeIn(N6[3], shift=0.2 * RIGHT))
+        self.wait(0.3)
+        self.play(N5[4].animate.set_color(KOLOR_TEKST), N6[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.next_slide()
+        N6[4].set_color(O)
+        self.play(FadeIn(N6[4:], shift=0.2 * RIGHT))
+        self.wait(0.3)
+        self.play(N6[4].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.next_slide()
+        pokaz(N7, 1)
