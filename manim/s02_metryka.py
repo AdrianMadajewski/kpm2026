@@ -68,10 +68,11 @@ class PrzestrzenMetryczna(Slide):
 
         # Krok 1: definicja i przestrzeń.
         self.play(FadeIn(naglowek))
+        self.next_slide()
         definicja[0].become(tlo_dla(definicja, wstep))
-        self.play(FadeIn(definicja[0]), FadeIn(definicja[1]))
-        self.play(FadeIn(wstep, shift=0.2 * RIGHT))
-        self.play(Create(ax), FadeIn(podpis_ax))
+        self.add(definicja[0], definicja[1])
+        # Definicja razem z rysunkiem.
+        self.play(FadeIn(wstep, shift=0.2 * RIGHT), Create(ax), FadeIn(podpis_ax))
         self.play(FadeIn(kropka_x), FadeIn(etyk_x), FadeIn(kropka_y), FadeIn(etyk_y))
         self.play(Create(odc_xy), FadeIn(wartosc))
         self.next_slide()
