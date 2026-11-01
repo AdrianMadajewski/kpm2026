@@ -184,26 +184,24 @@ class PrzykladMax(Slide):
             x_range=[0, 5, 1], y_range=[0, 5, 1],
             x_length=4.5, y_length=4.5,
             tips=False,
-            x_axis_config={"include_numbers": False},
-            y_axis_config={"include_numbers": True, "font_size": 24},
+            axis_config={"include_numbers": True, "font_size": 24},
         )
-        ax.shift(np.array([-2.0, -3.1, 0]) - ax.c2p(0, 0))
+        ax.shift(np.array([-2.0, -2.85, 0]) - ax.c2p(0, 0))
         etyk_p = MathTex(r"p", font_size=34).next_to(ax.y_axis, UP, buff=0.15)
 
         # Statyczne kopie punktu x i jego podpisu, żeby jechały razem z osią.
-        kropka_s = Dot(kropka.get_center(), radius=0.09, color=KOLOR_CZESCIOWA)
+        kropka_s = Dot(kropka.get_center(), radius=0.09, color=KOLOR_CZESCIOWA).set_z_index(10)
         etyk_s = MathTex("x", font_size=34).next_to(kropka_s, UP, buff=0.15)
         self.remove(kropka, etyk_x)
         self.add(kropka_s, etyk_s)
 
         # 1) Kreska znika, oś (bez liczb) zjeżdża i staje się osią OX, wyrasta OY.
-        self.play(FadeOut(wartosc), FadeOut(odcinek), FadeOut(os.numbers))
-        os.remove(os.numbers)
+        self.play(FadeOut(wartosc), FadeOut(odcinek))
         cel_x = ax.c2p(3, 0)
         self.play(
             Transform(os, ax.x_axis),
             kropka_s.animate.move_to(cel_x),
-            etyk_s.animate.next_to(cel_x, DOWN, buff=0.2),
+            etyk_s.animate.next_to(cel_x, DOWN, buff=0.62),
             run_time=1.5,
         )
         self.play(Create(ax.y_axis), FadeIn(etyk_p))
@@ -222,8 +220,9 @@ class PrzykladMax(Slide):
 
         # 3) Punkt y na prawo od x i fioletowa kreska do p(y,y).
         y = ValueTracker(4.0)
-        kropka_y = always_redraw(lambda: Dot(ax.c2p(y.get_value(), 0), radius=0.09, color=KOLOR_Y))
-        etyk_y = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y, DOWN, buff=0.2))
+        kropka_y = always_redraw(lambda: Dot(ax.c2p(y.get_value(), 0), radius=0.09,
+                                             color=KOLOR_Y).set_z_index(10))
+        etyk_y = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y, DOWN, buff=0.62))
         slupek_y = always_redraw(lambda: Line(
             ax.c2p(y.get_value(), 0), ax.c2p(y.get_value(), max(y.get_value(), 1e-3)),
             color=KOLOR_Y, stroke_width=12,
