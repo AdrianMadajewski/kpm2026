@@ -276,6 +276,8 @@ class WniosekOkreslonosc(Slide):
         ).arrange(DOWN, buff=0.1).move_to(maly)
 
         self.play(Create(duzy), FadeIn(etyk_duzy))
+        self.wait(0.2)
         self.next_slide()
         self.play(Create(maly), FadeIn(etyk_maly))
+        self.wait(0.2)
         self.next_slide()
