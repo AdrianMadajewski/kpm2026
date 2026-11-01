@@ -255,12 +255,21 @@ class ZbieznoscMetryczna(Slide):
 
         # ---- Rysunek: ciąg spiralą zbiega do a ----
         a = np.array([2.1, 1.45])
-        wyrazy = [a + 1.45 * 0.83 ** n * np.array([np.cos(1.15 * n), np.sin(1.15 * n)]) for n in range(1, 21)]
-        kropki = VGroup(*[Dot(P(u), radius=0.055, color=KOLOR_TEKST).set_z_index(5) for u in wyrazy])
-        etykiety = VGroup(*[
-            MathTex(rf"x_{{{n}}}", font_size=24).next_to(kropki[n - 1], kier, buff=0.06)
-            for n, kier in [(1, UP), (2, LEFT), (3, DOWN)]
+        LICZBA = 7
+        wyrazy = [a + 1.45 * 0.76 ** n * np.array([np.cos(1.15 * n), np.sin(1.15 * n)])
+                  for n in range(1, LICZBA + 1)]
+        # Im dalej w ciągu, tym mniejsza kropka i podpis.
+        kropki = VGroup(*[
+            Dot(P(u), radius=0.07 - 0.005 * (n - 1), color=KOLOR_TEKST).set_z_index(5)
+            for n, u in enumerate(wyrazy, start=1)
         ])
+        etykiety = VGroup()
+        for n, (u, k) in enumerate(zip(wyrazy, kropki), start=1):
+            kier = (u - a) / np.linalg.norm(u - a)
+            e = MathTex(rf"x_{{{n}}}", font_size=26 - 1.8 * (n - 1))
+            e.move_to(k.get_center() + (0.2 - 0.012 * n) * np.array([kier[0], kier[1], 0])
+                      + 0.08 * np.array([kier[0], kier[1], 0]) * e.width / 0.3)
+            etykiety.add(e)
         da = Dot(P(a), radius=0.07, color=B).set_z_index(6)
         ea = MathTex("a", font_size=30, color=B).move_to(da.get_center() + np.array([-0.6, -0.5, 0])).set_z_index(6)
         strz_a = Line(ea.get_corner(UR), da.get_center(), buff=0.08, color=B, stroke_width=2).set_z_index(6)
@@ -276,7 +285,7 @@ class ZbieznoscMetryczna(Slide):
         self.play(FadeIn(tekst_d[2], shift=0.2 * RIGHT))
 
         def N_dla(e):
-            return next(n for n in range(1, 21) if all(np.linalg.norm(u - a) < e for u in wyrazy[n - 1:]))
+            return next(n for n in range(1, LICZBA + 1) if all(np.linalg.norm(u - a) < e for u in wyrazy[n - 1:]))
 
         def opis(e):
             return MathTex(rf"\varepsilon={e:.2f},\quad N={N_dla(e)}", font_size=30, color=B) \
