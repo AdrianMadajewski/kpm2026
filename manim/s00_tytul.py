@@ -56,10 +56,11 @@ class Tytul(Slide):
         # A gdyby nie?
         wzor_p = MathTex(r"p(x,x) = \,?", font_size=40, color=KOLOR_CZESCIOWA)
         wzor_p.move_to(wzor_d, aligned_edge=LEFT)
+        self.play(FadeOut(wzor_d, shift=0.4 * LEFT), run_time=0.7)
         self.play(
             petla.animate.set_color(KOLOR_CZESCIOWA),
-            FadeOut(wzor_d, shift=0.4 * LEFT),
             FadeIn(wzor_p, shift=0.4 * RIGHT),
+            run_time=0.8,
         )
         self.play(Wiggle(punkt, scale_value=1.6))
         self.next_slide()
