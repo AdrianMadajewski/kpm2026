@@ -74,11 +74,15 @@ class CiagCauchyego(Slide):
             self.play(FadeIn(R[k], shift=0.2 * RIGHT))
             self.next_slide()
             self.play(R[k].animate.set_color(KOLOR_TEKST), run_time=0.5)
-        wn = Tex(r"więc $(x_n)_{n\in\mathbb{N}}$ jest ciągiem Cauchy'ego i $\lim_{n,m\to\infty} p(x_n,x_m)=1\neq 0$.",
-                 font_size=32)
+        wn = Tex(r"więc $(x_n)_{n\in\mathbb{N}}$ jest ciągiem Cauchy'ego i $\lim_{n,m\to\infty} p(x_n,x_m)=1$",
+                 r"$\,\neq 0$", r".", font_size=32)
         wn.next_to(R, DOWN, buff=0.22)
-        self.play(FadeIn(wn, shift=0.2 * RIGHT))
-        self.wait(0.2)
+        self.play(FadeIn(wn[0], shift=0.2 * RIGHT))
+        self.next_slide()
+        wn[1].set_color(KOLOR_METRYKA)
+        self.play(FadeIn(wn[1:], shift=0.2 * RIGHT))
+        self.next_slide()
+        self.play(wn[1].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
 
         # ---- Zupełność całej przestrzeni ----
