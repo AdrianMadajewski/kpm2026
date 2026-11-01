@@ -70,13 +70,3 @@ class Podsumowanie(Slide):
                   FadeTransform(etykieta_x, etykieta_xs), run_time=1.0)
         self.play(Flash(punkt, color=KOLOR_METRYKA, line_length=0.25, flash_radius=0.3))
         self.next_slide()
-
-        # Odpowiedź na pytanie z tytułu.
-        pytanie = Tex(r"Czy odległość punktu od samego siebie musi być zerowa?", font_size=34)
-        odp = Tex(r"Nie musi, ale w punkcie stałym kontrakcji jest.", font_size=34, color=O)
-        koniec = VGroup(pytanie, odp).arrange(DOWN, buff=0.2).to_edge(DOWN, buff=0.45)
-        self.play(FadeIn(pytanie, shift=0.2 * UP))
-        self.next_slide()
-        self.play(FadeIn(odp, shift=0.2 * UP))
-        self.wait(0.2)
-        self.next_slide()
