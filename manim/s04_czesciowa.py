@@ -160,19 +160,16 @@ class MetrykaJakoSzczegolny(Slide):
     """Stwierdzenie: p(x,x) = 0 dla każdego x  =>  p jest metryką — z dowodem."""
 
     def construct(self):
-        naglowek = Tex(r"Przestrzeń częściowo metryczna", font_size=44).to_edge(UP, buff=0.4)
-        self.add(naglowek)
-
         stw = VGroup(
             Tex(r"\textbf{Stwierdzenie.} Jeżeli $p$ jest metryką częściową na $X$", font_size=32),
             Tex(r"i $p(x,x)=0$ dla każdego $x\in X$, to $p$ jest metryką.", font_size=32),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.12).next_to(naglowek, DOWN, buff=0.4)
-        self.play(FadeIn(stw))
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.12).to_edge(UP, buff=0.5)
+        self.play(FadeIn(stw, shift=0.2 * DOWN))
         self.next_slide()
 
         FS = 36
         X_ETYK, X_WZOR, X_WYNIK = -6.3, -5.3, 2.4
-        wiersze_y = [1.15, 0.15, -0.85, -1.85]
+        wiersze_y = [1.55, 0.5, -0.55, -1.6]
 
         def etyk(t, y):
             return Tex(t, font_size=30, color=KOLOR_DRUGORZEDNY).move_to([X_ETYK, y, 0], aligned_edge=LEFT)
