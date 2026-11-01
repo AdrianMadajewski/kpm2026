@@ -30,6 +30,8 @@ SCENY = [
     ("s06_topologia_czesciowa.py", "LematBaza"),
     ("s06_topologia_czesciowa.py", "WlasnosciTopologii"),
     ("s07_zbieznosc.py", "Zbieznosc"),
+    ("s01_plan.py", "PlanSekcja4"),
+    ("s09_zupelnosc.py", "CiagCauchyego"),
 ]
 
 WYJSCIE = "prezentacja.html"
