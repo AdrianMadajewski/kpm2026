@@ -232,8 +232,10 @@ class TwierdzenieMatthewsa(Slide):
         self.next_slide()
 
         # =============== Strona 2: ciąg Cauchy'ego, granica, punkt stały ===============
-        A5 = MathTex(r"\text{Z (P2) także }", r"p(x_n,x_n)\le p(x_n,x_{n+1})\le c^n\, p(x_1,x_0)", r".",
-                     font_size=FS)
+        A4r = MathTex(r"\text{Dla } m>n \text{ mamy }", r"p(x_n,x_m)\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".",
+                      font_size=FS)
+        A5 = MathTex(r"\text{Dla } m=n \text{ mamy }", r"p(x_n,x_n)", r"\le p(x_n,x_{n+1})",
+                     r"\le c^n\, p(x_1,x_0)", r".", font_size=FS)
         A6 = MathTex(r"\text{Zatem }", r"\lim_{n,m\to\infty}p(x_n,x_m)=0", r"\text{, czyli }",
                      r"(x_n)_{n\ge 0}\text{ jest ciągiem Cauchy'ego}", r".", font_size=FS)
 
@@ -249,15 +251,21 @@ class TwierdzenieMatthewsa(Slide):
                      font_size=FS)
         B6 = MathTex(r"\text{Z (P2) }", r"p(x^*,x^*)=p(x^*,y)=p(y,y)=0", r"\text{, więc z (P1) }", r"y=x^*",
                      r".", font_size=FS)
-        strona2 = VGroup(A5, A6, B1, B2, B3, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
+        strona2 = VGroup(A4r, A5, A6, B1, B2, B3, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
         strona2.next_to(tw, DOWN, buff=0.3).to_edge(LEFT, buff=0.6)
         B3.shift(0.6 * RIGHT)
         strona3 = VGroup(B5, B6).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
         strona3.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
 
+        # Przypomnienie wyniku z poprzedniej strony.
+        pokaz(A4r)
+        # Przypadek m = n.
+        pokaz(A5[:2])
         pokaz_przyp(p2)
-        pokaz(A5, pomaranczowe=[A5[1]])
-        wyszarz(A5[1], przyp=p2)
+        pokaz(A5[2], pomaranczowe=[A5[2]])
+        wyszarz(A5[2], przyp=p2)
+        pokaz(A5[3:], pomaranczowe=[A5[3]])
+        wyszarz(A5[3])
         pokaz(A6[:2], pomaranczowe=[A6[1]])
         wyszarz(A6[1])
         pokaz(A6[2:])
