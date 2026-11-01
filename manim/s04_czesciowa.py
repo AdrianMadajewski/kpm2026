@@ -15,8 +15,8 @@ class MetrykaCzesciowa(Slide):
 
         # --- Docelowy układ: definicja metryki częściowej ---------------------
         wstep_p = VGroup(
-            Tex(r"Metryka częściowa na zbiorze $X$ to funkcja", font_size=32),
-            MathTex(r"p\colon X\times X\to[0,\infty)", font_size=34),
+            Tex(r"Metryka częściowa", r" na zbiorze $X$ to funkcja", font_size=32),
+            MathTex(r"p", r"\colon X\times X\to[0,\infty)", font_size=34),
             Tex(r"taka, że dla $x,y,z\in X$", font_size=32),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
         p1 = aksjomat(r"(P1)", r"x=y \iff p(x,x)=p(x,y)=p(y,y)")
@@ -34,8 +34,8 @@ class MetrykaCzesciowa(Slide):
 
         # --- Układ początkowy: przypomnienie metryki, w tych samych miejscach --
         wstep_d = VGroup(
-            Tex(r"Metryka na zbiorze $X$ to funkcja", font_size=32),
-            MathTex(r"d\colon X\times X\to[0,\infty)", font_size=34),
+            Tex(r"Metryka", r" na zbiorze $X$ to funkcja", font_size=32),
+            MathTex(r"d", r"\colon X\times X\to[0,\infty)", font_size=34),
             Tex(r"taka, że dla $x,y,z\in X$", font_size=32),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
         wstep_d.align_to(wstep_p, UL)
@@ -67,22 +67,34 @@ class MetrykaCzesciowa(Slide):
 
         # Krok 3: przemiana aksjomatów — każde przejście na osobne kliknięcie.
         self.play(FadeOut(grafika))
-        self.play(dopasuj_ramke(definicja, wstep_p, aks_p),
-                  TransformMatchingShapes(wstep_d, wstep_p))
+        # Zmieniają się tylko słowa „Metryka” -> „Metryka częściowa” oraz d -> p;
+        # reszta tekstu zostaje (ewentualnie lekko się przesuwa).
+        self.play(
+            dopasuj_ramke(definicja, wstep_p, aks_p),
+            FadeTransform(wstep_d[0][0], wstep_p[0][0]),
+            ReplacementTransform(wstep_d[0][1], wstep_p[0][1]),
+            FadeTransform(wstep_d[1][0], wstep_p[1][0]),
+            ReplacementTransform(wstep_d[1][1], wstep_p[1][1]),
+            ReplacementTransform(wstep_d[2], wstep_p[2]),
+            run_time=1.2,
+        )
         self.next_slide()
 
-        # Najpierw zjeżdżają niższe wiersze, żeby zrobić miejsce na (P2).
+        # Najpierw nierówność trójkąta zjeżdża na dół...
         self.play(TransformMatchingShapes(m3, VGroup(p4[0], p4[1][0])), run_time=1.2)
         self.next_slide()
+        # ...i dostaje dodatkowy człon -p(y,y).
+        self.play(FadeIn(p4[1][1], shift=0.3 * LEFT))
+        self.play(Indicate(p4[1][1], color=KOLOR_CZESCIOWA, scale_factor=1.2))
+        self.play(p4[1][1].animate.set_color(KOLOR_TEKST))
+        self.next_slide()
+
+        # Pozostałe aksjomaty.
         self.play(TransformMatchingShapes(m2, p3), run_time=1.0)
         self.next_slide()
         self.play(TransformMatchingShapes(m1, p1), run_time=1.2)
         self.next_slide()
         self.play(FadeIn(p2, shift=0.2 * RIGHT))
-        self.next_slide()
-        self.play(FadeIn(p4[1][1], shift=0.3 * LEFT))
-        self.play(Indicate(p4[1][1], color=KOLOR_CZESCIOWA, scale_factor=1.2))
-        self.play(p4[1][1].animate.set_color(KOLOR_TEKST))
         self.next_slide()
 
         # Krok 4: komentarze przy zmienionych aksjomatach.
