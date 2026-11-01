@@ -48,8 +48,9 @@ class Zbieznosc(Slide):
         Q4 = MathTex(r"(\Leftarrow)\ \text{Niech } U\in\tau_p,\ x\in U.", r"\ \text{Z lematu }",
                      r"B_p(x,\varepsilon)\subseteq U", r"\text{ dla pewnego } \varepsilon>0.", font_size=FS)
         Q5 = MathTex(r"\text{Z założenia istnieje } N \text{ takie, że dla każdego } n\ge N \text{ mamy }",
-                     r"p(x,x_n)<p(x,x)+\varepsilon", r"\text{,}", font_size=FS)
-        Q6 = MathTex(r"\text{czyli }", r"x_n\in B_p(x,\varepsilon)\subseteq U", r"\text{ dla } n\ge N.\ \blacksquare",
+                     r"p(x,x_n)-p(x,x)<\varepsilon", r"\text{,}", font_size=FS)
+        Q6 = MathTex(r"\text{zatem }", r"p(x,x_n)<p(x,x)+\varepsilon", r"\text{, czyli }",
+                     r"x_n\in B_p(x,\varepsilon)\subseteq U", r"\text{ dla } n\ge N.\ \blacksquare",
                      font_size=FS)
         dowod = VGroup(Q1, Q2, Q2b, Q3, Q3b, Q4, Q5, Q6).arrange(DOWN, aligned_edge=LEFT, buff=0.17)
         dowod.next_to(stw, DOWN, buff=0.35).to_edge(LEFT, buff=0.7)
@@ -117,9 +118,11 @@ class Zbieznosc(Slide):
         self.play(stw[1].animate.set_color(O), Create(podkr_z), FadeIn(Q5, shift=0.2 * RIGHT))
         self.next_slide()
         wyszarz(Q5[1], stw[1], extra=[FadeOut(podkr_z)])
+        pokaz(Q6[:2], pomaranczowe=[Q6[1]])
+        wyszarz(Q6[1])
         pokaz_przyp(kula)
-        pokaz(Q6, pomaranczowe=[Q6[1]])
-        wyszarz(Q6[1], przyp=kula)
+        pokaz(Q6[2:], pomaranczowe=[Q6[3]])
+        wyszarz(Q6[3], przyp=kula)
 
         # ================= Przykład: x_n = 0 w max =================
         self.play(*[FadeOut(m, shift=0.3 * LEFT) for m in self.mobjects], run_time=0.8)
