@@ -103,22 +103,28 @@ class PrzykladMax(Slide):
         etyk_x = always_redraw(lambda: MathTex("x", font_size=34).next_to(kropka, UP, buff=0.15))
         odcinek = always_redraw(lambda: Line(
             os.n2p(0) + POD, os.n2p(max(x.get_value(), 1e-3)) + POD,
-            color=KOLOR_SAMO, stroke_width=9))
+            color=KOLOR_CZESCIOWA, stroke_width=12).set_cap_style(CapStyleType.ROUND))
         wartosc = always_redraw(lambda: VGroup(
-            MathTex(r"p(x,x) =", font_size=34, color=KOLOR_SAMO),
-            DecimalNumber(x.get_value(), num_decimal_places=2, font_size=34, color=KOLOR_SAMO),
+            MathTex(r"p(x,x) =", font_size=34, color=KOLOR_CZESCIOWA),
+            DecimalNumber(x.get_value(), num_decimal_places=2, font_size=34, color=KOLOR_CZESCIOWA),
         ).arrange(RIGHT, buff=0.15).next_to(os.n2p(0) + POD, DOWN, buff=0.35, aligned_edge=LEFT))
         opis = Tex(r"wiemy tylko, że wartość leży w $[0,x]$",
                    font_size=32).next_to(os, DOWN, buff=1.8)
-        dopisek = Tex(r"(to tak naprawdę przedziały $[0,x]$)", font_size=28,
-                      color=KOLOR_DRUGORZEDNY).next_to(opis, DOWN, buff=0.15)
 
         self.play(Create(os))
+        self.next_slide()
         self.play(FadeIn(kropka), FadeIn(etyk_x))
+        self.next_slide()
         self.play(Create(odcinek), FadeIn(wartosc))
-        self.play(FadeIn(opis), FadeIn(dopisek))
+        self.next_slide()
+        self.play(FadeIn(opis))
         self.next_slide()
 
+        # Na razie scena kończy się tutaj; dalsza część (kurczenie odcinka,
+        # dwa punkty, otoczka, (P2), morał) jest w metodzie _dalej, wyłączona.
+        return
+
+    def _dalej(self, os, x, kropka, etyk_x, odcinek, wartosc, opis, wzor):
         # Odcinek się kurczy: coraz lepiej określony punkt.
         self.play(x.animate.set_value(0.8), run_time=2)
         self.play(x.animate.set_value(0.0), run_time=1.2)
@@ -128,7 +134,7 @@ class PrzykladMax(Slide):
         self.next_slide()
 
         # Krok 3: odległość dwóch punktów.
-        self.play(FadeOut(VGroup(kropka, etyk_x, wartosc, opis, dopisek, okreslony)))
+        self.play(FadeOut(VGroup(kropka, etyk_x, wartosc, opis, okreslony)))
         xa, ya = 1.5, 3.5
         dx = Dot(os.n2p(xa), radius=0.08)
         dy = Dot(os.n2p(ya), radius=0.08)
