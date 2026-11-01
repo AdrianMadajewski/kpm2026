@@ -26,36 +26,26 @@ class CiagCauchyego(Slide):
         C = Tex(r", gdy", font_size=FS)
         wiersz1 = VGroup(A, B, C).arrange(RIGHT, buff=0.12)
         C.next_to(B, RIGHT, buff=0.04).align_to(A, DOWN)
-        D = MathTex(r"\lim_{n,m\to\infty} d(x_n,x_m)", font_size=FS + 2)
-        E = MathTex(r"=0", font_size=FS + 2)
-        F = MathTex(r".", font_size=FS + 2)
-        wiersz2 = VGroup(D, E, F).arrange(RIGHT, buff=0.12)
-        F.next_to(E, RIGHT, buff=0.04).align_to(E, DOWN)
+        D = MathTex(r"\forall\,\varepsilon>0\ \ \exists\,N\in\mathbb{N}\ \ \forall\,n,m\ge N\colon\ \ "
+                    r"d(x_n,x_m)<\varepsilon.", font_size=FS + 2)
+        wiersz2 = VGroup(D)
         definicja = VGroup(wiersz1, wiersz2).arrange(DOWN, buff=0.35).next_to(naglowek, DOWN, buff=0.6)
         self.play(FadeIn(wiersz1, shift=0.2 * DOWN))
         self.play(FadeIn(wiersz2, shift=0.2 * DOWN))
         self.next_slide()
 
-        # Podświetlenie tego, co się zmienia.
-        self.play(B.animate.set_color(O), D.animate.set_color(O), E.animate.set_color(O), run_time=0.6)
+        # Podświetlenie na niebiesko: przestrzeń metryczna i warunek Cauchy'ego.
+        self.play(B.animate.set_color(KOLOR_METRYKA), D.animate.set_color(KOLOR_METRYKA), run_time=0.6)
         self.next_slide()
 
-        # d -> p (TransformMatchingShapes), "= 0" wyjeżdża w lewo.
+        # Przejście do metryki częściowej: d -> p, warunek z "granicą" a.
         B2 = MathTex(r"(X,p)", font_size=FS, color=O).move_to(B)
-        D2 = MathTex(r"\lim_{n,m\to\infty} p(x_n,x_m)", font_size=FS + 2, color=O).move_to(D)
-        self.play(TransformMatchingShapes(B, B2), TransformMatchingShapes(D, D2), FadeOut(E, shift=0.4 * LEFT),
-                  FadeOut(F))
+        D2 = MathTex(r"\exists\,a\in\mathbb{R}\ \ \forall\,\varepsilon>0\ \ \exists\,N\in\mathbb{N}\ \ "
+                     r"\forall\,n,m\ge N\colon\ \ |p(x_n,x_m)-a|<\varepsilon.", font_size=FS + 2, color=O)
+        D2.move_to(D)
+        self.play(TransformMatchingShapes(B, B2), TransformMatchingShapes(D, D2), run_time=1.2)
         self.next_slide()
-
-        # Nowa końcówka: "gdy granica ... istnieje i jest skończona".
-        C2 = Tex(r", gdy granica", font_size=FS).next_to(B2, RIGHT, buff=0.04).align_to(C, DOWN)
-        E2 = Tex(r"istnieje i jest skończona.", font_size=FS, color=O)
-        wiersz2_kon = VGroup(D2.copy(), E2).arrange(RIGHT, buff=0.2).move_to(np.array([0, D2.get_center()[1], 0]))
-        self.play(FadeTransform(C, C2), D2.animate.move_to(wiersz2_kon[0]), run_time=0.7)
-        self.play(FadeIn(E2, shift=0.3 * RIGHT))
-        self.next_slide()
-        self.play(B2.animate.set_color(KOLOR_TEKST), D2.animate.set_color(KOLOR_TEKST),
-                  E2.animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.play(B2.animate.set_color(KOLOR_TEKST), D2.animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
 
         # ---- Przykład w max ----
@@ -76,7 +66,7 @@ class CiagCauchyego(Slide):
             self.play(FadeIn(R[k], shift=0.2 * RIGHT))
             self.next_slide()
             self.play(R[k].animate.set_color(KOLOR_TEKST), run_time=0.5)
-        wn = Tex(r"więc $(x_n)_{n\in\mathbb{N}}$ jest ciągiem Cauchy'ego, choć granica wynosi $1\neq 0$.",
+        wn = Tex(r"więc $(x_n)_{n\in\mathbb{N}}$ jest ciągiem Cauchy'ego z $a=1\neq 0$.",
                  font_size=32)
         wn.next_to(R, DOWN, buff=0.4)
         self.play(FadeIn(wn, shift=0.2 * RIGHT))
