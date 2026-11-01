@@ -224,9 +224,11 @@ class LematBaza(Slide):
 
         # Krok 3: definicja delta.
         self.play(*zaswiec(L2[1], L4[5]), run_time=0.6)
+        self.next_slide()
+        L4[7].set_color(O)
         self.play(FadeIn(L4[6:], shift=0.2 * RIGHT))
         self.wait(0.4)
-        self.play(*zgas(L2[1], L4[5]), run_time=0.6)
+        self.play(*zgas(L2[1], L4[5], L4[7]), run_time=0.6)
         self.next_slide()
 
         self.play(FadeIn(L5))
