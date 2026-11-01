@@ -19,6 +19,7 @@ SCENY = [
     ("s03_topologia_metryczna.py", "Oddzielanie"),
     ("s03_topologia_metryczna.py", "ZbieznoscMetryczna"),
     ("s01_plan.py", "PlanSekcja2"),
+    ("s035_matthews.py", "Matthews"),
     ("s04_czesciowa.py", "MetrykaCzesciowa"),
     ("s05_przyklad_max.py", "PrzykladMax"),
     ("s05_przyklad_max.py", "Interpretacja"),
