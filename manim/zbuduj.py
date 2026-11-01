@@ -23,6 +23,9 @@ SCENY = [
     ("s05_przyklad_max.py", "Interpretacja"),
     ("s04_czesciowa.py", "MetrykaJakoSzczegolny"),
     ("s04_czesciowa.py", "WniosekOkreslonosc"),
+    ("s01_plan.py", "PlanSekcja3"),
+    ("s06_topologia_czesciowa.py", "PytaniaCzesciowa"),
+    ("s06_topologia_czesciowa.py", "KulaCzesciowa"),
     ("s08_kule.py", "Kule"),
 ]
 
