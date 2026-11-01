@@ -240,6 +240,8 @@ class TwierdzenieMatthewsa(Slide):
                       font_size=FS)
         A5 = MathTex(r"\text{Dla } m=n \text{ mamy }", r"p(x_n,x_n)", r"\le p(x_n,x_{n+1})",
                      r"\le c^n\, p(x_1,x_0)", r".", font_size=FS)
+        A5b = MathTex(r"\text{Zatem }", r"\lim_{n\to\infty}p(x_n,x_n)=0", r".", font_size=FS)
+        A5b_bok = MathTex(r"\text{(bo } c\in[0,1)\text{)}", font_size=26, color=KOLOR_DRUGORZEDNY)
         A6 = MathTex(r"\text{Zatem }", r"\lim_{n,m\to\infty}p(x_n,x_m)=0", r"\text{, czyli }",
                      r"(x_n)_{n\ge 0}\text{ jest ciągiem Cauchy'ego}", r".", font_size=FS)
 
@@ -255,7 +257,7 @@ class TwierdzenieMatthewsa(Slide):
                      font_size=FS)
         B6 = MathTex(r"\text{Z (P2) }", r"p(x^*,x^*)=p(x^*,y)=p(y,y)=0", r"\text{, więc z (P1) }", r"y=x^*",
                      r".", font_size=FS)
-        strona2 = VGroup(A0r, A4r, A5, A6, B1, B2, B3, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
+        strona2 = VGroup(A0r, A4r, A5, A5b, A6, B1, B2, B3, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.16)
         strona2.next_to(tw, DOWN, buff=0.3).to_edge(LEFT, buff=0.6)
         B3.shift(0.6 * RIGHT)
         strona3 = VGroup(B5, B6).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
@@ -275,6 +277,9 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(A5[3:], pomaranczowe=[A5[3]])
         self.play(A5[3].animate.set_color(KOLOR_TEKST), A0r[1].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
+        A5b_bok.next_to(A5b, RIGHT, buff=0.6)
+        pokaz(A5b, A5b_bok, pomaranczowe=[A5b[1]])
+        wyszarz(A5b[1])
         pokaz(A6[:2], pomaranczowe=[A6[1]])
         wyszarz(A6[1])
         pokaz(A6[2:])
@@ -310,7 +315,7 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(B4[4:], pomaranczowe=[B4[5]])
         wyszarz(B4[5], przyp=p1)
 
-        self.play(FadeOut(strona2, shift=0.3 * LEFT), run_time=0.7)
+        self.play(FadeOut(strona2, shift=0.3 * LEFT), FadeOut(A5b_bok, shift=0.3 * LEFT), run_time=0.7)
         self.next_slide()
 
         # Jednoznaczność.
