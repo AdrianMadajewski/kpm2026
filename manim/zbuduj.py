@@ -35,6 +35,7 @@ SCENY = [
     ("s09_zupelnosc.py", "ZupelnoscMax"),
     ("s10_punkt_staly.py", "Kontrakcja"),
     ("s10_punkt_staly.py", "TwierdzenieMatthewsa"),
+    ("s11_podsumowanie.py", "Podsumowanie"),
 ]
 
 WYJSCIE = "prezentacja.html"
