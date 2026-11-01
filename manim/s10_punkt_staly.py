@@ -134,7 +134,7 @@ class TwierdzenieMatthewsa(Slide):
                      r"x_{n+1}\coloneqq f(x_n)", r"\text{ dla } n=0,1,2,\dots", font_size=FS)
         A2 = MathTex(r"p(x_{n+1},x_n)", r"=p(f(x_n),f(x_{n-1}))", r"\le c\cdot p(x_n,x_{n-1})",
                      r"\le\dots\le c^n\cdot p(x_1,x_0)", r".", font_size=FS)
-        A3 = MathTex(r"\text{Niech } m>n.\ \text{Dla } x=x_n,\ y=x_{n+1},\ z=x_m\text{ mamy}", font_size=FS)
+        A3 = MathTex(r"\text{Niech } m>n.\ \text{Wtedy}", font_size=FS)
         R1 = MathTex(r"p(x_n,x_m)", r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", r"-p(x_{n+1},x_{n+1})",
                      font_size=FS)
         R2 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", font_size=FS)
@@ -163,11 +163,12 @@ class TwierdzenieMatthewsa(Slide):
         wyszarz(A2[3], przyp=kontr)
 
         # (P4) dla trzech punktów x_n, x_{n+1}, x_m.
+        p4_a = przypomnienie(r"\text{(P4)}\quad p(x_n,x_m)\le p(x_n,x_{n+1})+p(x_{n+1},x_m)-p(x_{n+1},x_{n+1})")
         pokaz(A3)
         pokaz(R1[0])
-        pokaz_przyp(p4)
+        pokaz_przyp(p4_a)
         pokaz(R1[1:], pomaranczowe=[R1[1], R1[2], R1[3]])
-        wyszarz(R1[1], R1[2], R1[3], przyp=p4)
+        wyszarz(R1[1], R1[2], R1[3], przyp=p4_a)
 
         # Odejmowany wyraz jest nieujemny: pomijamy go.
         nieuj = przypomnienie(r"p(x_{n+1},x_{n+1})\ge 0")
@@ -179,14 +180,11 @@ class TwierdzenieMatthewsa(Slide):
         # To samo dla p(x_{n+1}, x_m): (P4) z y = x_{n+2}.
         self.play(R2[1].animate.set_color(O), run_time=0.5)
         self.next_slide()
-        notka = MathTex(r"(x=x_{n+1},\ y=x_{n+2},\ z=x_m)", font_size=26, color=O)
-        notka.next_to(R3, RIGHT, buff=0.5)
-        self.play(FadeIn(p4, shift=0.2 * UP), FadeIn(notka, shift=0.2 * LEFT))
-        self.next_slide()
+        p4_b = przypomnienie(r"\text{(P4)}\quad p(x_{n+1},x_m)\le p(x_{n+1},x_{n+2})+p(x_{n+2},x_m)"
+                             r"-p(x_{n+2},x_{n+2})")
+        pokaz_przyp(p4_b)
         pokaz(R3, pomaranczowe=[R3[1]])
-        self.play(R2[1].animate.set_color(KOLOR_TEKST), R3[1].animate.set_color(KOLOR_TEKST),
-                  notka.animate.set_color(KOLOR_DRUGORZEDNY), FadeOut(p4, shift=0.2 * DOWN), run_time=0.6)
-        self.next_slide()
+        wyszarz(R2[1], R3[1], przyp=p4_b)
 
         # Suma i szereg geometryczny.
         pokaz(R4[:2], pomaranczowe=[R4[1]])
@@ -203,7 +201,7 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(R5[1:], pomaranczowe=[R5[1]])
         wyszarz(R5[1], przyp=geom)
 
-        self.play(FadeOut(strona1, shift=0.3 * LEFT), FadeOut(notka, shift=0.3 * LEFT), run_time=0.7)
+        self.play(FadeOut(strona1, shift=0.3 * LEFT), run_time=0.7)
         self.next_slide()
 
         # =============== Strona 2: ciąg Cauchy'ego, granica, punkt stały ===============
@@ -248,10 +246,12 @@ class TwierdzenieMatthewsa(Slide):
         wyszarz(B1[3], tw[2][2])
 
         # f(x*) = x*.
+        p4_c = przypomnienie(r"\text{(P4)}\quad p(x^*,f(x^*))\le p(x^*,x_{n+1})+p(x_{n+1},f(x^*))"
+                             r"-p(x_{n+1},x_{n+1})")
         pokaz(B2)
-        pokaz_przyp(p4)
+        pokaz_przyp(p4_c)
         pokaz(B3[:2], pomaranczowe=[B3[1]])
-        wyszarz(B3[1], przyp=p4)
+        wyszarz(B3[1], przyp=p4_c)
         pokaz_przyp(kontr)
         pokaz(B3[2], pomaranczowe=[B3[2]])
         wyszarz(B3[2], przyp=kontr)
