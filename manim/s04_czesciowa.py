@@ -275,9 +275,11 @@ class WniosekOkreslonosc(Slide):
             MathTex(r"p(x,x)=0", font_size=28, color=KOLOR_METRYKA),
         ).arrange(DOWN, buff=0.1).move_to(maly)
 
-        self.play(Create(duzy), FadeIn(etyk_duzy))
+        self.play(GrowFromCenter(duzy), run_time=0.9)
+        self.play(FadeIn(etyk_duzy), run_time=0.5)
         self.wait(0.2)
         self.next_slide()
-        self.play(Create(maly), FadeIn(etyk_maly))
+        self.play(GrowFromCenter(maly), run_time=0.9)
+        self.play(FadeIn(etyk_maly), run_time=0.5)
         self.wait(0.2)
         self.next_slide()
