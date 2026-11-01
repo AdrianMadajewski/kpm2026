@@ -75,9 +75,9 @@ class MetrykaCzesciowa(Slide):
         self.play(
             wstep_d[0][1].animate.move_to(wstep_p[0][2]),
             wstep_d[1][1].animate.move_to(wstep_p[1][1]),
-            FadeIn(wstep_p[0][1], shift=0.2 * DOWN),
-            FadeOut(wstep_d[1][0], shift=0.2 * UP),
-            FadeIn(wstep_p[1][0], shift=0.2 * UP),
+            FadeIn(wstep_p[0][1], shift=0.4 * RIGHT),
+            FadeOut(wstep_d[1][0], shift=0.4 * LEFT),
+            FadeIn(wstep_p[1][0], shift=0.4 * RIGHT),
             run_time=1.0,
         )
         # Podmiana obiektów na docelowe (te same napisy w tych samych miejscach).
@@ -98,7 +98,7 @@ class MetrykaCzesciowa(Slide):
             self.wait(0.3)
             if przesun:
                 self.play(stary.animate.align_to(nowy, UL), run_time=1.0)
-            self.play(FadeOut(stary, shift=0.15 * UP), FadeIn(nowy, shift=0.15 * UP), run_time=1.0)
+            self.play(FadeOut(stary, shift=0.4 * LEFT), FadeIn(nowy, shift=0.4 * RIGHT), run_time=1.0)
             self.wait(0.6)
             self.play(wzor_nowy.animate.set_color(KOLOR_TEKST), run_time=0.8)
 
@@ -169,7 +169,7 @@ class MetrykaJakoSzczegolny(Slide):
         w4.next_to(e4, RIGHT, buff=0.4)
         self.play(FadeIn(e4), FadeIn(w4))
         zero4 = MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w4[2])
-        self.play(FadeOut(w4[2], shift=0.2 * UP), FadeIn(zero4, shift=0.2 * UP))
+        self.play(FadeOut(w4[2], shift=0.4 * LEFT), FadeIn(zero4, shift=0.4 * RIGHT))
         self.play(FadeOut(w4[1]), FadeOut(zero4))
         cel4 = etykieta(r"$=$ (M3)").next_to(w4[0], RIGHT, buff=0.5)
         self.play(FadeIn(cel4, shift=0.2 * LEFT))
@@ -185,8 +185,8 @@ class MetrykaJakoSzczegolny(Slide):
         self.play(FadeIn(e1), FadeIn(w1))
         z2 = MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w1[2])
         z6 = MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w1[6])
-        self.play(FadeOut(w1[2], shift=0.2 * UP), FadeIn(z2, shift=0.2 * UP),
-                  FadeOut(w1[6], shift=0.2 * UP), FadeIn(z6, shift=0.2 * UP))
+        self.play(FadeOut(w1[2], shift=0.4 * LEFT), FadeIn(z2, shift=0.4 * RIGHT),
+                  FadeOut(w1[6], shift=0.4 * LEFT), FadeIn(z6, shift=0.4 * RIGHT))
         wynik1 = MathTex(r"x=y", r"\iff", r"p(x,y)=0", font_size=38)
         wynik1.shift(w1[0].get_left() - wynik1[0].get_left())
         self.play(FadeOut(VGroup(z2, w1[3], w1[4], w1[5], z6)), FadeIn(wynik1[2]))
