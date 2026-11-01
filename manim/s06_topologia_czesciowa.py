@@ -279,9 +279,13 @@ class WlasnosciTopologii(Slide):
             DashedVMobject(owal.copy().set_stroke(KOLOR_METRYKA, 2.5), num_dashes=30),
         )
         naz = MathTex(r"T_0", font_size=34).next_to(ramka, UP, buff=0.12)
-        panel_t0 = VGroup(ramka, px_, py_, lx, ly, otoczenie, naz)
+        def_t0 = VGroup(MathTex(r"\forall\, x\neq y\ \ \exists\, U\in\tau\colon", font_size=26),
+            MathTex(r"x\in U\not\ni y\ \ \text{lub}\ \ y\in U\not\ni x", font_size=26)).arrange(DOWN, buff=0.12)
+        def_t0.next_to(ramka, DOWN, buff=0.2)
+        panel_t0 = VGroup(ramka, px_, py_, lx, ly, otoczenie, naz, def_t0)
         self.play(FadeIn(VGroup(ramka, px_, py_, lx, ly, naz)))
         self.play(FadeIn(otoczenie))
+        self.play(FadeIn(def_t0, shift=0.2 * DOWN))
         self.next_slide()
 
         # ---- Dowód ----
@@ -395,6 +399,10 @@ class WlasnosciTopologii(Slide):
         self.play(FadeIn(VGroup(ramka1, qx, qy, mx, my, naz1)))
         self.play(FadeIn(ox_))
         self.play(FadeIn(oy_))
+        def_t1 = VGroup(MathTex(r"\forall\, x\neq y\ \ \exists\, U,V\in\tau\colon", font_size=26),
+            MathTex(r"x\in U\not\ni y\ \ \text{i}\ \ y\in V\not\ni x", font_size=26)).arrange(DOWN, buff=0.12)
+        def_t1.next_to(ramka1, DOWN, buff=0.2)
+        self.play(FadeIn(def_t1, shift=0.2 * DOWN))
         self.next_slide()
 
         # ---- Dowód (kontrprzykład max) ----
