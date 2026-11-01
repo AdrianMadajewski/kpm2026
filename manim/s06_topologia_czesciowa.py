@@ -266,6 +266,24 @@ class WlasnosciTopologii(Slide):
         self.wait(0.2)
         self.next_slide()
 
+        # ---- Przypomnienie T_0 (sam rysunek, po prawej) ----
+        ramka = RoundedRectangle(width=3.4, height=1.9, corner_radius=0.15, color=GRAY_C, stroke_width=2)
+        ramka.move_to(np.array([4.6, 0.55, 0]))
+        px_ = Dot(ramka.get_center() + 0.7 * LEFT, radius=0.07)
+        py_ = Dot(ramka.get_center() + 0.7 * RIGHT, radius=0.07)
+        lx = MathTex("x", font_size=28).next_to(px_, DOWN, buff=0.1)
+        ly = MathTex("y", font_size=28).next_to(py_, DOWN, buff=0.1)
+        owal = Ellipse(width=1.2, height=1.2).move_to(px_)
+        otoczenie = VGroup(
+            owal.copy().set_stroke(width=0).set_fill(KOLOR_METRYKA, 0.15),
+            DashedVMobject(owal.copy().set_stroke(KOLOR_METRYKA, 2.5), num_dashes=30),
+        )
+        naz = MathTex(r"T_0", font_size=34).next_to(ramka, UP, buff=0.12)
+        panel_t0 = VGroup(ramka, px_, py_, lx, ly, otoczenie, naz)
+        self.play(FadeIn(VGroup(ramka, px_, py_, lx, ly, naz)))
+        self.play(FadeIn(otoczenie))
+        self.next_slide()
+
         # ---- Dowód ----
         FS = 32
         O = KOLOR_CZESCIOWA
