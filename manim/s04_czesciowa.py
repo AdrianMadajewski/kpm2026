@@ -157,73 +157,97 @@ class MetrykaCzesciowa(Slide):
 
 
 class MetrykaJakoSzczegolny(Slide):
-    """Stwierdzenie: p(x,x) = 0 dla każdego x  =>  p jest metryką."""
+    """Stwierdzenie: p(x,x) = 0 dla każdego x  =>  p jest metryką — z dowodem."""
 
     def construct(self):
         naglowek = Tex(r"Przestrzeń częściowo metryczna", font_size=44).to_edge(UP, buff=0.4)
         self.add(naglowek)
 
-        tw = blok(VGroup(
-            Tex(r"Jeżeli $p$ jest metryką częściową na $X$ i $p(x,x)=0$", font_size=32),
-            Tex(r"dla każdego $x\in X$, to $p$ jest metryką.", font_size=32),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.15), "Stwierdzenie").next_to(naglowek, DOWN, buff=0.4)
-        self.play(FadeIn(tw))
+        stw = VGroup(
+            Tex(r"\textbf{Stwierdzenie.} Jeżeli $p$ jest metryką częściową na $X$", font_size=32),
+            Tex(r"i $p(x,x)=0$ dla każdego $x\in X$, to $p$ jest metryką.", font_size=32),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.12).next_to(naglowek, DOWN, buff=0.4)
+        self.play(FadeIn(stw))
         self.next_slide()
 
-        def etykieta(t):
-            return Tex(t, font_size=30, color=KOLOR_DRUGORZEDNY)
+        FS = 36
+        X_ETYK, X_WZOR, X_WYNIK = -6.3, -5.3, 2.4
+        wiersze_y = [1.15, 0.15, -0.85, -1.85]
 
-        lewa_x = -5.0  # kolumna etykiet
+        def etyk(t, y):
+            return Tex(t, font_size=30, color=KOLOR_DRUGORZEDNY).move_to([X_ETYK, y, 0], aligned_edge=LEFT)
 
-        # (P4) -> (M3)
-        y4 = 0.3
-        e4 = etykieta(r"(P4)").move_to([lewa_x, y4, 0])
-        w4 = MathTex(r"p(x,z)\le p(x,y)+p(y,z)", r"-", r"p(y,y)", font_size=38)
-        w4[2].set_color(KOLOR_SAMO)
-        w4.next_to(e4, RIGHT, buff=0.4)
-        self.play(FadeIn(e4), FadeIn(w4))
-        zero4 = MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w4[2])
-        self.play(FadeOut(w4[2], shift=0.4 * LEFT), run_time=0.7)
-        self.play(FadeIn(zero4, shift=0.4 * RIGHT), run_time=0.8)
-        self.play(FadeOut(w4[1]), FadeOut(zero4))
-        cel4 = etykieta(r"$=$ (M3)").next_to(w4[0], RIGHT, buff=0.5)
-        self.play(FadeIn(cel4, shift=0.2 * LEFT))
+        def wzor(y, *czesci):
+            return MathTex(*czesci, font_size=FS).move_to([X_WZOR, y, 0], aligned_edge=LEFT)
+
+        def wynik(t, y):
+            return MathTex(t, font_size=FS, color=KOLOR_METRYKA).move_to([X_WYNIK, y, 0], aligned_edge=LEFT)
+
+        def podstaw_zero(*czesci):
+            """Podświetl -> czesci wyjeżdżają w lewo -> wjeżdżają zera -> zgaś."""
+            self.play(*[c.animate.set_color(KOLOR_CZESCIOWA) for c in czesci], run_time=0.7)
+            self.wait(0.3)
+            zera = [MathTex("0", font_size=FS, color=KOLOR_CZESCIOWA).move_to(c) for c in czesci]
+            self.play(*[FadeOut(c, shift=0.4 * LEFT) for c in czesci], run_time=0.7)
+            self.play(*[FadeIn(z, shift=0.4 * RIGHT) for z in zera], run_time=0.8)
+            self.wait(0.4)
+            self.play(*[z.animate.set_color(KOLOR_TEKST) for z in zera], run_time=0.7)
+            return zera
+
+        # ---- (P1) -> (M1) ----
+        y = wiersze_y[0]
+        e1 = etyk(r"(P1)", y)
+        w1 = wzor(y, r"x=y", r"\iff", r"p(x,x)", r"=", r"p(x,y)", r"=", r"p(y,y)")
+        self.play(FadeIn(e1), FadeIn(w1, shift=0.2 * RIGHT))
+        self.next_slide()
+        z2, z6 = podstaw_zero(w1[2], w1[6])
+        self.next_slide()
+        cel1 = wzor(y, r"x=y", r"\iff", r"p(x,y)=0")
+        self.play(TransformMatchingShapes(VGroup(w1[0], w1[1], z2, w1[3], w1[4], w1[5], z6), cel1), run_time=1.2)
+        r1 = wynik(r"\Longrightarrow\ \text{(M1)}", y)
+        self.play(FadeIn(r1, shift=0.2 * RIGHT))
         self.next_slide()
 
-        # (P1) -> (M1)
-        y1 = -0.7
-        e1 = etykieta(r"(P1)").move_to([lewa_x, y1, 0])
-        w1 = MathTex(r"x=y", r"\iff", r"p(x,x)", r"=", r"p(x,y)", r"=", r"p(y,y)", font_size=38)
-        w1[2].set_color(KOLOR_SAMO)
-        w1[6].set_color(KOLOR_SAMO)
-        w1.next_to(e1, RIGHT, buff=0.4)
-        self.play(FadeIn(e1), FadeIn(w1))
-        z2 = MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w1[2])
-        z6 = MathTex("0", font_size=38, color=KOLOR_SAMO).move_to(w1[6])
-        self.play(FadeOut(w1[2], shift=0.4 * LEFT), FadeOut(w1[6], shift=0.4 * LEFT), run_time=0.7)
-        self.play(FadeIn(z2, shift=0.4 * RIGHT), FadeIn(z6, shift=0.4 * RIGHT), run_time=0.8)
-        wynik1 = MathTex(r"x=y", r"\iff", r"p(x,y)=0", font_size=38)
-        wynik1.shift(w1[0].get_left() - wynik1[0].get_left())
-        self.play(FadeOut(VGroup(z2, w1[3], w1[4], w1[5], z6)), FadeIn(wynik1[2]))
-        self.remove(w1[0], w1[1])
-        self.add(wynik1)
-        cel1 = etykieta(r"$=$ (M1)").next_to(wynik1, RIGHT, buff=0.5)
-        self.play(FadeIn(cel1, shift=0.2 * LEFT))
+        # ---- (P2): nic nowego ----
+        y = wiersze_y[1]
+        e2 = etyk(r"(P2)", y)
+        w2 = wzor(y, r"p(x,x)", r"\le", r"p(x,y)")
+        self.play(FadeIn(e2), FadeIn(w2, shift=0.2 * RIGHT))
+        self.next_slide()
+        (z0,) = podstaw_zero(w2[0])
+        cel2 = wzor(y, r"0\le p(x,y)")
+        self.play(TransformMatchingShapes(VGroup(z0, w2[1], w2[2]), cel2), run_time=0.9)
+        self.next_slide()
+        r2 = Tex(r"zawsze prawda, bo $p\ge 0$", font_size=30, color=KOLOR_METRYKA)
+        r2.move_to([X_WYNIK, y, 0], aligned_edge=LEFT)
+        self.play(FadeIn(r2, shift=0.2 * RIGHT))
         self.next_slide()
 
-        # (P3) = (M2)
-        y3 = -1.7
-        e3 = etykieta(r"(P3)").move_to([lewa_x, y3, 0])
-        w3 = MathTex(r"p(x,y)=p(y,x)", font_size=38).next_to(e3, RIGHT, buff=0.4)
-        cel3 = etykieta(r"$=$ (M2)").next_to(w3, RIGHT, buff=0.5)
-        self.play(FadeIn(e3), FadeIn(w3))
-        self.play(FadeIn(cel3, shift=0.2 * LEFT))
+        # ---- (P3) -> (M2) ----
+        y = wiersze_y[2]
+        e3 = etyk(r"(P3)", y)
+        w3 = wzor(y, r"p(x,y)=p(y,x)")
+        self.play(FadeIn(e3), FadeIn(w3, shift=0.2 * RIGHT))
+        self.next_slide()
+        r3 = wynik(r"\Longrightarrow\ \text{(M2)}", y)
+        self.play(FadeIn(r3, shift=0.2 * RIGHT))
         self.next_slide()
 
-        # Morał.
-        moral = VGroup(
-            Tex(r"Metryki to dokładnie te metryki częściowe,", font_size=32, color=KOLOR_METRYKA),
-            Tex(r"w których każdy punkt jest \emph{w pełni określony}.", font_size=32, color=KOLOR_METRYKA),
-        ).arrange(DOWN, buff=0.12).to_edge(DOWN, buff=0.45)
-        self.play(FadeIn(moral, shift=0.2 * UP))
+        # ---- (P4) -> (M3) ----
+        y = wiersze_y[3]
+        e4 = etyk(r"(P4)", y)
+        w4 = wzor(y, r"p(x,z)\le p(x,y)+p(y,z)", r"-", r"p(y,y)")
+        self.play(FadeIn(e4), FadeIn(w4, shift=0.2 * RIGHT))
+        self.next_slide()
+        (z4,) = podstaw_zero(w4[2])
+        self.next_slide()
+        self.play(FadeOut(w4[1], shift=0.4 * LEFT), FadeOut(z4, shift=0.4 * LEFT), run_time=0.7)
+        r4 = wynik(r"\Longrightarrow\ \text{(M3)}", y)
+        self.play(FadeIn(r4, shift=0.2 * RIGHT))
+        self.next_slide()
+
+        # ---- Wniosek ----
+        wniosek = Tex(r"Zatem $p$ spełnia (M1)--(M3), czyli jest metryką. \hfill $\blacksquare$",
+                      font_size=34).to_edge(DOWN, buff=0.5)
+        self.play(FadeIn(wniosek, shift=0.2 * UP))
         self.next_slide()
