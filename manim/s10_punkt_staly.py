@@ -269,13 +269,11 @@ class TwierdzenieMatthewsa(Slide):
         pokaz_przyp(p2)
         pokaz(A5[2], pomaranczowe=[A5[2]])
         wyszarz(A5[2], przyp=p2)
-        # Korzystamy z (*): podkreślenie.
-        podkr_g = Underline(A0r[1], color=O, stroke_width=3, buff=0.05)
-        self.play(A0r[1].animate.set_color(O), Create(podkr_g), run_time=0.6)
+        # Korzystamy z (*): podświetlenie.
+        self.play(A0r[1].animate.set_color(O), run_time=0.6)
         self.next_slide()
         pokaz(A5[3:], pomaranczowe=[A5[3]])
-        self.play(A5[3].animate.set_color(KOLOR_TEKST), A0r[1].animate.set_color(KOLOR_TEKST), FadeOut(podkr_g),
-                  run_time=0.6)
+        self.play(A5[3].animate.set_color(KOLOR_TEKST), A0r[1].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
         pokaz(A6[:2], pomaranczowe=[A6[1]])
         wyszarz(A6[1])
