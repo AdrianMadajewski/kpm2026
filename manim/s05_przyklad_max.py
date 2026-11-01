@@ -70,19 +70,24 @@ class PrzykladMax(Slide):
         self.play(FadeIn(strzalki[3]), FadeIn(prawe[3], shift=0.2 * RIGHT), run_time=0.6)
         self.next_slide()
 
-        bso = Tex(r"Bez straty ogólności $\max\{x,z\}=x$. Wtedy", font_size=FS)
+        bso = Tex(r"Bez straty ogólności $\max\{x,z\}=x$.", font_size=FS)
+        mamy = Tex(r"Mamy $\max\{x,y\}\ge x$ oraz $\max\{y,z\}\ge y$.", font_size=FS)
         rach = MathTex(
-            r"\max\{x,y\}+\max\{y,z\}-y", r"\ge", r"x+y-y", r"=", r"x", r"=", r"\max\{x,z\}",
+            r"\text{Stąd}\quad \max\{x,y\}+\max\{y,z\}-y",
+            r"\ge x+y-y",
+            r"=x",
+            r"=\max\{x,z\}.",
             font_size=FS,
         )
-        bo = MathTex(r"\text{bo } \max\{x,y\}\ge x \text{ oraz } \max\{y,z\}\ge y.",
-                     font_size=28, color=KOLOR_DRUGORZEDNY)
-        dowod = VGroup(bso, rach, bo).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
+        dowod = VGroup(bso, mamy, rach).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
         dowod.next_to(lewe[3], DOWN, buff=0.5).align_to(lewe[3], LEFT)
         self.play(FadeIn(bso))
-        self.play(FadeIn(rach[:3]))
-        self.play(FadeIn(bo))
-        self.play(FadeIn(rach[3:]))
+        self.next_slide()
+        self.play(FadeIn(mamy))
+        self.next_slide()
+        for czesc in rach:
+            self.play(FadeIn(czesc, shift=0.2 * RIGHT), run_time=0.6)
+            self.next_slide()
         ptaszek = ptaszek_przy(prawe[3])
         self.play(FadeIn(ptaszek, scale=1.5))
         self.next_slide()
