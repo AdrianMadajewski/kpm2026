@@ -50,7 +50,7 @@ class MetrykaCzesciowa(Slide):
         self.next_slide()
 
         # Krok 2: pytanie — pętla z tytułu.
-        srodek = np.array([3.6, 1.4, 0])
+        srodek = np.array([2.4, 0.5, 0])
         punkt = Dot(srodek, radius=0.09)
         etyk_x = MathTex("x", font_size=34).next_to(punkt, DOWN, buff=0.15)
         petla = Arc(radius=0.35, start_angle=-PI / 2 + 0.45, angle=2 * PI - 0.9,
