@@ -179,31 +179,78 @@ class PrzykladMax(Slide):
                                  otoczka, etyk_pxy, objasnienie)))
         self.play(FadeIn(wartosc))
 
-        # Druga oś: punkt y, który staje się coraz lepiej określony.
-        self.play(os.animate.shift(1.6 * UP), run_time=1.0)
+        # Układ współrzędnych: na OX punkty, na OY wartości p(., .).
+        ax = Axes(
+            x_range=[0, 5, 1], y_range=[0, 4, 1],
+            x_length=5.5, y_length=4.4,
+            tips=False,
+            axis_config={"include_numbers": True, "font_size": 24},
+        )
+        ax.shift(np.array([-3.5, -2.85, 0]) - ax.c2p(0, 0))
+        O = ax.c2p(0, 0)
+        etyk_p = MathTex(r"p", font_size=34).next_to(ax.y_axis, UP, buff=0.15)
 
-        os2 = NumberLine(x_range=[0, 5, 1], length=10, include_numbers=True,
-                         font_size=28, include_tip=False).shift(1.15 * DOWN)
-        y = ValueTracker(3.0)
-        kropka_y = always_redraw(lambda: Dot(os2.n2p(y.get_value()), radius=0.09, color=KOLOR_Y))
-        etyk_y = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y, UP, buff=0.15))
-        odcinek_y = always_redraw(lambda: Line(
-            os2.n2p(0) + POD, os2.n2p(max(y.get_value(), 1e-3)) + POD,
+        # 1) Oś liczbowa staje się osią OX, wyrasta oś OY.
+        self.play(FadeOut(wartosc))
+        etyk_x2 = always_redraw(lambda: MathTex("x", font_size=34).next_to(kropka, DOWN, buff=0.45))
+        self.play(Transform(os, ax.x_axis), FadeOut(etyk_x), run_time=1.5)
+        self.play(FadeIn(etyk_x2))
+        self.play(Create(ax.y_axis), FadeIn(etyk_p))
+        self.next_slide()
+
+        # 2) Przedział [0, x] obraca się wokół zera i kładzie na osi OY.
+        seg = Line(O, ax.c2p(x.get_value(), 0), color=KOLOR_CZESCIOWA,
+                   stroke_width=12).set_cap_style(CapStyleType.ROUND)
+        seg.shift(odcinek.get_left() - seg.get_left())
+        self.remove(odcinek)
+        self.add(seg)
+        self.bring_to_front(kropka)
+        self.play(seg.animate.shift(O - seg.get_left()), run_time=0.8)
+        self.play(Rotate(seg, PI / 2, about_point=O), run_time=1.5)
+        self.next_slide()
+
+        # Słupek nad x o wysokości p(x,x), przerywana linia do osi OY.
+        slupek_x = Line(ax.c2p(3, 0), ax.c2p(3, 3), color=KOLOR_CZESCIOWA,
+                        stroke_width=12).set_cap_style(CapStyleType.ROUND)
+        linia_x = DashedLine(ax.c2p(3, 3), ax.c2p(0, 3), color=KOLOR_CZESCIOWA, stroke_width=2)
+        podpis_x = MathTex(r"p(x,x)", font_size=32, color=KOLOR_CZESCIOWA).next_to(ax.c2p(0, 3), LEFT, buff=0.6)
+        self.play(Create(slupek_x), FadeOut(seg))
+        self.bring_to_front(kropka)
+        self.play(Create(linia_x), FadeIn(podpis_x))
+        self.next_slide()
+
+        # 3) Punkt y z własnym słupkiem p(y,y).
+        y = ValueTracker(4.0)
+        kropka_y = always_redraw(lambda: Dot(ax.c2p(y.get_value(), 0), radius=0.09, color=KOLOR_Y))
+        etyk_y = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y, DOWN, buff=0.45))
+        slupek_y = always_redraw(lambda: Line(
+            ax.c2p(y.get_value(), 0), ax.c2p(y.get_value(), max(y.get_value(), 1e-3)),
             color=KOLOR_Y, stroke_width=12,
             stroke_opacity=1 if y.get_value() > 0.02 else 0).set_cap_style(CapStyleType.ROUND))
-        wartosc_y = always_redraw(lambda: VGroup(
-            MathTex(r"p(y,y) =", font_size=34, color=KOLOR_Y),
-            DecimalNumber(y.get_value(), num_decimal_places=2, font_size=34, color=KOLOR_Y),
-        ).arrange(RIGHT, buff=0.15).next_to(os2.n2p(0) + POD, DOWN, buff=0.35, aligned_edge=LEFT))
-
-        self.play(Create(os2))
-        self.play(FadeIn(kropka_y), FadeIn(etyk_y), Create(odcinek_y), FadeIn(wartosc_y))
+        linia_y = always_redraw(lambda: DashedLine(
+            ax.c2p(y.get_value(), y.get_value()), ax.c2p(0, y.get_value()),
+            color=KOLOR_Y, stroke_width=2) if y.get_value() > 0.1 else VMobject())
+        podpis_y = always_redraw(lambda: VGroup(
+            MathTex(r"p(y,y)=", font_size=32, color=KOLOR_Y),
+            DecimalNumber(y.get_value(), num_decimal_places=2, font_size=32, color=KOLOR_Y),
+        ).arrange(RIGHT, buff=0.1).next_to(ax.c2p(0, y.get_value()), LEFT, buff=0.6))
+        self.play(FadeIn(kropka_y), FadeIn(etyk_y))
+        self.play(Create(slupek_y), Create(linia_y), FadeIn(podpis_y))
         self.next_slide()
 
-        self.play(y.animate.set_value(0.0), run_time=2.5)
+        # 4) y jedzie do zera — punkt staje się w pełni określony.
+        self.play(y.animate.set_value(0.0), run_time=3.0)
+        okreslony = Tex(r"w pełni określony", font_size=30, color=KOLOR_Y)
+        okreslony.next_to(ax.c2p(0, 0), UR, buff=0.35)
+        self.play(FadeIn(okreslony, shift=0.2 * UP))
         self.next_slide()
 
-        pytanie = Tex(r"O którym z punktów wiemy więcej?", font_size=36).to_edge(DOWN, buff=0.35)
+        # 5) Pytanie.
+        pytanie = VGroup(
+            Tex(r"O którym z punktów", font_size=36),
+            Tex(r"wiemy więcej?", font_size=36),
+        ).arrange(DOWN, buff=0.15)
+        pytanie.move_to([4.6, 0.3, 0])
         self.play(FadeIn(pytanie, shift=0.2 * UP))
         self.next_slide()
 
