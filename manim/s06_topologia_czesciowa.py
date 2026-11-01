@@ -261,7 +261,88 @@ class WlasnosciTopologii(Slide):
         self.next_slide()
 
         stw = Tex(r"\textbf{Stwierdzenie.} Topologia $\tau_p$ spełnia aksjomat $T_0$.", font_size=36)
-        stw.next_to(tytul, DOWN, buff=0.6)
+        stw.next_to(tytul, DOWN, buff=0.5)
         self.play(FadeIn(stw, shift=0.2 * DOWN))
+        self.wait(0.2)
+        self.next_slide()
+
+        # ---- Dowód ----
+        FS = 32
+        O = KOLOR_CZESCIOWA
+        KOLOR_Y = ManimColor("#7B3FA0")
+
+        L1 = Tex(r"\textit{Dowód.} Ustalmy $x\neq y$.", font_size=FS)
+        L2 = MathTex(r"\text{Z (P1) mamy }", r"p(x,x)\neq p(x,y)", r"\text{ lub }", r"p(y,y)\neq p(x,y)", r".",
+                     font_size=FS)
+        L3 = MathTex(r"\text{Z (P2) wynika, że }", r"p(x,x)<p(x,y)", r"\text{ lub }", r"p(y,y)<p(x,y)", r".",
+                     font_size=FS)
+        L4 = MathTex(r"\text{Niech np. }", r"p(x,x)<p(x,y)", r"\text{ i }",
+                     r"\varepsilon\coloneqq p(x,y)-p(x,x)>0", r".", font_size=FS)
+        L5 = MathTex(r"\text{Wtedy }", r"p(x,y)=p(x,x)+\varepsilon", r"\text{, czyli }",
+                     r"y\notin B_p(x,\varepsilon)", r".\ \blacksquare", font_size=FS)
+        dowod = VGroup(L1, L2, L3, L4, L5).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
+        dowod.next_to(stw, DOWN, buff=0.45).to_edge(LEFT, buff=0.8)
+
+        def przypomnienie(tex):
+            return MathTex(tex, font_size=30, color=O).to_edge(DOWN, buff=0.35)
+
+        p1 = przypomnienie(r"\text{(P1)}\quad x=y \iff p(x,x)=p(x,y)=p(y,y)")
+        p2 = przypomnienie(r"\text{(P2)}\quad p(x,x)\le p(x,y)")
+
+        self.play(FadeIn(L1))
+        self.next_slide()
+
+        # (P1)
+        self.play(FadeIn(p1, shift=0.2 * UP))
+        self.next_slide()
+        L2[1].set_color(O); L2[3].set_color(O)
+        self.play(FadeIn(L2, shift=0.2 * RIGHT))
+        self.next_slide()
+        self.play(FadeOut(p1, shift=0.2 * DOWN), L2[1].animate.set_color(KOLOR_TEKST),
+                  L2[3].animate.set_color(KOLOR_TEKST), run_time=0.7)
+        self.next_slide()
+
+        # (P2)
+        self.play(FadeIn(p2, shift=0.2 * UP))
+        self.next_slide()
+        L3[1].set_color(O); L3[3].set_color(O)
+        self.play(FadeIn(L3, shift=0.2 * RIGHT))
+        self.next_slide()
+        self.play(FadeOut(p2, shift=0.2 * DOWN), L3[1].animate.set_color(KOLOR_TEKST),
+                  L3[3].animate.set_color(KOLOR_TEKST), run_time=0.7)
+        self.next_slide()
+
+        # Wybór epsilon.
+        L4[3].set_color(O)
+        self.play(FadeIn(L4, shift=0.2 * RIGHT))
+        self.wait(0.4)
+        self.play(L4[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.next_slide()
+
+        # Wniosek: y poza kulą.
+        self.play(L4[3].animate.set_color(O), run_time=0.6)
+        self.next_slide()
+        L5[1].set_color(O); L5[3].set_color(O)
+        self.play(FadeIn(L5, shift=0.2 * RIGHT))
+        self.wait(0.4)
+        self.play(L4[3].animate.set_color(KOLOR_TEKST), L5[1].animate.set_color(KOLOR_TEKST),
+                  L5[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.next_slide()
+
+        # ---- Rysunek w przykładzie max: x = 1.5, y = 3, eps = 1.5, kula [0, 3) ----
+        os = NumberLine(x_range=[0, 5, 1], length=8, include_numbers=True,
+                        font_size=24, include_tip=False).move_to(np.array([0, -2.75, 0]))
+        x0, y0 = 1.5, 3.0
+        eps = max(x0, y0) - x0
+        kx = Dot(os.n2p(x0), radius=0.08, color=O).set_z_index(10)
+        ky = Dot(os.n2p(y0), radius=0.08, color=KOLOR_Y).set_z_index(10)
+        ex = MathTex("x", font_size=28).next_to(kx, DOWN, buff=0.4)
+        ey = MathTex("y", font_size=28).next_to(ky, DOWN, buff=0.4)
+        kula = _kula_na_osi(os, x0 + eps, O, 0.35)
+        e_k = MathTex(r"B_p(x,\varepsilon)=[0,\,3)", font_size=28, color=O).next_to(kula[0], RIGHT, buff=0.35)
+        self.play(Create(os))
+        self.play(FadeIn(kx), FadeIn(ex), FadeIn(ky), FadeIn(ey))
+        self.next_slide()
+        self.play(FadeIn(kula), FadeIn(e_k))
         self.wait(0.2)
         self.next_slide()
