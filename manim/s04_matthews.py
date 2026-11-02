@@ -1,9 +1,6 @@
 from manim_slides import Slide
 from common import *
-import os
 import numpy as np
-
-ZDJECIE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "zdjecia", "matthews.jpg")
 
 
 class Matthews(Slide):

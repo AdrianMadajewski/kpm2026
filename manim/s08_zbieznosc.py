@@ -1,6 +1,6 @@
 from manim_slides import Slide
 from common import *
-from s06_topologia_czesciowa import _kula_na_osi
+from s07_topologia_czesciowa import _kula_na_osi
 
 
 class Zbieznosc(Slide):
