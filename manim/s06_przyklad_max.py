@@ -1,5 +1,6 @@
 from manim_slides import Slide
 from common import *
+import numpy as np
 
 
 class PrzykladMax(Slide):
@@ -74,11 +75,14 @@ class PrzykladMax(Slide):
         bso = Tex(r"Bez straty ogólności ", r"$\max\{x,z\}=x$", r".", font_size=FS)
         mamy = Tex(r"Mamy ", r"$\max\{x,y\}\ge x$", r" oraz ", r"$\max\{y,z\}\ge y$", r".", font_size=FS)
         rach = MathTex(
-            r"\text{Stąd}\quad",
-            r"\max\{x,y\}+\max\{y,z\}-y",
-            r"\ge x+y-y",
-            r"=x",
-            r"=\max\{x,z\}.",
+            r"\text{Stąd}\quad",            # 0
+            r"\max\{x,y\}+\max\{y,z\}-y",   # 1
+            r"\ge",                          # 2
+            r"x+y-y",                        # 3
+            r"=x",                           # 4
+            r"=",                            # 5
+            r"\max\{x,z\}",                  # 6
+            r".",                            # 7
             font_size=FS,
         )
         dowod = VGroup(bso, mamy, rach).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
@@ -95,32 +99,32 @@ class PrzykladMax(Slide):
         # "≥ x + y - y": korzystamy z obu nierówności z linijki "Mamy ...".
         self.play(mamy[1].animate.set_color(O), mamy[3].animate.set_color(O), run_time=0.5)
         self.next_slide()
-        rach[2].set_color(O)
-        self.play(FadeIn(rach[2], shift=0.2 * RIGHT), run_time=0.6)
+        rach[2:4].set_color(O)
+        self.play(FadeIn(rach[2:4], shift=0.2 * RIGHT), run_time=0.6)
         self.next_slide()
         self.play(mamy[1].animate.set_color(czarny), mamy[3].animate.set_color(czarny),
-                  rach[2].animate.set_color(czarny), run_time=0.5)
+                  rach[2:4].animate.set_color(czarny), run_time=0.5)
         self.next_slide()
         # "= x"
-        rach[3].set_color(O)
-        self.play(FadeIn(rach[3], shift=0.2 * RIGHT), run_time=0.6)
+        rach[4].set_color(O)
+        self.play(FadeIn(rach[4], shift=0.2 * RIGHT), run_time=0.6)
         self.next_slide()
-        self.play(rach[3].animate.set_color(czarny), run_time=0.5)
+        self.play(rach[4].animate.set_color(czarny), run_time=0.5)
         self.next_slide()
         # "= max{x,z}": korzystamy z założenia bso.
         self.play(bso[1].animate.set_color(O), run_time=0.5)
         self.next_slide()
-        rach[4].set_color(O)
-        self.play(FadeIn(rach[4], shift=0.2 * RIGHT), run_time=0.6)
+        rach[5:7].set_color(O)
+        self.play(FadeIn(rach[5:], shift=0.2 * RIGHT), run_time=0.6)
         self.next_slide()
-        self.play(bso[1].animate.set_color(czarny), rach[4].animate.set_color(czarny), run_time=0.5)
+        self.play(bso[1].animate.set_color(czarny), rach[5:7].animate.set_color(czarny), run_time=0.5)
         self.next_slide()
-        # Udowodniona nierówność (P4) dla max: podświetlenie, pauza, ptaszek.
-        # Tylko końce łańcucha: max{x,y}+max{y,z}-y  ...  = max{x,z}.
-        self.play(rach[1].animate.set_color(O), rach[4].animate.set_color(O), run_time=0.5)
+        # Udowodniona nierówność (P4) dla max: max{x,y} + max{y,z} - y >= max{x,z}.
+        wynik = VGroup(rach[1], rach[2], rach[6])
+        self.play(wynik.animate.set_color(O), run_time=0.5)
         self.next_slide()
         ptaszek = ptaszek_przy(prawe[3])
-        self.play(FadeIn(ptaszek, scale=1.5), rach[1].animate.set_color(czarny), rach[4].animate.set_color(czarny))
+        self.play(FadeIn(ptaszek, scale=1.5), wynik.animate.set_color(czarny))
         self.next_slide()
         self.play(FadeOut(VGroup(*etykiety, *lewe, *prawe, *strzalki, dowod, ptaszek, ptaszki)))
 
@@ -154,7 +158,9 @@ class PrzykladMax(Slide):
 
         def kolor_m():
             # Pomarańczowy, gdy maksimum to x; fioletowy, gdy y.
-            return KOLOR_CZESCIOWA if xx.get_value() >= yy.get_value() else KOLOR_Y
+            # Blisko x = y kolor przechodzi płynnie (pas szerokości 0.8).
+            t = np.clip((xx.get_value() - yy.get_value()) / 0.8 + 0.5, 0, 1)
+            return interpolate_color(KOLOR_Y, KOLOR_CZESCIOWA, t)
 
         kwadrat = always_redraw(lambda: Polygon(
             ax.c2p(0, 0), ax.c2p(m(), 0), ax.c2p(m(), m()), ax.c2p(0, m()),
