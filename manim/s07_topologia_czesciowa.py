@@ -171,19 +171,6 @@ class Kule(Slide):
         self.play(eps.animate.set_value(0.03), run_time=4, rate_func=smooth)
         self.next_slide()
 
-        # Co zostaje: [0, x] = p(x,x).
-        # Klamra pod tym, co zostało z kuli, czyli pod [0, x] (bez rysowania nowej kreski).
-        pod_kula = Line(os_p.n2p(0), os_p.n2p(x0))
-        klamra = Brace(pod_kula, DOWN, color=KOLOR_CZESCIOWA, buff=0.5)
-        podpis = MathTex(r"p(x,x) = x", font_size=34, color=KOLOR_CZESCIOWA).next_to(klamra, DOWN, buff=0.1)
-        self.play(GrowFromCenter(klamra), FadeIn(podpis))
-        self.next_slide()
-        komentarz = Tex(r"każda kula wokół $x$ zawiera $[0,x]$", font_size=32)
-        komentarz.move_to([2.4, -3.4, 0])
-        self.play(FadeIn(komentarz, shift=0.2 * LEFT))
-        self.wait(0.2)
-        self.next_slide()
-
 
 def _koniec_otwarty(punkt, kolor):
     return Circle(radius=0.08, color=kolor, stroke_width=4).set_fill(WHITE, 1).move_to(punkt).set_z_index(5)
