@@ -49,9 +49,9 @@ class PrzestrzenMetryczna(Slide):
         def wsp_y():
             return np.array([py[0].get_value(), py[1].get_value()])
 
-        kropka_x = Dot(P(px), radius=0.07)
+        kropka_x = Dot(P(px), radius=0.07).set_z_index(10)
         etyk_x = MathTex("x", font_size=32).next_to(kropka_x, DL, buff=0.08)
-        kropka_y = always_redraw(lambda: Dot(P(wsp_y()), radius=0.07))
+        kropka_y = always_redraw(lambda: Dot(P(wsp_y()), radius=0.07).set_z_index(10))
         etyk_y = always_redraw(lambda: MathTex("y", font_size=32).next_to(P(wsp_y()), UR, buff=0.08))
         odc_xy = always_redraw(lambda: Line(P(px), P(wsp_y()), color=KOLOR_METRYKA, stroke_width=5))
 
@@ -103,7 +103,7 @@ class PrzestrzenMetryczna(Slide):
         m3[1].set_color(KOLOR_METRYKA)
         self.play(FadeIn(m3, shift=0.2 * RIGHT), m2[1].animate.set_color(KOLOR_TEKST))
         pz = np.array([2.0, 2.8])
-        kropka_z = Dot(P(pz), radius=0.07)
+        kropka_z = Dot(P(pz), radius=0.07).set_z_index(10)
         etyk_z = MathTex("z", font_size=32).next_to(kropka_z, UP, buff=0.1)
         bok_xy = Line(P(px), P(yv), color=KOLOR_METRYKA, stroke_width=5)
         bok_yz = Line(P(yv), P(pz), color=KOLOR_METRYKA, stroke_width=5)
