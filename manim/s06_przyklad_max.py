@@ -33,7 +33,7 @@ class PrzykladMax(Slide):
         ]
         prawe = [
             MathTex(r"x=y \iff x=\max\{x,y\}=y", font_size=FS),
-            MathTex(r"x\le\max\{x,y\}", font_size=FS),
+            MathTex(r"x=\max\{x,x\}\le\max\{x,y\}", font_size=FS),
             MathTex(r"\max\{x,y\}=\max\{y,x\}", font_size=FS),
             MathTex(r"\max\{x,z\}\le\max\{x,y\}+\max\{y,z\}-y", font_size=FS),
         ]
