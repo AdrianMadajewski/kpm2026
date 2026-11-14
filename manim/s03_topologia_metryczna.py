@@ -216,15 +216,9 @@ class Oddzielanie(Slide):
         self.play(Create(odc))
         self.play(GrowFromCenter(kx), GrowFromCenter(ky))
         self.play(FadeIn(wniosek4))
+        self.wait(0.4)
+        self.play(wniosek4.animate.set_color(KOLOR_TEKST), run_time=0.8)
         self.next_slide()
-        self.play(wniosek4.animate.set_color(KOLOR_TEKST), run_time=0.6)
-        self.next_slide()
-        ptaszki = VGroup(*[MathTex(t + r"\ \checkmark", font_size=36, color=KOLOR_METRYKA)
-                           for t in (r"T_2", r"T_1", r"T_0")]).arrange(RIGHT, buff=0.8)
-        ptaszki.next_to(wniosek4, DOWN, buff=0.4).align_to(wniosek4, LEFT)
-        for i, pt in enumerate(ptaszki):
-            self.play(FadeIn(pt, shift=0.2 * UP))
-            self.next_slide()
 
 
 class ZbieznoscMetryczna(Slide):
