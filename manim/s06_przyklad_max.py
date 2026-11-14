@@ -123,92 +123,7 @@ class PrzykladMax(Slide):
         self.next_slide()
         self.play(FadeOut(VGroup(*etykiety, *lewe, *prawe, *strzalki, dowod, ptaszek, ptaszki)))
 
-        # Krok 2: punkt x jako przedział [0, x].
-        os = NumberLine(x_range=[0, 5, 1], length=10, include_numbers=True,
-                        font_size=28, include_tip=False).shift(0.2 * DOWN)
-        POD = 0.75 * DOWN  # odsunięcie odcinków pod oś (poniżej liczb)
-
-        x = ValueTracker(3.0)
-        kropka = always_redraw(lambda: Dot(os.n2p(x.get_value()), radius=0.09, color=KOLOR_CZESCIOWA))
-        etyk_x = always_redraw(lambda: MathTex("x", font_size=34).next_to(kropka, UP, buff=0.15))
-        odcinek = always_redraw(lambda: Line(
-            os.n2p(0) + POD, os.n2p(max(x.get_value(), 1e-3)) + POD,
-            color=KOLOR_CZESCIOWA, stroke_width=7).set_cap_style(CapStyleType.ROUND))
-        wartosc = always_redraw(lambda: VGroup(
-            MathTex(r"p(x,x) =", font_size=34, color=KOLOR_CZESCIOWA),
-            DecimalNumber(x.get_value(), num_decimal_places=2, font_size=34, color=KOLOR_CZESCIOWA),
-        ).arrange(RIGHT, buff=0.15).next_to(os.n2p(0) + POD, DOWN, buff=0.35, aligned_edge=LEFT))
-        opis = Tex(r"wiemy tylko, że wartość leży w $[0,x]$",
-                   font_size=32).next_to(os, DOWN, buff=1.8)
-
-        self.play(Create(os))
-        self.next_slide()
-        self.play(FadeIn(kropka), FadeIn(etyk_x))
-        self.next_slide()
-        self.play(Create(odcinek), FadeIn(wartosc))
-        self.next_slide()
-
-        # Ruszamy x w prawo i w lewo — kreska i p(x,x) idą za nim.
-        self.play(x.animate.set_value(4.0), run_time=1.2)
-        self.next_slide()
-        self.play(x.animate.set_value(1.5), run_time=1.6)
-        self.play(x.animate.set_value(3.0), run_time=1.2)
-        self.next_slide()
-
-        self.play(FadeIn(opis))
-        self.next_slide()
-
-        # Co oznacza p(x,y)? Drugi punkt y na tej samej osi.
-        yy = ValueTracker(1.5)
-        kropka_y1 = always_redraw(lambda: Dot(os.n2p(yy.get_value()), radius=0.09, color=KOLOR_Y))
-        etyk_y1 = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y1, UP, buff=0.15))
-        POD2 = 1.45 * DOWN
-        odc_y1 = always_redraw(lambda: Line(
-            os.n2p(0) + POD2, os.n2p(max(yy.get_value(), 1e-3)) + POD2,
-            color=KOLOR_Y, stroke_width=7).set_cap_style(CapStyleType.ROUND))
-        etyk_px = always_redraw(lambda: MathTex(r"[0,x]", font_size=30, color=KOLOR_CZESCIOWA)
-                                .next_to(odcinek, RIGHT, buff=0.25))
-        etyk_py = always_redraw(lambda: MathTex(r"[0,y]", font_size=30, color=KOLOR_Y)
-                                .next_to(odc_y1, RIGHT, buff=0.25))
-
-        self.play(FadeOut(opis), FadeOut(wartosc))
-        self.play(FadeIn(kropka_y1), FadeIn(etyk_y1), FadeIn(etyk_px))
-        self.play(Create(odc_y1), FadeIn(etyk_py))
-        self.next_slide()
-
-        NAD = 0.8 * UP
-        otoczka = always_redraw(lambda: Line(
-            os.n2p(0) + NAD, os.n2p(max(x.get_value(), yy.get_value())) + NAD,
-            color=KOLOR_TEKST, stroke_width=7).set_cap_style(CapStyleType.ROUND))
-        etyk_pxy = always_redraw(lambda: VGroup(
-            MathTex(r"p(x,y)=\max\{x,y\}=", font_size=34),
-            DecimalNumber(max(x.get_value(), yy.get_value()), num_decimal_places=2, font_size=34),
-        ).arrange(RIGHT, buff=0.15).next_to(os.n2p(0) + NAD, UP, buff=0.25, aligned_edge=LEFT))
-        objasnienie = Tex(r"długość najmniejszego przedziału zawierającego $[0,x]$ i $[0,y]$",
-                          font_size=30).to_edge(DOWN, buff=0.5)
-        self.play(Create(otoczka), FadeIn(etyk_pxy))
-        self.next_slide()
-
-        # Machamy oboma punktami: odległość to zawsze większy z przedziałów.
-        self.play(yy.animate.set_value(4.5), run_time=1.6)
-        self.next_slide()
-        self.play(x.animate.set_value(2.0), run_time=1.2)
-        self.next_slide()
-        self.play(yy.animate.set_value(1.0), run_time=1.6)
-        self.next_slide()
-        self.play(x.animate.set_value(3.5), run_time=1.2)
-        self.next_slide()
-        self.play(x.animate.set_value(3.0), yy.animate.set_value(1.5), run_time=1.0)
-        self.next_slide()
-
-        self.play(FadeIn(objasnienie))
-        self.next_slide()
-
-        # Sprzątamy wszystko poza osią i punktem x (bez kreski [0,x] i jej podpisu).
-        self.play(FadeOut(VGroup(kropka_y1, etyk_y1, odc_y1, etyk_px, etyk_py,
-                                 otoczka, etyk_pxy, objasnienie, odcinek)))
-
-        # Układ współrzędnych: na OX punkty (bez liczb), na OY wartości p(., .).
+        # Krok 2: układ współrzędnych. Na OX punkty x, y; na OY wartość max{x,y}.
         ax = Axes(
             x_range=[0, 5, 1], y_range=[0, 4, 1],
             x_length=4.5, y_length=3.6,
@@ -217,22 +132,53 @@ class PrzykladMax(Slide):
         )
         ax.shift(np.array([-2.0, -2.6, 0]) - ax.c2p(0, 0))
         etyk_p = MathTex(r"p", font_size=34).next_to(ax.y_axis, UP, buff=0.15)
+        self.play(Create(ax), FadeIn(etyk_p))
+        self.next_slide()
 
-        # Statyczne kopie punktu x i jego podpisu, żeby jechały razem z osią.
-        kropka_s = Dot(kropka.get_center(), radius=0.09, color=KOLOR_CZESCIOWA).set_z_index(10)
-        etyk_s = MathTex("x", font_size=34).next_to(kropka_s, UP, buff=0.15)
-        self.remove(kropka, etyk_x)
+        xx = ValueTracker(3.0)
+        yy = ValueTracker(1.5)
+        kropka_x = always_redraw(lambda: Dot(ax.c2p(xx.get_value(), 0), radius=0.09,
+                                             color=KOLOR_CZESCIOWA).set_z_index(10))
+        etyk_x = always_redraw(lambda: MathTex("x", font_size=34).next_to(kropka_x, DOWN, buff=0.62))
+        kropka_y1 = always_redraw(lambda: Dot(ax.c2p(yy.get_value(), 0), radius=0.09,
+                                              color=KOLOR_Y).set_z_index(10))
+        etyk_y1 = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y1, DOWN, buff=0.62))
+        self.play(FadeIn(kropka_x), FadeIn(etyk_x))
+        self.play(FadeIn(kropka_y1), FadeIn(etyk_y1))
+        self.next_slide()
+
+        # Kwadrat [0, max{x,y}]^2: jego wysokość na OY to p(x,y).
+        def m():
+            return max(xx.get_value(), yy.get_value())
+
+        kwadrat = always_redraw(lambda: Polygon(
+            ax.c2p(0, 0), ax.c2p(m(), 0), ax.c2p(m(), m()), ax.c2p(0, m()),
+            color=KOLOR_TEKST, stroke_width=4).set_fill(GRAY, 0.12))
+        etyk_pxy = always_redraw(lambda: VGroup(
+            MathTex(r"p(x,y)=\max\{x,y\}=", font_size=30),
+            DecimalNumber(m(), num_decimal_places=2, font_size=30),
+        ).arrange(RIGHT, buff=0.1).next_to(ax.c2p(0, m()), LEFT, buff=0.55))
+        self.play(Create(kwadrat), FadeIn(etyk_pxy))
+        self.next_slide()
+
+        # Ruszamy punktami: kwadrat zawsze sięga do większego z nich.
+        self.play(yy.animate.set_value(4.0), run_time=1.6)
+        self.next_slide()
+        self.play(xx.animate.set_value(2.0), run_time=1.2)
+        self.next_slide()
+        self.play(yy.animate.set_value(1.0), run_time=1.6)
+        self.next_slide()
+        self.play(xx.animate.set_value(3.5), run_time=1.2)
+        self.next_slide()
+        self.play(xx.animate.set_value(3.0), yy.animate.set_value(1.5), run_time=1.0)
+        self.next_slide()
+
+        # Sprzątamy kwadrat i y; zostaje x w punkcie 3 (statyczna kopia).
+        kropka_s = Dot(ax.c2p(3, 0), radius=0.09, color=KOLOR_CZESCIOWA).set_z_index(10)
+        etyk_s = MathTex("x", font_size=34).next_to(kropka_s, DOWN, buff=0.62)
+        self.remove(kropka_x, etyk_x)
         self.add(kropka_s, etyk_s)
-
-        # 1) Oś zjeżdża i staje się osią OX, wyrasta OY.
-        cel_x = ax.c2p(3, 0)
-        self.play(
-            Transform(os, ax.x_axis),
-            kropka_s.animate.move_to(cel_x),
-            etyk_s.animate.next_to(cel_x, DOWN, buff=0.62),
-            run_time=1.5,
-        )
-        self.play(Create(ax.y_axis), FadeIn(etyk_p))
+        self.play(FadeOut(VGroup(kwadrat, etyk_pxy, kropka_y1, etyk_y1)))
         self.next_slide()
 
         # 2) Pomarańczowa kreska z x do góry, do wysokości p(x,x).
