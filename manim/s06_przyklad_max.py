@@ -74,7 +74,8 @@ class PrzykladMax(Slide):
         bso = Tex(r"Bez straty ogólności ", r"$\max\{x,z\}=x$", r".", font_size=FS)
         mamy = Tex(r"Mamy ", r"$\max\{x,y\}\ge x$", r" oraz ", r"$\max\{y,z\}\ge y$", r".", font_size=FS)
         rach = MathTex(
-            r"\text{Stąd}\quad \max\{x,y\}+\max\{y,z\}-y",
+            r"\text{Stąd}\quad",
+            r"\max\{x,y\}+\max\{y,z\}-y",
             r"\ge x+y-y",
             r"=x",
             r"=\max\{x,z\}.",
@@ -89,36 +90,36 @@ class PrzykladMax(Slide):
         O = KOLOR_CZESCIOWA
         czarny = KOLOR_TEKST
         # "Stąd max{x,y} + max{y,z} - y"
-        self.play(FadeIn(rach[0], shift=0.2 * RIGHT), run_time=0.6)
+        self.play(FadeIn(rach[:2], shift=0.2 * RIGHT), run_time=0.6)
         self.next_slide()
         # "≥ x + y - y": korzystamy z obu nierówności z linijki "Mamy ...".
         self.play(mamy[1].animate.set_color(O), mamy[3].animate.set_color(O), run_time=0.5)
         self.next_slide()
-        rach[1].set_color(O)
-        self.play(FadeIn(rach[1], shift=0.2 * RIGHT), run_time=0.6)
-        self.next_slide()
-        self.play(mamy[1].animate.set_color(czarny), mamy[3].animate.set_color(czarny),
-                  rach[1].animate.set_color(czarny), run_time=0.5)
-        self.next_slide()
-        # "= x"
         rach[2].set_color(O)
         self.play(FadeIn(rach[2], shift=0.2 * RIGHT), run_time=0.6)
         self.next_slide()
-        self.play(rach[2].animate.set_color(czarny), run_time=0.5)
+        self.play(mamy[1].animate.set_color(czarny), mamy[3].animate.set_color(czarny),
+                  rach[2].animate.set_color(czarny), run_time=0.5)
+        self.next_slide()
+        # "= x"
+        rach[3].set_color(O)
+        self.play(FadeIn(rach[3], shift=0.2 * RIGHT), run_time=0.6)
+        self.next_slide()
+        self.play(rach[3].animate.set_color(czarny), run_time=0.5)
         self.next_slide()
         # "= max{x,z}": korzystamy z założenia bso.
         self.play(bso[1].animate.set_color(O), run_time=0.5)
         self.next_slide()
-        rach[3].set_color(O)
-        self.play(FadeIn(rach[3], shift=0.2 * RIGHT), run_time=0.6)
+        rach[4].set_color(O)
+        self.play(FadeIn(rach[4], shift=0.2 * RIGHT), run_time=0.6)
         self.next_slide()
-        self.play(bso[1].animate.set_color(czarny), rach[3].animate.set_color(czarny), run_time=0.5)
+        self.play(bso[1].animate.set_color(czarny), rach[4].animate.set_color(czarny), run_time=0.5)
         self.next_slide()
         # Udowodniona nierówność (P4) dla max: podświetlenie, pauza, ptaszek.
-        self.play(prawe[3].animate.set_color(O), run_time=0.5)
+        self.play(rach[1:].animate.set_color(O), run_time=0.5)
         self.next_slide()
         ptaszek = ptaszek_przy(prawe[3])
-        self.play(FadeIn(ptaszek, scale=1.5), prawe[3].animate.set_color(czarny))
+        self.play(FadeIn(ptaszek, scale=1.5), rach[1:].animate.set_color(czarny))
         self.next_slide()
         self.play(FadeOut(VGroup(*etykiety, *lewe, *prawe, *strzalki, dowod, ptaszek, ptaszki)))
 
