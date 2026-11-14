@@ -214,8 +214,8 @@ class LematBaza(Slide):
         self.play(FadeOut(motywacja, shift=0.2 * UP))
 
         lemat = VGroup(
-            Tex(r"\textbf{Lemat.} Jeżeli $y_0\in B_p(x_0,\varepsilon)$, to istnieje $\delta>0$ takie, że", font_size=32),
-            MathTex(r"B_p(y_0,\delta)\subset B_p(x_0,\varepsilon).", font_size=34),
+            Tex(r"\textbf{Lemat.} Jeżeli $y\in B_p(x,\varepsilon)$, to istnieje $\delta>0$ takie, że", font_size=32),
+            MathTex(r"B_p(y,\delta)\subset B_p(x,\varepsilon).", font_size=34),
         ).arrange(DOWN, buff=0.15).to_edge(UP, buff=0.45)
         self.play(FadeIn(lemat, shift=0.2 * DOWN))
         self.next_slide()
@@ -227,12 +227,12 @@ class LematBaza(Slide):
         delta = x0 + eps - max(x0, y0)
         kx = Dot(os.n2p(x0), radius=0.09, color=KOLOR_CZESCIOWA).set_z_index(10)
         ky = Dot(os.n2p(y0), radius=0.09, color=KOLOR_Y).set_z_index(10)
-        ex = MathTex("x_0", font_size=30).next_to(kx, DOWN, buff=0.45)
-        ey = MathTex("y_0", font_size=30).next_to(ky, DOWN, buff=0.45)
+        ex = MathTex("x", font_size=30).next_to(kx, DOWN, buff=0.45)
+        ey = MathTex("y", font_size=30).next_to(ky, DOWN, buff=0.45)
         kula_x = _kula_na_osi(os, x0 + eps, KOLOR_CZESCIOWA, 0.35)
         kula_y = _kula_na_osi(os, y0 + delta, KOLOR_Y, 0.7)
-        e_kx = MathTex(r"B_p(x_0,\varepsilon)", font_size=30, color=KOLOR_CZESCIOWA).next_to(kula_x[0], RIGHT, buff=0.3)
-        e_ky = MathTex(r"B_p(y_0,\delta)", font_size=30, color=KOLOR_Y).next_to(kula_y[0], RIGHT, buff=0.3)
+        e_kx = MathTex(r"B_p(x,\varepsilon)", font_size=30, color=KOLOR_CZESCIOWA).next_to(kula_x[0], RIGHT, buff=0.3)
+        e_ky = MathTex(r"B_p(y,\delta)", font_size=30, color=KOLOR_Y).next_to(kula_y[0], RIGHT, buff=0.3)
 
         # Przykład, w którym rysujemy.
         przyklad = MathTex(r"X=[0,\infty),\qquad p(x,y)=\max\{x,y\}", font_size=34)
@@ -253,20 +253,20 @@ class LematBaza(Slide):
         FS = 32
         O = KOLOR_CZESCIOWA
 
-        L1 = MathTex(r"\text{\textit{Dowód.} Ustalmy }", r"y_0\in B_p(x_0,\varepsilon)",
-                     r"\coloneqq\{x\in X :", r"p(x_0,x)<p(x_0,x_0)+\varepsilon", r"\}.", font_size=FS)
-        L2 = MathTex(r"\text{Niech }", r"\delta\coloneqq p(x_0,x_0)+\varepsilon-p(x_0,y_0)", r">0", r".", font_size=FS)
-        L3 = MathTex(r"\text{Niech }", r"x\in B_p(y_0,\delta)", r"\coloneqq\{x\in X :",
-                     r"p(y_0,x)<p(y_0,y_0)+\delta", r"\}.\ \text{Wtedy}", font_size=FS)
-        L4 = MathTex(r"p(x_0,x)", r"\le", r"p(x_0,y_0)+", r"p(y_0,x)-p(y_0,y_0)", r"<",
-                     r"p(x_0,y_0)+\delta", r"=", r"p(x_0,x_0)+\varepsilon", r",", font_size=FS + 2)
-        L5 = Tex(r"czyli $x\in B_p(x_0,\varepsilon)$. \hfill $\blacksquare$", font_size=FS)
+        L1 = MathTex(r"\text{\textit{Dowód.} Ustalmy }", r"y\in B_p(x,\varepsilon)",
+                     r"\coloneqq\{u\in X :", r"p(x,u)<p(x,x)+\varepsilon", r"\}.", font_size=FS)
+        L2 = MathTex(r"\text{Niech }", r"\delta\coloneqq p(x,x)+\varepsilon-p(x,y)", r">0", r".", font_size=FS)
+        L3 = MathTex(r"\text{Niech }", r"z\in B_p(y,\delta)", r"\coloneqq\{u\in X :",
+                     r"p(y,u)<p(y,y)+\delta", r"\}.\ \text{Wtedy}", font_size=FS)
+        L4 = MathTex(r"p(x,z)", r"\le", r"p(x,y)+", r"p(y,z)-p(y,y)", r"<", r"p(x,y)+\delta",
+                     r"=", r"p(x,x)+\varepsilon", r",", font_size=FS + 2)
+        L5 = Tex(r"czyli $z\in B_p(x,\varepsilon)$. \hfill $\blacksquare$", font_size=FS)
         dowod = VGroup(L1, L2, L3, L4, L5).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
         dowod.next_to(os, DOWN, buff=0.85).to_edge(LEFT, buff=0.8)
         L4.shift(0.6 * RIGHT + 0.2 * DOWN)
         L5.shift(0.2 * DOWN)
         tag = Tex(r"(P4)", font_size=24, color=KOLOR_DRUGORZEDNY).next_to(L4[1], UP, buff=0.1)
-        tresc_p4 = MathTex(r"\text{(P4)}\quad p(x_0,x)\le p(x_0,y_0)+p(y_0,x)-p(y_0,y_0)",
+        tresc_p4 = MathTex(r"\text{(P4)}\quad p(a,c)\le p(a,b)+p(b,c)-p(b,b)",
                            font_size=30, color=KOLOR_CZESCIOWA).to_edge(DOWN, buff=0.3)
 
         def zaswiec(*m):
