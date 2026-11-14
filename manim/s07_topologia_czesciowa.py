@@ -280,12 +280,20 @@ class LematBaza(Slide):
         self.next_slide()
 
         # Niech delta := ...  (pauza)  > 0 — bo y jest w kuli, czyli p(x,y) < p(x,x)+eps.
+        # Kropka najpierw stoi tuż za definicją delta, potem przesuwa się za "> 0".
+        kropka_cel = L2[3].get_center()
+        dol_kropki = L2[3].get_bottom()[1]
+        L2[3].next_to(L2[1], RIGHT, buff=0.05)
+        L2[3].shift((dol_kropki - L2[3].get_bottom()[1]) * UP)
         self.play(FadeIn(L2[:2]), FadeIn(L2[3]))
         self.next_slide()
+        # Z czego korzystamy: y jest w kuli wokół x. Podświetlenie zostaje do kliknięcia.
         self.play(*zaswiec(L1[1], L1[3]), run_time=0.6)
-        self.play(FadeIn(L2[2], shift=0.2 * RIGHT))
-        self.wait(0.4)
-        self.play(*zgas(L1[1], L1[3]), run_time=0.6)
+        self.next_slide()
+        L2[2].set_color(O)
+        self.play(L2[3].animate.move_to(kropka_cel), FadeIn(L2[2], shift=0.2 * RIGHT), run_time=0.7)
+        self.next_slide()
+        self.play(*zgas(L1[1], L1[3], L2[2]), run_time=0.6)
         self.next_slide()
 
         # Niech z w kuli wokół y.
