@@ -215,6 +215,7 @@ class Oddzielanie(Slide):
         self.play(FadeIn(tekst4, shift=0.2 * RIGHT), FadeIn(dx), FadeIn(dy), FadeIn(ex), FadeIn(ey))
         self.play(Create(odc))
         self.play(GrowFromCenter(kx), GrowFromCenter(ky))
+        self.next_slide()
         self.play(FadeIn(wniosek4))
         self.wait(0.4)
         self.play(wniosek4.animate.set_color(KOLOR_TEKST), run_time=0.8)
