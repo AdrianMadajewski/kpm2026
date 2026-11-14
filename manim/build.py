@@ -24,6 +24,7 @@ SCENES = [
     # 2. Partial metric spaces
     ("s01_plan.py", "PlanSekcja2"),
     ("s04_matthews.py", "Matthews"),
+    ("s04_matthews.py", "Strumienie"),
     ("s05_czesciowa.py", "MetrykaCzesciowa"),
     ("s06_przyklad_max.py", "PrzykladMax"),
     ("s06_przyklad_max.py", "Interpretacja"),
