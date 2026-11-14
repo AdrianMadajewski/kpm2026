@@ -152,12 +152,16 @@ class PrzykladMax(Slide):
         def m():
             return max(xx.get_value(), yy.get_value())
 
+        def kolor_m():
+            # Pomarańczowy, gdy maksimum to x; fioletowy, gdy y.
+            return KOLOR_CZESCIOWA if xx.get_value() >= yy.get_value() else KOLOR_Y
+
         kwadrat = always_redraw(lambda: Polygon(
             ax.c2p(0, 0), ax.c2p(m(), 0), ax.c2p(m(), m()), ax.c2p(0, m()),
-            color=KOLOR_TEKST, stroke_width=4).set_fill(GRAY, 0.12))
+            color=kolor_m(), stroke_width=4).set_fill(kolor_m(), 0.12))
         etyk_pxy = always_redraw(lambda: VGroup(
-            MathTex(r"p(x,y)=\max\{x,y\}=", font_size=30),
-            DecimalNumber(m(), num_decimal_places=2, font_size=30),
+            MathTex(r"p(x,y)=\max\{x,y\}=", font_size=30, color=kolor_m()),
+            DecimalNumber(m(), num_decimal_places=2, font_size=30, color=kolor_m()),
         ).arrange(RIGHT, buff=0.1).next_to(ax.c2p(0, m()), LEFT, buff=0.55))
         self.play(Create(kwadrat), FadeIn(etyk_pxy))
         self.next_slide()
@@ -186,7 +190,7 @@ class PrzykladMax(Slide):
         slupek_x = Line(ax.c2p(3, 0), ax.c2p(3, 3), color=KOLOR_CZESCIOWA,
                         stroke_width=7).set_cap_style(CapStyleType.ROUND)
         linia_x = DashedLine(ax.c2p(3, 3), ax.c2p(0, 3), color=KOLOR_CZESCIOWA, stroke_width=2)
-        podpis_x = MathTex(r"p(x,x)=3.00", font_size=30, color=KOLOR_CZESCIOWA)
+        podpis_x = MathTex(r"p(x,x)=\max\{x,x\}=3.00", font_size=30, color=KOLOR_CZESCIOWA)
         podpis_x.next_to(ax.c2p(0, 3), LEFT, buff=0.55)
         self.play(Create(slupek_x))
         self.bring_to_front(kropka_s)
@@ -206,7 +210,7 @@ class PrzykladMax(Slide):
             ax.c2p(y.get_value(), y.get_value()), ax.c2p(0, y.get_value()),
             color=KOLOR_Y, stroke_width=2) if y.get_value() > 0.1 else VMobject())
         podpis_y = always_redraw(lambda: VGroup(
-            MathTex(r"p(y,y)=", font_size=30, color=KOLOR_Y),
+            MathTex(r"p(y,y)=\max\{y,y\}=", font_size=30, color=KOLOR_Y),
             DecimalNumber(y.get_value(), num_decimal_places=2, font_size=30, color=KOLOR_Y),
         ).arrange(RIGHT, buff=0.1).next_to(ax.c2p(0, y.get_value()), LEFT, buff=0.55))
         self.play(FadeIn(kropka_y), FadeIn(etyk_y))
