@@ -16,7 +16,7 @@ class Tytul(Slide):
         autor = VGroup(
             Tex(r"Adrian Madajewski", font_size=32),
             Tex(r"Wydział Matematyki i Informatyki UAM", font_size=26, color=KOLOR_DRUGORZEDNY),
-            Tex(r"OMatKo!!! 2026, Wrocław", font_size=26, color=KOLOR_DRUGORZEDNY),
+            Tex(r"KPM 2026, Warszawa", font_size=26, color=KOLOR_DRUGORZEDNY),
         ).arrange(DOWN, buff=0.15).to_edge(DOWN, buff=0.6)
 
         # Autor i tytuł widoczne od razu.
