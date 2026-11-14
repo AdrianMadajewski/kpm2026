@@ -116,10 +116,11 @@ class PrzykladMax(Slide):
         self.play(bso[1].animate.set_color(czarny), rach[4].animate.set_color(czarny), run_time=0.5)
         self.next_slide()
         # Udowodniona nierówność (P4) dla max: podświetlenie, pauza, ptaszek.
-        self.play(rach[1:].animate.set_color(O), run_time=0.5)
+        # Tylko końce łańcucha: max{x,y}+max{y,z}-y  ...  = max{x,z}.
+        self.play(rach[1].animate.set_color(O), rach[4].animate.set_color(O), run_time=0.5)
         self.next_slide()
         ptaszek = ptaszek_przy(prawe[3])
-        self.play(FadeIn(ptaszek, scale=1.5), rach[1:].animate.set_color(czarny))
+        self.play(FadeIn(ptaszek, scale=1.5), rach[1].animate.set_color(czarny), rach[4].animate.set_color(czarny))
         self.next_slide()
         self.play(FadeOut(VGroup(*etykiety, *lewe, *prawe, *strzalki, dowod, ptaszek, ptaszki)))
 
