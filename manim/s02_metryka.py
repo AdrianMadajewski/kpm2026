@@ -39,11 +39,6 @@ class PrzestrzenMetryczna(Slide):
             tips=False,
             axis_config={"include_numbers": True, "font_size": 24},
         ).to_edge(RIGHT, buff=0.7).shift(0.35 * UP)
-        podpis_ax = MathTex(
-            r"X\coloneqq\mathbb{R}^2,\quad "
-            r"d(x,y)\coloneqq\sqrt{(x_1-y_1)^2+(x_2-y_2)^2}",
-            font_size=28,
-        ).next_to(ax, UP, buff=0.2).to_edge(RIGHT, buff=0.4)
 
         px = np.array([1.0, 1.0])
         py = ValueTracker(3.0), ValueTracker(1.5)
@@ -73,7 +68,7 @@ class PrzestrzenMetryczna(Slide):
         self.add(definicja[0], definicja[1])
         # Definicja razem z rysunkiem; d: X x X -> [0, inf) na niebiesko.
         wstep[1].set_color(KOLOR_METRYKA)
-        self.play(FadeIn(wstep, shift=0.2 * RIGHT), Create(ax), FadeIn(podpis_ax))
+        self.play(FadeIn(wstep, shift=0.2 * RIGHT), Create(ax))
         self.play(FadeIn(kropka_x), FadeIn(etyk_x), FadeIn(kropka_y), FadeIn(etyk_y))
         self.play(Create(odc_xy), FadeIn(wartosc))
         self.next_slide()
