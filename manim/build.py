@@ -4,7 +4,9 @@ Usage:
     python build.py                  # quick preview (360p, 10 fps)
     python build.py --quality h      # conference version (1080p, 60 fps)
     python build.py --scene Tytul    # render a single scene only (no HTML)
+    python build.py --scene PrzykladMax --html   # render one scene and bundle it alone into PrzykladMax.html
     python build.py --html-only      # skip rendering, just bundle the HTML
+    python build.py --scene PrzykladMax --html-only  # bundle one already rendered scene into PrzykladMax.html
 """
 import argparse
 import subprocess
@@ -69,6 +71,8 @@ def main():
                         help="p=preview 360p/10fps, l=480p, m=720p, h=1080p, k=4K (default: p)")
     parser.add_argument("--scene", help="render only this scene class (skips the HTML step)")
     parser.add_argument("--html-only", action="store_true", help="only bundle already rendered scenes")
+    parser.add_argument("--html", action="store_true",
+                        help="with --scene: also bundle that scene alone into <Scene>.html")
     args = parser.parse_args()
 
     if args.scene and args.scene not in {cls for _, cls in SCENES}:
@@ -81,12 +85,14 @@ def main():
             run([sys.executable, "-m", "manim", "render", *QUALITY[args.quality],
                  "--disable_caching", file, cls])
 
-    if args.scene:
+    if args.scene and not (args.html or args.html_only):
         return
 
+    scenes = [args.scene] if args.scene else [cls for _, cls in SCENES]
+    output = f"{args.scene}.html" if args.scene else OUTPUT
     run([
         sys.executable, "-m", "manim_slides", "convert",
-        *[cls for _, cls in SCENES], OUTPUT,
+        *scenes, output,
         "--to", "html", "--one-file", "--offline",
         f"-ctitle={TITLE}",
         "-cbackground_color=white",
@@ -94,7 +100,7 @@ def main():
         "-cslide_number=true",
         "-cprogress=true",
     ])
-    print(f"Done: {OUTPUT}")
+    print(f"Done: {output}")
 
 
 if __name__ == "__main__":

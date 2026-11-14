@@ -29,6 +29,8 @@ python build.py --quality h      # 1080p60, the conference version
 python build.py                  # quick 360p preview
 python build.py --scene Kule     # re-render one scene only
 python build.py --html-only      # re-bundle without rendering
+python build.py --scene PrzykladMax --quality h --html   # one scene alone -> PrzykladMax.html
+python build.py --scene PrzykladMax --html-only          # bundle an already rendered scene alone
 ```
 
 The result is `prezentacja.html`: one file with the videos and reveal.js embedded,

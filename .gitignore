@@ -21,3 +21,4 @@ __pycache__/
 # Wynik manim-slides (duży plik z osadzonymi filmami)
 manim/prezentacja.html
 manim/prezentacja_assets/
+manim/*.html
