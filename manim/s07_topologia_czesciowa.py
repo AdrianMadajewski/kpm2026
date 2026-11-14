@@ -234,6 +234,12 @@ class LematBaza(Slide):
         e_kx = MathTex(r"B_p(x,\varepsilon)", font_size=30, color=KOLOR_CZESCIOWA).next_to(kula_x[0], RIGHT, buff=0.3)
         e_ky = MathTex(r"B_p(y,\delta)", font_size=30, color=KOLOR_Y).next_to(kula_y[0], RIGHT, buff=0.3)
 
+        # Przykład, w którym rysujemy.
+        przyklad = MathTex(r"X=[0,\infty),\qquad p(x,y)=\max\{x,y\}", font_size=34)
+        przyklad.next_to(lemat, DOWN, buff=0.25)
+        self.play(FadeIn(przyklad, shift=0.2 * DOWN))
+        self.next_slide()
+
         self.play(Create(os))
         self.play(FadeIn(kx), FadeIn(ex))
         self.play(FadeIn(kula_x), FadeIn(e_kx))
