@@ -22,12 +22,12 @@ class CiagCauchyego(Slide):
         # ---- Definicja w przestrzeni metrycznej ----
         A = Tex(r"\textbf{Definicja.} Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest \emph{ciągiem Cauchy'ego} w ",
                 font_size=FS)
-        B = MathTex(r"(X,d)", font_size=FS)
+        B = MathTex(r"(X,", r"d", r")", font_size=FS)
         C = Tex(r", gdy", font_size=FS)
         wiersz1 = VGroup(A, B, C).arrange(RIGHT, buff=0.12)
         C.next_to(B, RIGHT, buff=0.04).align_to(A, DOWN)
-        D = MathTex(r"\forall\,\varepsilon>0\ \ \exists\,N\in\mathbb{N}\ \ \forall\,n,m\ge N\colon\ \ "
-                    r"d(x_n,x_m)<\varepsilon.", font_size=FS + 2)
+        D = MathTex(r"\forall\,\varepsilon>0\ \ \exists\,N\in\mathbb{N}\ \ \forall\,n,m\ge N\colon\ \ ",
+                    r"d", r"(x_n,x_m)", r"<\varepsilon.", font_size=FS + 2)
         wiersz2 = VGroup(D)
         definicja = VGroup(wiersz1, wiersz2).arrange(DOWN, buff=0.35).next_to(naglowek, DOWN, buff=0.35)
         self.play(FadeIn(wiersz1, shift=0.2 * DOWN))
@@ -39,11 +39,19 @@ class CiagCauchyego(Slide):
         self.next_slide()
 
         # Przejście do metryki częściowej: d -> p, warunek z "granicą" a.
-        B2 = MathTex(r"(X,p)", font_size=FS, color=O).move_to(B)
-        D2 = MathTex(r"\exists\,a\in\mathbb{R}\ \ \forall\,\varepsilon>0\ \ \exists\,N\in\mathbb{N}\ \ "
-                     r"\forall\,n,m\ge N\colon\ \ |p(x_n,x_m)-a|<\varepsilon.", font_size=FS + 2, color=O)
+        # Wspólne fragmenty przesuwają się na miejsce, d zmienia się w p, nowe części się pojawiają.
+        B2 = MathTex(r"(X,", r"p", r")", font_size=FS, color=O).move_to(B)
+        D2 = MathTex(r"\exists\,a\in\mathbb{R}\ \ ",
+                     r"\forall\,\varepsilon>0\ \ \exists\,N\in\mathbb{N}\ \ \forall\,n,m\ge N\colon\ \ ",
+                     r"|", r"p", r"(x_n,x_m)", r"-a|", r"<\varepsilon.", font_size=FS + 2, color=O)
         D2.move_to(D)
-        self.play(TransformMatchingShapes(B, B2), TransformMatchingShapes(D, D2), run_time=1.2)
+        self.play(
+            ReplacementTransform(B[0], B2[0]), FadeTransform(B[1], B2[1]), ReplacementTransform(B[2], B2[2]),
+            ReplacementTransform(D[0], D2[1]), FadeTransform(D[1], D2[3]),
+            ReplacementTransform(D[2], D2[4]), ReplacementTransform(D[3], D2[6]),
+            run_time=1.0,
+        )
+        self.play(FadeIn(D2[0], shift=0.2 * RIGHT), FadeIn(D2[2]), FadeIn(D2[5], shift=0.2 * LEFT), run_time=0.7)
         self.next_slide()
         self.play(B2.animate.set_color(KOLOR_TEKST), D2.animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
