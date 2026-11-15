@@ -208,17 +208,16 @@ class TwierdzenieMatthewsa(Slide):
         A3 = MathTex(r"\text{Niech } m>n.\ \text{Wtedy}", font_size=FS)
         R1 = MathTex(r"p(x_n,x_m)", r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", r"-p(x_{n+1},x_{n+1})",
                      font_size=FS)
-        R2 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", font_size=FS)
         R3 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_{n+2})+", r"p(x_{n+2},x_m)", r"-p(x_{n+2},x_{n+2})",
                      font_size=FS)
         R4 = MathTex(r"\le\dots\le", r"\sum_{k=n}^{m-1}p(x_k,x_{k+1})", r"\le\sum_{k=n}^{m-1}c^k\, p(x_1,x_0)",
                      font_size=FS)
         R5 = MathTex(r"=p(x_1,x_0)\sum_{k=n}^{m-1}c^k", r"\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".", font_size=FS)
-        strona1 = VGroup(A1, A2, A3, R1, R2, R3, R4, R5).arrange(DOWN, aligned_edge=LEFT, buff=0.08)
-        strona1.next_to(tw, DOWN, buff=0.22).to_edge(LEFT, buff=0.6)
+        strona1 = VGroup(A1, A2, A3, R1, R3, R4, R5).arrange(DOWN, aligned_edge=LEFT, buff=0.24)
+        strona1.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
         A2.shift(0.6 * RIGHT)
         R1.shift(0.6 * RIGHT)
-        for r in (R2, R3, R4, R5):
+        for r in (R3, R4, R5):
             r.align_to(R1[1], LEFT)
 
         pokaz(A1[0])
@@ -245,22 +244,24 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(R1[1:], pomaranczowe=[R1[1], R1[2], R1[3]])
         wyszarz(R1[1], R1[2], R1[3], przyp=p4_a)
 
-        # Odejmowany wyraz jest nieujemny: pomijamy go.
+        # Odejmowany wyraz jest nieujemny: znika.
         nieuj = przypomnienie(r"p(x_{n+1},x_{n+1})\ge 0")
         self.play(R1[3].animate.set_color(O), FadeIn(nieuj, shift=0.2 * UP), run_time=0.6)
         self.next_slide()
-        pokaz(R2)
-        wyszarz(R1[3], przyp=nieuj)
+        czlon_a = R1[3]
+        self.play(FadeOut(czlon_a, shift=0.2 * DOWN), FadeOut(nieuj, shift=0.2 * DOWN), run_time=0.6)
+        R1.remove(czlon_a)  # inaczej wraca przy FadeOut całej strony
+        self.next_slide()
 
         # To samo dla p(x_{n+1}, x_m): (P4) z y = x_{n+2}.
-        self.play(R2[1].animate.set_color(O), run_time=0.5)
+        self.play(R1[2].animate.set_color(O), run_time=0.5)
         self.next_slide()
         p4_b = przypomnienie(r"\text{(P4)}\quad p(x_{n+1},x_m)\le p(x_{n+1},x_{n+2})+p(x_{n+2},x_m)"
                              r"-p(x_{n+2},x_{n+2})")
         pokaz_przyp(p4_b)
         pokaz(R3, pomaranczowe=[R3[1], R3[2], R3[3]])
-        wyszarz(R2[1], R3[1], R3[2], R3[3], przyp=p4_b)
-        # Odejmowany wyraz jest nieujemny: zapominamy o nim.
+        wyszarz(R1[2], R3[1], R3[2], R3[3], przyp=p4_b)
+        # Odejmowany wyraz jest nieujemny: znika.
         nieuj_b = przypomnienie(r"p(x_{n+2},x_{n+2})\ge 0")
         self.play(R3[3].animate.set_color(O), FadeIn(nieuj_b, shift=0.2 * UP), run_time=0.6)
         self.next_slide()
@@ -305,8 +306,8 @@ class TwierdzenieMatthewsa(Slide):
         C3 = MathTex(r"\text{Ponieważ }", r"\frac{c^N}{1-c}\,p(x_1,x_0)\xrightarrow[N\to\infty]{}0",
                      r"\text{, to }", r"\lim_{n,m\to\infty}p(x_n,x_m)=0", r",", font_size=FS)
         C4 = MathTex(r"\text{czyli }", r"(x_n)_{n\in\mathbb{N}}\text{ jest ciągiem Cauchy'ego}", r".", font_size=FS)
-        strona2 = VGroup(A0r, A4r, A5, A5b, C1, C2, C3, C4).arrange(DOWN, aligned_edge=LEFT, buff=0.16)
-        strona2.next_to(tw, DOWN, buff=0.3).to_edge(LEFT, buff=0.6)
+        strona2 = VGroup(A0r, A4r, A5, A5b, C1, C2, C3, C4).arrange(DOWN, aligned_edge=LEFT, buff=0.24)
+        strona2.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
 
         cn0 = przypomnienie(r"c\in[0,1)\implies c^n\xrightarrow[n\to\infty]{}0")
         p3 = przypomnienie(r"\text{(P3)}\quad p(x,y)=p(y,x)")
@@ -364,16 +365,15 @@ class TwierdzenieMatthewsa(Slide):
         B2 = MathTex(r"\textit{Punkt stały.}\ \text{Dla } n\in\mathbb{N}\text{ mamy}", font_size=FS)
         B3 = MathTex(r"p(x^*,f(x^*))", r"\le p(x^*,x_{n+1})+p(x_{n+1},f(x^*))", r"-p(x_{n+1},x_{n+1})",
                      font_size=FS)
-        B3b = MathTex(r"\le p(x^*,x_{n+1})+p(x_{n+1},f(x^*))", font_size=FS)
         B3c = MathTex(r"=p(x^*,x_{n+1})+", r"p(f(x_n),f(x^*))", font_size=FS)
         B3d = MathTex(r"\le p(x^*,x_{n+1})+", r"c\cdot p(x_n,x^*)", r"\xrightarrow[n\to\infty]{}0", r".",
                       font_size=FS)
         B4 = MathTex(r"\text{Zatem }", r"p(x^*,f(x^*))=0", r"\text{, więc z Lematu }", r"f(x^*)=x^*", r".",
                      font_size=FS)
-        strona3 = VGroup(B1, B2, B3, B3b, B3c, B3d, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
+        strona3 = VGroup(B1, B2, B3, B3c, B3d, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.28)
         strona3.next_to(tw, DOWN, buff=0.35).to_edge(LEFT, buff=0.6)
         B3.shift(0.6 * RIGHT)
-        for r in (B3b, B3c, B3d):
+        for r in (B3c, B3d):
             r.align_to(B3[1], LEFT)
 
         # Zupełność: granica x* i od razu p(x*, x*) = 0.
@@ -398,8 +398,10 @@ class TwierdzenieMatthewsa(Slide):
         nieuj_c = przypomnienie(r"p(x_{n+1},x_{n+1})\ge 0")
         self.play(B3[2].animate.set_color(O), FadeIn(nieuj_c, shift=0.2 * UP), run_time=0.6)
         self.next_slide()
-        pokaz(B3b)
-        wyszarz(B3[2], przyp=nieuj_c)
+        czlon_c = B3[2]
+        self.play(FadeOut(czlon_c, shift=0.2 * DOWN), FadeOut(nieuj_c, shift=0.2 * DOWN), run_time=0.6)
+        B3.remove(czlon_c)
+        self.next_slide()
         # x_{n+1} = f(x_n).
         iter_c = przypomnienie(r"x_{n+1}=f(x_n)")
         pokaz_przyp(iter_c)
