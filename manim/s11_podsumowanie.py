@@ -72,6 +72,40 @@ class Podsumowanie(Slide):
         self.next_slide()
 
 
+class Literatura(Slide):
+    """Literatura."""
+
+    def construct(self):
+        naglowek = Tex(r"Literatura", font_size=44).to_edge(UP, buff=0.4)
+        pozycje = [
+            r"S.\,G.~Matthews, \emph{Metric domains for completeness},\\"
+            r"praca doktorska, University of Warwick, 1985.",
+            r"S.\,G.~Matthews, \emph{Partial metric topology},\\"
+            r"Annals of the New York Academy of Sciences 728 (1994), 183--197.",
+            r"M.~Bukatin, R.~Kopperman, S.\,G.~Matthews, H.~Pajoohesh, \emph{Partial metric spaces},\\"
+            r"The American Mathematical Monthly 116 (2009), no.~8, 708--718.",
+            r"G.~Kahn, \emph{The semantics of a simple language for parallel programming},\\"
+            r"Information Processing 74 (Proc.\ IFIP Congress), North-Holland, 1974, 471--475.",
+            r"S.\,G.~Matthews, \texttt{partialmetric.org} (\texttt{dcs.warwick.ac.uk/pmetric}).",
+        ]
+        wiersze = VGroup()
+        for i, t in enumerate(pozycje, start=1):
+            nr = Tex(rf"[{i}]", font_size=28, color=KOLOR_DRUGORZEDNY)
+            tekst = VGroup(*[MathTex(r"\text{" + linia + "}", font_size=28) for linia in t.split(r"\\")])
+            tekst.arrange(DOWN, aligned_edge=LEFT, buff=0.1)
+            wiersz = VGroup(nr, tekst).arrange(RIGHT, buff=0.25, aligned_edge=UP)
+            wiersze.add(wiersz)
+        wiersze.arrange(DOWN, aligned_edge=LEFT, buff=0.32)
+        wiersze.next_to(naglowek, DOWN, buff=0.5)
+        if wiersze.width > 13:
+            wiersze.scale_to_fit_width(13)
+        wiersze.set_x(0)
+
+        self.play(FadeIn(naglowek))
+        self.play(LaggedStart(*[FadeIn(w, shift=0.2 * RIGHT) for w in wiersze], lag_ratio=0.2), run_time=2.0)
+        self.next_slide()
+
+
 class Podziekowania(Slide):
     """Podziękowania za uwagę i kod QR do repozytorium z prezentacją."""
 

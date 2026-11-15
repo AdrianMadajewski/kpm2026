@@ -47,6 +47,7 @@ SCENES = [
     # Summary
     ("s01_plan.py", "PlanPodsumowanie"),
     ("s11_podsumowanie.py", "Podsumowanie"),
+    ("s11_podsumowanie.py", "Literatura"),
     ("s11_podsumowanie.py", "Podziekowania"),
 ]
 
