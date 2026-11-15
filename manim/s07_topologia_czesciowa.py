@@ -328,10 +328,12 @@ class LematBaza(Slide):
         # Krok 2: z w B_p(y, delta), czyli p(y,z) - p(y,y) < delta.
         self.play(*zaswiec(L3[1], L3[3], L4[3]), run_time=0.6)
         self.next_slide()
-        self.play(FadeIn(L4[4:6], shift=0.2 * RIGHT))
-        self.play(L4[5].animate.set_color(O), run_time=0.4)
-        self.wait(0.4)
-        self.play(*zgas(L3[1], L3[3], L4[3], L4[5]), run_time=0.6)
+        # Jedno kliknięcie: stare podświetlenie gaśnie, "< p(x,y) + delta" wchodzi na pomarańczowo
+        # i po chwili samo robi się czarne.
+        L4[5].set_color(O)
+        self.play(*zgas(L3[1], L3[3], L4[3]), FadeIn(L4[4:6], shift=0.2 * RIGHT), run_time=0.7)
+        self.wait(0.5)
+        self.play(*zgas(L4[5]), run_time=0.6)
         self.next_slide()
 
         # Krok 3: definicja delta.
