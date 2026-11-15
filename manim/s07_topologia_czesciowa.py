@@ -183,6 +183,28 @@ class Kule(Slide):
         self.next_slide()
 
 
+def _diabelek():
+    """Mały, sympatyczny diabełek: czerwona buzia, rogi, oczy, uśmiech, ogonek."""
+    czerw = ManimColor("#C8302E")
+    twarz = Circle(radius=0.5, color=czerw, stroke_width=3).set_fill(ManimColor("#E4573D"), 1)
+    rog_l = Polygon([-0.38, 0.28, 0], [-0.18, 0.42, 0], [-0.42, 0.78, 0],
+                    color=czerw, stroke_width=2).set_fill(czerw, 1)
+    rog_p = rog_l.copy().flip(UP).move_to([-rog_l.get_center()[0], rog_l.get_center()[1], 0])
+    oko_l = Dot([-0.17, 0.08, 0], radius=0.06, color=WHITE)
+    oko_p = Dot([0.17, 0.08, 0], radius=0.06, color=WHITE)
+    zrenica_l = Dot([-0.15, 0.06, 0], radius=0.03, color=BLACK)
+    zrenica_p = Dot([0.19, 0.06, 0], radius=0.03, color=BLACK)
+    brwi = VGroup(Line([-0.3, 0.24, 0], [-0.07, 0.17, 0], color=BLACK, stroke_width=3),
+                  Line([0.3, 0.24, 0], [0.07, 0.17, 0], color=BLACK, stroke_width=3))
+    usmiech = Arc(radius=0.24, start_angle=-PI + 0.55, angle=PI - 1.1, color=BLACK, stroke_width=3)
+    usmiech.move_to([0, -0.17, 0])
+    ogon = VMobject(color=czerw, stroke_width=3).set_points_smoothly(
+        [[0.42, -0.25, 0], [0.7, -0.35, 0], [0.8, -0.1, 0], [0.7, 0.1, 0]])
+    grot = Polygon([0.62, 0.08, 0], [0.82, 0.02, 0], [0.74, 0.24, 0], color=czerw,
+                   stroke_width=2).set_fill(czerw, 1)
+    return VGroup(ogon, grot, rog_l, rog_p, twarz, oko_l, oko_p, zrenica_l, zrenica_p, brwi, usmiech)
+
+
 def _koniec_otwarty(punkt, kolor):
     return Circle(radius=0.08, color=kolor, stroke_width=4).set_fill(WHITE, 1).move_to(punkt).set_z_index(5)
 
@@ -505,35 +527,36 @@ class WlasnosciTopologii(Slide):
         self.play(FadeIn(def_t1, shift=0.2 * DOWN))
         self.next_slide()
 
-        # ---- Przykład bez dowodu: max i dwa punkty 0 <= x < y ----
+        # ---- Przykład bez dowodu: max i dwa punkty 0 <= y < x ----
         M1 = MathTex(r"\text{Niech }", r"X=[0,\infty)", r",\ ", r"p(x,y)=\max\{x,y\}",
-                     r"\text{ oraz }", r"0\le x<y", r".", font_size=FS)
+                     r"\text{ oraz }", r"0\le y<x", r".", font_size=FS)
         M1.next_to(uwaga, DOWN, buff=0.6).to_edge(LEFT, buff=0.8)
         self.play(FadeIn(M1, shift=0.2 * RIGHT))
         self.next_slide()
 
-        # ---- Rysunek: x = 1.5, y = 3, kula wokół y kurczy się, a x wciąż w niej jest ----
+        # ---- Rysunek: y = 1.5, x = 3, kula wokół x kurczy się, a y wciąż w niej jest ----
         os1 = NumberLine(x_range=[0, 5, 1], length=6.2, include_numbers=True,
                          font_size=24, include_tip=False)
         os1.next_to(M1, DOWN, buff=1.5).align_to(M1, LEFT)
-        x1, y1 = 1.5, 3.0
-        sx = Dot(os1.n2p(x1), radius=0.08, color=O).set_z_index(10)
+        y1, x1 = 1.5, 3.0
         sy = Dot(os1.n2p(y1), radius=0.08, color=KOLOR_Y).set_z_index(10)
-        fx = MathTex("x", font_size=28).next_to(sx, DOWN, buff=0.4)
+        sx = Dot(os1.n2p(x1), radius=0.08, color=O).set_z_index(10)
         fy = MathTex("y", font_size=28).next_to(sy, DOWN, buff=0.4)
+        fx = MathTex("x", font_size=28).next_to(sx, DOWN, buff=0.4)
         self.play(Create(os1))
-        self.play(FadeIn(sx), FadeIn(fx), FadeIn(sy), FadeIn(fy))
+        self.play(FadeIn(sy), FadeIn(fy), FadeIn(sx), FadeIn(fx))
         self.next_slide()
 
         eps_t = ValueTracker(1.5)
-        kula_y = always_redraw(lambda: _kula_na_osi(os1, y1 + eps_t.get_value(), KOLOR_Y, 0.35))
-        e_ky = always_redraw(lambda: MathTex(r"B_p(y,\varepsilon)", font_size=28, color=KOLOR_Y)
-                             .next_to(kula_y[0], UP, buff=0.15).align_to(kula_y[0], RIGHT))
+        kula_x = always_redraw(lambda: _kula_na_osi(os1, x1 + eps_t.get_value(), O, 0.35))
+        e_kx = always_redraw(lambda: MathTex(r"B_p(x,\varepsilon)", font_size=28, color=O)
+                             .next_to(kula_x[0], UP, buff=0.15).align_to(kula_x[0], RIGHT))
         eps_lab = MathTex(r"\varepsilon=", font_size=30)
         eps_num = DecimalNumber(1.5, num_decimal_places=2, font_size=30)
-        eps_grp = VGroup(eps_lab, eps_num).arrange(RIGHT, buff=0.12).next_to(os1, DOWN, buff=0.75)
+        eps_grp = VGroup(eps_lab, eps_num).arrange(RIGHT, buff=0.12)
+        eps_grp.next_to(os1, DOWN, buff=0.75).align_to(os1, RIGHT)
         eps_num.add_updater(lambda m: m.set_value(eps_t.get_value()).next_to(eps_lab, RIGHT, buff=0.12))
-        self.play(FadeIn(kula_y), FadeIn(e_ky), FadeIn(eps_grp))
+        self.play(FadeIn(kula_x), FadeIn(e_kx), FadeIn(eps_grp))
         self.wait(0.2)
         self.next_slide()
 
@@ -541,5 +564,10 @@ class WlasnosciTopologii(Slide):
         self.next_slide()
         self.play(eps_t.animate.set_value(0.15), run_time=1.5)
         self.next_slide()
-        self.play(Indicate(sx, color=O, scale_factor=1.6))
+
+        # y podskakuje, a spod osi wyłania się diabełek — y nie da się wyrzucić z żadnej kuli wokół x.
+        diabelek = _diabelek().scale(0.55).next_to(fy, DOWN, buff=0.15)
+        self.play(Indicate(sy, color=KOLOR_Y, scale_factor=1.6),
+                  FadeIn(diabelek, shift=0.4 * UP), run_time=1.0)
+        self.play(Wiggle(diabelek, scale_value=1.1, rotation_angle=0.06 * TAU), run_time=0.8)
         self.next_slide()
