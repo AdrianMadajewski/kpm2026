@@ -54,7 +54,18 @@ class KulaCzesciowa(Slide):
         self.wait(0.3)
         for i in (0, 3, 5):
             kula_p[i].set_color(KOLOR_CZESCIOWA)
-        self.play(TransformMatchingShapes(kula_d, kula_p), run_time=1.3)
+        # Wspólne części przesuwają się na nowe miejsca, różne płynnie się przenikają,
+        # a nowy człon p(x,x)+ wjeżdża z góry.
+        self.play(
+            ReplacementTransform(kula_d[1], kula_p[1]),
+            ReplacementTransform(kula_d[2], kula_p[2]),
+            ReplacementTransform(kula_d[4], kula_p[4]),
+            ReplacementTransform(kula_d[5], kula_p[6]),
+            FadeTransform(kula_d[0], kula_p[0]),
+            FadeTransform(kula_d[3], kula_p[3]),
+            FadeIn(kula_p[5], shift=0.25 * DOWN),
+            run_time=1.2,
+        )
         self.play(FadeOut(podpis_d, shift=0.4 * LEFT), run_time=0.5)
         self.play(FadeIn(podpis_p, shift=0.4 * RIGHT), run_time=0.6)
         self.wait(0.5)
