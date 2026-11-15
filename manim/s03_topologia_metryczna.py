@@ -229,21 +229,22 @@ class ZbieznoscMetryczna(Slide):
         self.add(naglowek)
         B = KOLOR_METRYKA
 
-        # ---- Lewa kolumna ----
-        tekst_d = VGroup(
-            Tex(r"Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest zbieżny do $a\in X$, gdy", font_size=30),
-            MathTex(r"\lim_{n\to\infty} d(a,x_n)=0", r",", font_size=32),
-            Tex(r"tzn. $\forall\,\varepsilon>0\ \exists\,N\ \forall\,n\ge N\colon\ x_n\in B_d(a,\varepsilon)$.",
-                font_size=30),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        # ---- Lewa kolumna: najpierw definicja topologiczna, potem równoważność z d ----
         tekst_top = VGroup(
-            Tex(r"Topologicznie:", font_size=30, color=KOLOR_DRUGORZEDNY),
-            MathTex(r"x_n\to a", r"\iff", r"\forall\,U\in\tau_d,\ a\in U\ \ \exists\,N\ \forall\,n\ge N\colon\ x_n\in U",
+            Tex(r"Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest zbieżny do $a\in X$, gdy", font_size=30),
+            MathTex(r"\forall\,U\in\tau_d,\ a\in U\ \ \exists\,N\ \forall\,n\ge N\colon\ x_n\in U", r".",
                     font_size=30),
             Tex(r"(każde otoczenie $a$ zawiera prawie wszystkie wyrazy ciągu)", font_size=26,
                 color=KOLOR_DRUGORZEDNY),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
-        lewa = VGroup(tekst_d, tekst_top).arrange(DOWN, aligned_edge=LEFT, buff=0.6)
+        tekst_d = VGroup(
+            Tex(r"W przestrzeni metrycznej:", font_size=30, color=KOLOR_DRUGORZEDNY),
+            MathTex(r"x_n\to a", r"\iff", r"\forall\,\varepsilon>0\ \exists\,N\ \forall\,n\ge N\colon\ "
+                    r"x_n\in B_d(a,\varepsilon)", font_size=30),
+            MathTex(r"\iff", r"\lim_{n\to\infty} d(a,x_n)=0", r".", font_size=30),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        tekst_d[2].shift((tekst_d[1][1].get_left()[0] - tekst_d[2][0].get_left()[0]) * RIGHT)
+        lewa = VGroup(tekst_top, tekst_d).arrange(DOWN, aligned_edge=LEFT, buff=0.6)
         lewa.to_edge(LEFT, buff=0.4).shift(0.2 * DOWN)
         if lewa.get_right()[0] > ax.get_left()[0] - 0.2:
             lewa.scale_to_fit_width(ax.get_left()[0] - 0.2 - lewa.get_left()[0]).to_edge(LEFT, buff=0.4)
@@ -270,40 +271,17 @@ class ZbieznoscMetryczna(Slide):
         strz_a = Line(ea.get_corner(UR), da.get_center(), buff=0.08, color=B, stroke_width=2).set_z_index(6)
         ea = VGroup(ea, strz_a)
 
+        def koloruj(czy_w_srodku):
+            return [k.animate.set_color(B if czy_w_srodku(u) else GRAY_B) for k, u in zip(kropki, wyrazy)]
+
         self.play(Create(ax))
-        self.play(FadeIn(tekst_d[:2], shift=0.2 * RIGHT), FadeIn(da), FadeIn(ea))
+        self.play(FadeIn(tekst_top[:2], shift=0.2 * RIGHT), FadeIn(da), FadeIn(ea))
         self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki], lag_ratio=0.15), FadeIn(etykiety),
                   run_time=2.0)
         self.next_slide()
 
-        # ---- Wersja z kulami: eps maleje, N rośnie ----
-        self.play(FadeIn(tekst_d[2], shift=0.2 * RIGHT))
-
-        def N_dla(e):
-            return next(n for n in range(1, LICZBA + 1) if all(np.linalg.norm(u - a) < e for u in wyrazy[n - 1:]))
-
-        def opis(e):
-            return MathTex(rf"\varepsilon={e:.2f},\quad N={N_dla(e)}", font_size=30, color=B) \
-                .next_to(ax, DOWN, buff=0.35)
-
-        def koloruj(czy_w_srodku):
-            return [k.animate.set_color(B if czy_w_srodku(u) else GRAY_B) for k, u in zip(kropki, wyrazy)]
-
-        eps_lista = [1.0, 0.6, 0.3]
-        kula_a = kula(P(a), eps_lista[0] * J)
-        napis = opis(eps_lista[0])
-        self.play(FadeIn(kula_a), FadeIn(napis), *koloruj(lambda u: np.linalg.norm(u - a) < eps_lista[0]))
-        self.next_slide()
-        for e in eps_lista[1:]:
-            nowy = opis(e)
-            self.play(Transform(kula_a, kula(P(a), e * J)), FadeOut(napis), FadeIn(nowy),
-                      *koloruj(lambda u, e=e: np.linalg.norm(u - a) < e), run_time=1.0)
-            napis = nowy
-            self.next_slide()
-
         # ---- Wersja topologiczna: dowolny zbiór otwarty U wokół a ----
-        self.play(FadeOut(kula_a), FadeOut(napis), *[k.animate.set_color(KOLOR_TEKST) for k in kropki])
-        self.play(FadeIn(tekst_top, shift=0.2 * RIGHT))
+        self.play(FadeIn(tekst_top[2], shift=0.2 * RIGHT))
         self.next_slide()
 
         def zbior_U(srodek, szer, wys, kat):
@@ -328,4 +306,31 @@ class ZbieznoscMetryczna(Slide):
         U2 = zbior_U(*zbiory[1])
         self.play(Transform(U, U2), eU.animate.next_to(U2, UR, buff=0.0),
                   *koloruj(lambda u: w_elipsie(u, *zbiory[1])), run_time=1.0)
+        self.next_slide()
+
+        # ---- W przestrzeni metrycznej wystarczą kule: eps maleje, N rośnie ----
+        self.play(FadeOut(U), FadeOut(eU), *[k.animate.set_color(KOLOR_TEKST) for k in kropki])
+        self.play(FadeIn(tekst_d[:2], shift=0.2 * RIGHT))
+
+        def N_dla(e):
+            return next(n for n in range(1, LICZBA + 1) if all(np.linalg.norm(u - a) < e for u in wyrazy[n - 1:]))
+
+        def opis(e):
+            return MathTex(rf"\varepsilon={e:.2f},\quad N={N_dla(e)}", font_size=30, color=B) \
+                .next_to(ax, DOWN, buff=0.35)
+
+        eps_lista = [1.0, 0.6, 0.3]
+        kula_a = kula(P(a), eps_lista[0] * J)
+        napis = opis(eps_lista[0])
+        self.play(FadeIn(kula_a), FadeIn(napis), *koloruj(lambda u: np.linalg.norm(u - a) < eps_lista[0]))
+        self.next_slide()
+        for e in eps_lista[1:]:
+            nowy = opis(e)
+            self.play(Transform(kula_a, kula(P(a), e * J)), FadeOut(napis), FadeIn(nowy),
+                      *koloruj(lambda u, e=e: np.linalg.norm(u - a) < e), run_time=1.0)
+            napis = nowy
+            self.next_slide()
+
+        # ---- Równoważność z granicą odległości ----
+        self.play(FadeIn(tekst_d[2], shift=0.2 * RIGHT))
         self.next_slide()
