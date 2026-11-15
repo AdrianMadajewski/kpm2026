@@ -85,11 +85,10 @@ class Zbieznosc(Slide):
         wyszarz(Q1[2], przyp=baza)
 
         # Skąd Q2: definicja zbieżności (u góry) dla U := B_p(x, eps).
-        podkr = Underline(defn[1], color=O, stroke_width=3, buff=0.08)
         Q2[1].set_color(O)
-        self.play(defn[1].animate.set_color(O), Create(podkr), FadeIn(Q2, shift=0.2 * RIGHT))
+        self.play(defn[1].animate.set_color(O), FadeIn(Q2, shift=0.2 * RIGHT))
         self.next_slide()
-        self.play(defn[1].animate.set_color(KOLOR_DRUGORZEDNY), FadeOut(podkr), Q2[1].animate.set_color(KOLOR_TEKST),
+        self.play(defn[1].animate.set_color(KOLOR_DRUGORZEDNY), Q2[1].animate.set_color(KOLOR_TEKST),
                   run_time=0.6)
         self.next_slide()
 
@@ -110,12 +109,11 @@ class Zbieznosc(Slide):
         pokaz_przyp(lemat)
         pokaz(Q4[2:], pomaranczowe=[Q4[3]])
         wyszarz(Q4[3], przyp=lemat)
-        # Korzystamy z założenia (prawa strona stwierdzenia): podkreślenie.
-        podkr_z = Underline(stw[1], color=O, stroke_width=3, buff=0.05)
+        # Korzystamy z założenia (prawa strona stwierdzenia): podświetlenie.
         Q5[3].set_color(O)
-        self.play(stw[1].animate.set_color(O), Create(podkr_z), FadeIn(Q5, shift=0.2 * RIGHT))
+        self.play(stw[1].animate.set_color(O), FadeIn(Q5, shift=0.2 * RIGHT))
         self.next_slide()
-        wyszarz(Q5[3], stw[1], extra=[FadeOut(podkr_z)])
+        wyszarz(Q5[3], stw[1])
         pokaz(Q6[:2], pomaranczowe=[Q6[1]])
         wyszarz(Q6[1])
         pokaz_przyp(kula)
