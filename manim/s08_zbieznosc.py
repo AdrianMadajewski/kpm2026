@@ -166,7 +166,7 @@ class Zbieznosc(Slide):
         self.play(FadeIn(wn, shift=0.2 * RIGHT))
         self.next_slide()
 
-        konc = Tex(r"Wniosek: granica ciągu \textbf{nie jest jednoznaczna}.", font_size=36, color=O)
+        konc = Tex(r"\textbf{Granica ciągu nie jest jednoznaczna.}", font_size=36, color=O)
         konc.next_to(wn, DOWN, buff=0.6)
         self.play(FadeIn(konc, shift=0.2 * UP))
         self.wait(0.2)
