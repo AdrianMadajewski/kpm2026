@@ -70,3 +70,21 @@ class Podsumowanie(Slide):
                   FadeTransform(etykieta_x, etykieta_xs), run_time=1.0)
         self.play(Flash(punkt, color=KOLOR_METRYKA, line_length=0.25, flash_radius=0.3))
         self.next_slide()
+
+
+class Podziekowania(Slide):
+    """Podziękowania za uwagę i kod QR do repozytorium z prezentacją."""
+
+    def construct(self):
+        from pathlib import Path
+
+        dzieki = Tex(r"Dziękuję za uwagę!", font_size=60)
+        qr = SVGMobject(str(Path(__file__).parent / "grafika" / "qr_github.svg"))
+        qr.set_fill(KOLOR_TEKST, 1).set_stroke(width=0).set_height(3.4)
+        adres = Tex(r"\texttt{github.com/AdrianMadajewski/kpm2026}", font_size=30, color=KOLOR_DRUGORZEDNY)
+        VGroup(dzieki, qr, adres).arrange(DOWN, buff=0.5)
+
+        self.play(FadeIn(dzieki, shift=0.2 * DOWN))
+        self.next_slide()
+        self.play(FadeIn(qr, scale=0.9), FadeIn(adres, shift=0.2 * UP))
+        self.next_slide()
