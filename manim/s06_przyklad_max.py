@@ -266,7 +266,7 @@ class Interpretacja(Slide):
             self.play(FadeIn(p, shift=0.2 * RIGHT), run_time=0.6)
             self.next_slide()
 
-        pytanie = Tex(r"A co, jeśli \emph{każdy} punkt jest w pełni określony?",
-                      font_size=36).to_edge(DOWN, buff=0.45)
+        pytanie = Tex(r"A co, jeśli \emph{każdy} punkt jest w pełni określony?", font_size=36)
+        pytanie.next_to(punkty, DOWN, buff=0.9).set_x(0)
         self.play(FadeIn(pytanie, shift=0.2 * UP))
         self.next_slide()
