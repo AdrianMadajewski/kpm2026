@@ -1,6 +1,5 @@
 from manim_slides import Slide
 from common import *
-from s07_topologia_czesciowa import _kula_na_osi
 
 
 class Zbieznosc(Slide):
@@ -157,53 +156,18 @@ class Zbieznosc(Slide):
             self.play(R[k].animate.set_color(KOLOR_TEKST), run_time=0.5)
             self.next_slide()
 
+        lim = MathTex(r"\text{Zatem }", r"\lim_{n\to\infty} p(x,x_n)=x", r"=p(x,x)", r",", font_size=36)
+        lim.next_to(R, DOWN, buff=0.4)
+        self.play(FadeIn(lim, shift=0.2 * RIGHT))
+        self.next_slide()
+
         wn = Tex(r"więc $x_n\to x$ dla \emph{każdego} $x\in[0,\infty)$!", font_size=36)
-        wn.next_to(R, DOWN, buff=0.4)
+        wn.next_to(lim, DOWN, buff=0.4)
         self.play(FadeIn(wn, shift=0.2 * RIGHT))
         self.next_slide()
 
-        # ---- Rysunek na osi ----
-        os = NumberLine(x_range=[0, 5, 1], length=8, include_numbers=True,
-                        font_size=24, include_tip=False).move_to(np.array([0, -2.4, 0]))
-        xt = ValueTracker(1.0)
-        et = ValueTracker(1.0)
-        ciag = Dot(os.n2p(0), radius=0.09, color=KOLOR_Y).set_z_index(11)
-        e_ciag = MathTex(r"x_n", font_size=28, color=KOLOR_Y).next_to(ciag, DOWN, buff=0.4)
-        kx = always_redraw(lambda: Dot(os.n2p(xt.get_value()), radius=0.08, color=O).set_z_index(10))
-        ex = always_redraw(lambda: MathTex("x", font_size=28).next_to(kx, DOWN, buff=0.4))
-        kula = always_redraw(lambda: _kula_na_osi(os, xt.get_value() + et.get_value(), O, 0.35))
-        e_kula = always_redraw(lambda: MathTex(r"B_p(x,\varepsilon)", font_size=28, color=O)
-                               .next_to(kula[0], UP, buff=0.15).align_to(kula[0], RIGHT))
-        eps_lab = MathTex(r"\varepsilon=", font_size=30)
-        eps_num = DecimalNumber(1.0, num_decimal_places=2, font_size=30)
-        eps_grp = VGroup(eps_lab, eps_num).arrange(RIGHT, buff=0.12).move_to(np.array([5.4, -1.5, 0]))
-        eps_num.add_updater(lambda m: m.set_value(et.get_value()).next_to(eps_lab, RIGHT, buff=0.12))
-
-        self.play(Create(os))
-        self.play(FadeIn(ciag), FadeIn(e_ciag))
-        self.next_slide()
-        self.play(FadeIn(kx), FadeIn(ex))
-        self.next_slide()
-        self.play(FadeIn(kula), FadeIn(e_kula), FadeIn(eps_grp))
-        self.wait(0.2)
-        self.next_slide()
-
-        # epsilon maleje: kula wciąż zawiera x_n = 0.
-        self.play(et.animate.set_value(0.2), run_time=1.5)
-        self.next_slide()
-        self.play(Indicate(ciag, color=KOLOR_Y, scale_factor=1.6))
-        self.next_slide()
-
-        # x wędruje po osi: dla każdego x kula zawiera 0.
-        self.play(xt.animate.set_value(3.0), run_time=1.5)
-        self.next_slide()
-        self.play(xt.animate.set_value(4.5), run_time=1.2)
-        self.next_slide()
-        self.play(xt.animate.set_value(2.0), run_time=1.2)
-        self.next_slide()
-
-        konc = Tex(r"Granica ciągu \textbf{nie jest jednoznaczna}.", font_size=36, color=O)
-        konc.to_edge(DOWN, buff=0.35)
+        konc = Tex(r"Wniosek: granica ciągu \textbf{nie jest jednoznaczna}.", font_size=36, color=O)
+        konc.next_to(wn, DOWN, buff=0.6)
         self.play(FadeIn(konc, shift=0.2 * UP))
         self.wait(0.2)
         self.next_slide()
