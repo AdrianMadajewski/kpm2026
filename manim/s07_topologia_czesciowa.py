@@ -184,9 +184,9 @@ class Kule(Slide):
 
 
 def _diabelek():
-    """Mały, sympatyczny diabełek: czerwona buzia, rogi, oczy, uśmiech, ogonek."""
-    czerw = ManimColor("#C8302E")
-    twarz = Circle(radius=0.5, color=czerw, stroke_width=3).set_fill(ManimColor("#E4573D"), 1)
+    """Mały, sympatyczny diabełek w kolorze punktu y: buzia, rogi, oczy, uśmiech, ogonek."""
+    czerw = ManimColor("#5E2D7A")  # ciemny fiolet (kontur, rogi, ogon)
+    twarz = Circle(radius=0.5, color=czerw, stroke_width=3).set_fill(ManimColor("#7B3FA0"), 1)
     rog_l = Polygon([-0.38, 0.28, 0], [-0.18, 0.42, 0], [-0.42, 0.78, 0],
                     color=czerw, stroke_width=2).set_fill(czerw, 1)
     rog_p = rog_l.copy().flip(UP).move_to([-rog_l.get_center()[0], rog_l.get_center()[1], 0])
@@ -567,7 +567,15 @@ class WlasnosciTopologii(Slide):
 
         # y podskakuje, a spod osi wyłania się diabełek — y nie da się wyrzucić z żadnej kuli wokół x.
         diabelek = _diabelek().scale(0.55).next_to(fy, DOWN, buff=0.15)
-        self.play(Indicate(sy, color=KOLOR_Y, scale_factor=1.6),
-                  FadeIn(diabelek, shift=0.4 * UP), run_time=1.0)
-        self.play(Wiggle(diabelek, scale_value=1.1, rotation_angle=0.06 * TAU), run_time=0.8)
+        # Diabełek pojawia się i pulsuje razem z punktem y (to samo powiększenie tam i z powrotem).
+        diabelek.save_state()
+
+        def puls(m, a):
+            m.restore()
+            m.scale(1 + 0.6 * there_and_back(a))
+            m.set_opacity(min(1.0, 4 * a))
+
+        diabelek.set_opacity(0)
+        self.play(Indicate(sy, color=KOLOR_Y, scale_factor=1.6), UpdateFromAlphaFunc(diabelek, puls),
+                  run_time=1.0)
         self.next_slide()
