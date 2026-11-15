@@ -144,19 +144,42 @@ class TwierdzenieMatthewsa(Slide):
         # Nagłówek znika, a twierdzenie idzie do góry, żeby zrobić miejsce na dowód.
         self.play(FadeOut(naglowek, shift=0.3 * UP), tw.animate.to_edge(UP, buff=0.35), run_time=0.7)
 
+        # =============== Lemat: p(x,y) = 0 => x = y ===============
+        L0 = MathTex(r"\text{Zanim przejdziemy do dowodu:}", font_size=FS, color=KOLOR_DRUGORZEDNY)
+        L1 = MathTex(r"\textbf{Lemat.}\ \text{Jeśli } p(x,y)=0\text{, to } x=y.", font_size=FS + 2)
+        L2 = MathTex(r"\textit{Dowód.}\ \text{Z (P2) }", r"0\le p(x,x)\le p(x,y)=0", r".", font_size=FS)
+        L3 = MathTex(r"\text{Z (P2) i (P3) }", r"0\le p(y,y)\le p(y,x)=p(x,y)=0", r".", font_size=FS)
+        L4 = MathTex(r"\text{Zatem }", r"p(x,x)=p(x,y)=p(y,y)", r"\text{, więc z (P1) }", r"x=y", r".\ \ \blacksquare",
+                     font_size=FS)
+        lemat = VGroup(L0, L1, L2, L3, L4).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        lemat.next_to(tw, DOWN, buff=0.45).to_edge(LEFT, buff=0.6)
+        p2p3 = przypomnienie(r"\text{(P2)}\quad p(x,x)\le p(x,y),\qquad \text{(P3)}\quad p(x,y)=p(y,x)")
+        lemat_p = przypomnienie(r"\text{(Lemat)}\quad p(x,y)=0\implies x=y")
+
+        pokaz(L0)
+        pokaz(L1)
+        pokaz_przyp(p2p3)
+        pokaz(L2, pomaranczowe=[L2[1]])
+        wyszarz(L2[1])
+        pokaz(L3, pomaranczowe=[L3[1]])
+        wyszarz(L3[1], przyp=p2p3)
+        pokaz_przyp(p1)
+        pokaz(L4[:2], pomaranczowe=[L4[1]])
+        wyszarz(L4[1])
+        pokaz(L4[2:], pomaranczowe=[L4[3]])
+        wyszarz(L4[3], przyp=p1)
+        self.play(FadeOut(lemat, shift=0.3 * LEFT), run_time=0.7)
+        self.next_slide()
+
         # =============== Strona 0: jednoznaczność (prostsza, więc najpierw) ===============
         J1 = MathTex(r"\textit{Dowód.}\ \textit{Jednoznaczność.}\ \text{Niech }", r"f(x)=x", r"\text{ oraz }",
                      r"f(y)=y", r".", font_size=FS)
         J2 = MathTex(r"\text{Wtedy }", r"p(x,y)=p(f(x),f(y))", r"\le c\cdot p(x,y)", r",", font_size=FS)
         J3 = MathTex(r"\text{więc }", r"(1-c)\,p(x,y)\le 0", r"\text{. Ponieważ } c<1 \text{ i } p\ge 0\text{, to }",
                      r"p(x,y)=0", r".", font_size=FS)
-        J4 = MathTex(r"\text{Z (P2) i (P3) }", r"p(x,x)\le p(x,y)=0", r"\text{ oraz }",
-                     r"p(y,y)\le p(y,x)=p(x,y)=0", r".", font_size=FS)
-        J5 = MathTex(r"\text{Zatem }", r"p(x,x)=p(x,y)=p(y,y)", r"\text{, więc z (P1) }", r"x=y", r".",
-                     font_size=FS)
-        strona0 = VGroup(J1, J2, J3, J4, J5).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        J4 = MathTex(r"\text{Z Lematu }", r"x=y", r".", font_size=FS)
+        strona0 = VGroup(J1, J2, J3, J4).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         strona0.next_to(tw, DOWN, buff=0.45).to_edge(LEFT, buff=0.6)
-        p2p3 = przypomnienie(r"\text{(P2)}\quad p(x,x)\le p(x,y),\qquad \text{(P3)}\quad p(x,y)=p(y,x)")
 
         pokaz(J1[0])
         pokaz(J1[1:], pomaranczowe=[J1[1], J1[3]])
@@ -170,16 +193,9 @@ class TwierdzenieMatthewsa(Slide):
         wyszarz(J3[1])
         pokaz(J3[2:], pomaranczowe=[J3[3]])
         wyszarz(J3[3])
-        pokaz_przyp(p2p3)
-        pokaz(J4[:2], pomaranczowe=[J4[1]])
-        wyszarz(J4[1])
-        pokaz(J4[2:], pomaranczowe=[J4[3]])
-        wyszarz(J4[3], przyp=p2p3)
-        pokaz_przyp(p1)
-        pokaz(J5[:2], pomaranczowe=[J5[1]])
-        wyszarz(J5[1])
-        pokaz(J5[2:], pomaranczowe=[J5[3]])
-        wyszarz(J5[3], przyp=p1)
+        pokaz_przyp(lemat_p)
+        pokaz(J4, pomaranczowe=[J4[1]])
+        wyszarz(J4[1], przyp=lemat_p)
 
         self.play(FadeOut(strona0, shift=0.3 * LEFT), run_time=0.7)
         self.next_slide()
@@ -352,8 +368,8 @@ class TwierdzenieMatthewsa(Slide):
         B3c = MathTex(r"=p(x^*,x_{n+1})+", r"p(f(x_n),f(x^*))", font_size=FS)
         B3d = MathTex(r"\le p(x^*,x_{n+1})+", r"c\cdot p(x_n,x^*)", r"\xrightarrow[n\to\infty]{}0", r".",
                       font_size=FS)
-        B4 = MathTex(r"\text{Zatem }", r"p(x^*,f(x^*))=0", r"\text{, a z (P2) }",
-                     r"p(x^*,x^*)=p(f(x^*),f(x^*))=0", r"\text{, więc z (P1) }", r"f(x^*)=x^*", r".", font_size=FS)
+        B4 = MathTex(r"\text{Zatem }", r"p(x^*,f(x^*))=0", r"\text{, więc z Lematu }", r"f(x^*)=x^*", r".",
+                     font_size=FS)
         strona3 = VGroup(B1, B2, B3, B3b, B3c, B3d, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
         strona3.next_to(tw, DOWN, buff=0.35).to_edge(LEFT, buff=0.6)
         B3.shift(0.6 * RIGHT)
@@ -400,12 +416,9 @@ class TwierdzenieMatthewsa(Slide):
         wyszarz(B3d[2], przyp=zb_c)
         pokaz(B4[:2], pomaranczowe=[B4[1]])
         wyszarz(B4[1])
-        pokaz_przyp(p2)
-        pokaz(B4[2:4], pomaranczowe=[B4[3]])
-        wyszarz(B4[3], przyp=p2)
-        pokaz_przyp(p1)
-        pokaz(B4[4:], pomaranczowe=[B4[5]])
-        wyszarz(B4[5], przyp=p1)
+        pokaz_przyp(lemat_p)
+        pokaz(B4[2:], pomaranczowe=[B4[3]])
+        wyszarz(B4[3], przyp=lemat_p)
 
         kwadrat = MathTex(r"\blacksquare", font_size=FS).next_to(B4, RIGHT, buff=0.15)
         self.play(FadeIn(kwadrat))
