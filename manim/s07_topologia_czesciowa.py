@@ -76,7 +76,7 @@ class KulaCzesciowa(Slide):
         wstep = Tex(r"Dla $X\coloneqq[0,\infty)$ i $p(x,y)\coloneqq\max\{x,y\}$ mamy", font_size=34)
         r1 = MathTex(r"B_p(x,\varepsilon)", r"=\{y\ge 0 : \max\{x,y\}<x+\varepsilon\}", font_size=36)
         r2 = MathTex(r"=\{y\ge 0 : y<x+\varepsilon\}", font_size=36)
-        r3 = MathTex(r"=[0,\,x+\varepsilon).", font_size=36, color=KOLOR_CZESCIOWA)
+        r3 = MathTex(r"=[0,\,x+\varepsilon).", font_size=36)
         bo = Tex(r"bo zawsze $x<x+\varepsilon$", font_size=28, color=KOLOR_DRUGORZEDNY)
 
         wstep.next_to(podpis_p, DOWN, buff=0.7).to_edge(LEFT, buff=1.2)
