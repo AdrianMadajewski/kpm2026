@@ -565,17 +565,9 @@ class WlasnosciTopologii(Slide):
         self.play(eps_t.animate.set_value(0.15), run_time=1.5)
         self.next_slide()
 
-        # y podskakuje, a spod osi wyłania się diabełek — y nie da się wyrzucić z żadnej kuli wokół x.
-        diabelek = _diabelek().scale(0.55).next_to(fy, DOWN, buff=0.15)
-        # Diabełek pojawia się i pulsuje razem z punktem y (to samo powiększenie tam i z powrotem).
-        diabelek.save_state()
-
-        def puls(m, a):
-            m.restore()
-            m.scale(1 + 0.6 * there_and_back(a))
-            m.set_opacity(min(1.0, 4 * a))
-
-        diabelek.set_opacity(0)
-        self.play(Indicate(sy, color=KOLOR_Y, scale_factor=1.6), UpdateFromAlphaFunc(diabelek, puls),
-                  run_time=1.0)
+        # Kropka y zamienia się w diabełka, który buja się na boki:
+        # y nie da się wyrzucić z żadnej kuli wokół x.
+        diabelek = _diabelek().scale(0.42).move_to(sy).set_z_index(11)
+        self.play(FadeTransform(sy, diabelek), run_time=0.8)
+        self.play(Wiggle(diabelek, scale_value=1.0, rotation_angle=0.09 * TAU, n_wiggles=4), run_time=1.6)
         self.next_slide()
