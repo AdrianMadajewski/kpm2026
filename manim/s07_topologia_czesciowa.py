@@ -469,24 +469,6 @@ class WlasnosciTopologii(Slide):
                   L5[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
 
-        # ---- Rysunek w przykładzie max: x = 1.5, y = 3, eps = 1.5, kula [0, 3) ----
-        os = NumberLine(x_range=[0, 5, 1], length=8, include_numbers=True,
-                        font_size=24, include_tip=False).move_to(np.array([0, -2.75, 0]))
-        x0, y0 = 1.5, 3.0
-        eps = max(x0, y0) - x0
-        kx = Dot(os.n2p(x0), radius=0.08, color=O).set_z_index(10)
-        ky = Dot(os.n2p(y0), radius=0.08, color=KOLOR_Y).set_z_index(10)
-        ex = MathTex("x", font_size=28).next_to(kx, DOWN, buff=0.4)
-        ey = MathTex("y", font_size=28).next_to(ky, DOWN, buff=0.4)
-        kula = _kula_na_osi(os, x0 + eps, O, 0.35)
-        e_k = MathTex(r"B_p(x,\varepsilon)=[0,\,3)", font_size=28, color=O).next_to(kula[0], RIGHT, buff=0.35)
-        self.play(Create(os))
-        self.play(FadeIn(kx), FadeIn(ex), FadeIn(ky), FadeIn(ey))
-        self.next_slide()
-        self.play(FadeIn(kula), FadeIn(e_k))
-        self.wait(0.2)
-        self.next_slide()
-
         # ================= Uwaga: T_1 nie musi zachodzić =================
         self.play(*[FadeOut(m, shift=0.3 * LEFT) for m in self.mobjects if m is not tytul], run_time=0.8)
         self.next_slide()
