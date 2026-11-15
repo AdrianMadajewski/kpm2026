@@ -195,16 +195,13 @@ class TwierdzenieMatthewsa(Slide):
         R2 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_m)", font_size=FS)
         R3 = MathTex(r"\le p(x_n,x_{n+1})+", r"p(x_{n+1},x_{n+2})+", r"p(x_{n+2},x_m)", r"-p(x_{n+2},x_{n+2})",
                      font_size=FS)
-        R3b = MathTex(r"\le p(x_n,x_{n+1})+p(x_{n+1},x_{n+2})+", r"p(x_{n+2},x_{n+3})+p(x_{n+3},x_m)",
-                      r"-p(x_{n+3},x_{n+3})", font_size=FS)
-        R4 = MathTex(r"\le\dots\le", r"\sum_{k=n}^{m-1}p(x_k,x_{k+1})", r"\le\sum_{k=n}^{m-1}c^k\, p(x_1,x_0)",
+        R4 = MathTex(r"\le\dots\le", r"\sum_{k=n}^{m-1}p(x_k,x_{k+1})", r"\le\sum_{k=n}^{m-1}c^k\, p(x_1,x_0)", r".",
                      font_size=FS)
-        R5 = MathTex(r"=p(x_1,x_0)\sum_{k=n}^{m-1}c^k", r"\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".", font_size=FS)
-        strona1 = VGroup(A1, A2, A3, R1, R2, R3, R3b, R4, R5).arrange(DOWN, aligned_edge=LEFT, buff=0.08)
+        strona1 = VGroup(A1, A2, A3, R1, R2, R3, R4).arrange(DOWN, aligned_edge=LEFT, buff=0.08)
         strona1.next_to(tw, DOWN, buff=0.22).to_edge(LEFT, buff=0.6)
         A2.shift(0.6 * RIGHT)
         R1.shift(0.6 * RIGHT)
-        for r in (R2, R3, R3b, R4, R5):
+        for r in (R2, R3, R4):
             r.align_to(R1[1], LEFT)
 
         pokaz(A1[0])
@@ -255,22 +252,6 @@ class TwierdzenieMatthewsa(Slide):
         R3.remove(czlon_b)  # inaczej wraca przy FadeOut całej strony
         self.next_slide()
 
-        # Jeszcze raz (P4) dla p(x_{n+2}, x_m).
-        self.play(R3[2].animate.set_color(O), run_time=0.5)
-        self.next_slide()
-        p4_d = przypomnienie(r"\text{(P4)}\quad p(x_{n+2},x_m)\le p(x_{n+2},x_{n+3})+p(x_{n+3},x_m)"
-                             r"-p(x_{n+3},x_{n+3})")
-        pokaz_przyp(p4_d)
-        pokaz(R3b, pomaranczowe=[R3b[1], R3b[2]])
-        wyszarz(R3[2], R3b[1], R3b[2], przyp=p4_d)
-        nieuj_d = przypomnienie(r"p(x_{n+3},x_{n+3})\ge 0")
-        self.play(R3b[2].animate.set_color(O), FadeIn(nieuj_d, shift=0.2 * UP), run_time=0.6)
-        self.next_slide()
-        czlon_d = R3b[2]
-        self.play(FadeOut(czlon_d, shift=0.2 * DOWN), FadeOut(nieuj_d, shift=0.2 * DOWN), run_time=0.6)
-        R3b.remove(czlon_d)
-        self.next_slide()
-
         # Suma i szereg geometryczny.
         pokaz(R4[:2], pomaranczowe=[R4[1]])
         wyszarz(R4[1])
@@ -278,21 +259,20 @@ class TwierdzenieMatthewsa(Slide):
         self.next_slide()
         pokaz(R4[2], pomaranczowe=[R4[2]])
         wyszarz(R4[2], A2[3])
-        # Wyłączenie stałej przed sumę (bez kolorów).
-        pokaz(R5[0])
-        geom = MathTex(r"\sum_{k=n}^{m-1}c^k\le\sum_{k=n}^{\infty}c^k=\frac{c^n}{1-c}", font_size=26, color=O)
-        geom.to_edge(DOWN, buff=0.2)
-        pokaz_przyp(geom)
-        pokaz(R5[1:], pomaranczowe=[R5[1]])
-        wyszarz(R5[1], przyp=geom)
+        pokaz(R4[3:])
+        gw2 = MathTex(r"(**)", font_size=FS).next_to(R4, RIGHT, buff=0.4)
+        self.play(FadeIn(gw2))
+        self.next_slide()
 
-        self.play(FadeOut(strona1, shift=0.3 * LEFT), FadeOut(gw1, shift=0.3 * LEFT), run_time=0.7)
+        self.play(FadeOut(strona1, shift=0.3 * LEFT), FadeOut(gw1, shift=0.3 * LEFT), FadeOut(gw2, shift=0.3 * LEFT),
+                  run_time=0.7)
         self.next_slide()
 
         # =============== Strona 2: ciąg iteracji jest ciągiem Cauchy'ego ===============
         A0r = MathTex(r"(*)\quad", r"p(x_{n+1},x_n)\le c^n\cdot p(x_1,x_0)", r"\text{ dla } n\ge 0.", font_size=FS)
-        A4r = MathTex(r"\text{Dla } m>n \text{ mamy }", r"p(x_n,x_m)\le\frac{c^n}{1-c}\,p(x_1,x_0)", r".",
-                      font_size=FS)
+        A4r = MathTex(r"(**)\quad", r"p(x_n,x_m)\le\sum_{k=n}^{m-1}c^k\, p(x_1,x_0)",
+                      r"=p(x_1,x_0)\sum_{k=n}^{m-1}c^k", r"\le\frac{c^n}{1-c}\,p(x_1,x_0)",
+                      r"\text{ dla } m>n.", font_size=FS)
         A5 = MathTex(r"\text{Dla } m=n \text{ mamy }", r"p(x_n,x_n)", r"\le p(x_n,x_{n+1})",
                      r"\le c^n\, p(x_1,x_0)", r".", font_size=FS)
         A5b = MathTex(r"\text{Zatem }", r"\lim_{n\to\infty}p(x_n,x_n)=0", r".", font_size=FS)
@@ -313,7 +293,13 @@ class TwierdzenieMatthewsa(Slide):
 
         # Przypomnienie wyników z poprzedniej strony.
         pokaz(A0r)
-        pokaz(A4r)
+        pokaz(A4r[:2])
+        pokaz(A4r[2])
+        geom = MathTex(r"\sum_{k=n}^{m-1}c^k\le\sum_{k=n}^{\infty}c^k=\frac{c^n}{1-c}", font_size=26, color=O)
+        geom.to_edge(DOWN, buff=0.2)
+        pokaz_przyp(geom)
+        pokaz(A4r[3:], pomaranczowe=[A4r[3]])
+        wyszarz(A4r[3], przyp=geom)
         # Przypadek m = n.
         pokaz(A5[:2])
         pokaz_przyp(p2)
@@ -334,11 +320,11 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(C1[1:], pomaranczowe=[C1[2]])
         wyszarz(C1[2], przyp=p3)
         # Pierwsza nierówność: z linijek "m > n" i "m = n".
-        self.play(A4r[1].animate.set_color(O), A5[3].animate.set_color(O), run_time=0.6)
+        self.play(A4r[3].animate.set_color(O), A5[3].animate.set_color(O), run_time=0.6)
         self.next_slide()
         pokaz_przyp(m_eq_n)
         pokaz(C2[:2], pomaranczowe=[C2[1]])
-        self.play(A4r[1].animate.set_color(KOLOR_TEKST), A5[3].animate.set_color(KOLOR_TEKST),
+        self.play(A4r[3].animate.set_color(KOLOR_TEKST), A5[3].animate.set_color(KOLOR_TEKST),
                   C2[1].animate.set_color(KOLOR_TEKST), FadeOut(m_eq_n, shift=0.2 * DOWN), run_time=0.6)
         self.next_slide()
         pokaz_przyp(cN)
