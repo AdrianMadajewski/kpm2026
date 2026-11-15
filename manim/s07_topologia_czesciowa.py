@@ -505,50 +505,11 @@ class WlasnosciTopologii(Slide):
         self.play(FadeIn(def_t1, shift=0.2 * DOWN))
         self.next_slide()
 
-        # ---- Dowód (kontrprzykład max) ----
-        M1 = MathTex(r"\textit{Dowód.}\ \text{Niech }", r"X=[0,\infty)", r",\ ", r"p(x,y)=\max\{x,y\}",
+        # ---- Przykład bez dowodu: max i dwa punkty 0 <= x < y ----
+        M1 = MathTex(r"\text{Niech }", r"X=[0,\infty)", r",\ ", r"p(x,y)=\max\{x,y\}",
                      r"\text{ oraz }", r"0\le x<y", r".", font_size=FS)
-        M2 = MathTex(r"\text{Każdy zbiór otwarty }", r"U\ni y", r"\text{ zawiera pewną kulę }",
-                     r"B_p(y,\varepsilon)", r".", font_size=FS)
-        M3 = MathTex(r"\text{Ale }", r"B_p(y,\varepsilon)=[0,\,y+\varepsilon)", r"\ni", r"x", r",",
-                     font_size=FS)
-        M4 = MathTex(r"\text{więc każde otoczenie } y \text{ zawiera } x", r"\text{, czyli brak } T_1.\ \blacksquare",
-                     font_size=FS)
-        dowod1 = VGroup(M1, M2, M3, M4).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
-        dowod1.next_to(uwaga, DOWN, buff=0.45).to_edge(LEFT, buff=0.8)
-
-        baza = przypomnienie(r"\text{(Lemat)}\quad \text{kule } B_p \text{ tworzą bazę topologii } \tau_p")
-        kula_max = przypomnienie(r"\text{(max)}\quad B_p(u,\varepsilon)=[0,\,u+\varepsilon)")
-
+        M1.next_to(uwaga, DOWN, buff=0.6).to_edge(LEFT, buff=0.8)
         self.play(FadeIn(M1, shift=0.2 * RIGHT))
-        self.next_slide()
-
-        # Lemat o bazie.
-        self.play(FadeIn(baza, shift=0.2 * UP))
-        self.next_slide()
-        M2[3].set_color(O)
-        self.play(FadeIn(M2, shift=0.2 * RIGHT))
-        self.next_slide()
-        self.play(FadeOut(baza, shift=0.2 * DOWN), M2[3].animate.set_color(KOLOR_TEKST), run_time=0.7)
-        self.next_slide()
-
-        # Kula w przykładzie max.
-        self.play(FadeIn(kula_max, shift=0.2 * UP))
-        self.next_slide()
-        M3[1].set_color(O)
-        self.play(FadeIn(M3[:2], shift=0.2 * RIGHT))
-        self.next_slide()
-        self.play(FadeOut(kula_max, shift=0.2 * DOWN), M3[1].animate.set_color(KOLOR_TEKST), run_time=0.7)
-        self.next_slide()
-        # x < y < y + eps, więc x należy do kuli.
-        M3[3].set_color(O)
-        self.play(FadeIn(M3[2:], shift=0.2 * RIGHT))
-        self.wait(0.4)
-        self.play(M3[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
-        self.next_slide()
-
-        self.play(FadeIn(M4, shift=0.2 * RIGHT))
-        self.wait(0.2)
         self.next_slide()
 
         # ---- Rysunek: x = 1.5, y = 3, kula wokół y kurczy się, a x wciąż w niej jest ----
