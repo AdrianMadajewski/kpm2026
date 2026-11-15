@@ -1,0 +1,40 @@
+# Compiles the Beamer slides and publishes the PDF as an artifact and as a release asset.
+name: Build PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "beamer/**"
+      - ".github/workflows/pdf.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pdf:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile the Beamer slides
+        uses: xu-cheng/latex-action@v4
+        with:
+          working_directory: beamer
+          root_file: prezentacja.tex
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prezentacja-pdf
+          path: beamer/prezentacja.pdf
+
+      # A fixed release keeps a stable download link to the newest PDF.
+      - name: Update the "pdf" release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: pdf
+          name: Slides (PDF)
+          body: Newest PDF of the Beamer slides, rebuilt automatically from `beamer/prezentacja.tex`.
+          files: beamer/prezentacja.pdf
+          make_latest: true

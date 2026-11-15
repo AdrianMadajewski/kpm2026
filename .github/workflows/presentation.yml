@@ -1,4 +1,4 @@
-# Builds the Beamer PDF and the Manim presentation and publishes both on GitHub Pages.
+# Renders the Manim presentation (1080p by default) and publishes it on GitHub Pages.
 name: Build presentation
 
 on:
@@ -6,15 +6,14 @@ on:
     branches: [main]
     paths:
       - "manim/**"
-      - "beamer/**"
       - ".github/workflows/presentation.yml"
   workflow_dispatch:
     inputs:
       quality:
-        description: "Render quality (l=480p, m=720p, h=1080p)"
-        default: "m"
+        description: "Render quality (h=1080p, m=720p, l=480p)"
+        default: "h"
         type: choice
-        options: [l, m, h]
+        options: [h, m, l]
 
 permissions:
   contents: read
@@ -26,26 +25,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pdf:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Compile the Beamer slides
-        uses: xu-cheng/latex-action@v4
-        with:
-          working_directory: beamer
-          root_file: prezentacja.tex
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: prezentacja-pdf
-          path: beamer/prezentacja.pdf
-
   build:
-    needs: pdf
     runs-on: ubuntu-24.04
-    timeout-minutes: 300
+    timeout-minutes: 360
     defaults:
       run:
         working-directory: manim
@@ -70,13 +52,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Render scenes and build the site
-        run: python build.py --quality "${{ inputs.quality || 'm' }}" --web site
-
-      - name: Add the PDF to the site
-        uses: actions/download-artifact@v4
-        with:
-          name: prezentacja-pdf
-          path: manim/site
+        run: python build.py --quality "${{ inputs.quality || 'h' }}" --web site
 
       - uses: actions/upload-pages-artifact@v3
         with:

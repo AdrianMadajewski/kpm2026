@@ -7,7 +7,7 @@ Usage:
     python build.py --scene PrzykladMax --html   # render one scene and bundle it alone into PrzykladMax.html
     python build.py --html-only      # skip rendering, just bundle the HTML
     python build.py --scene PrzykladMax --html-only  # bundle one already rendered scene into PrzykladMax.html
-    python build.py --quality m --web site          # website build: site/index.html + separate video files
+    python build.py --quality h --web site          # website build: site/index.html + separate video files
 """
 import argparse
 import os
