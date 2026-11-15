@@ -129,8 +129,48 @@ class TwierdzenieMatthewsa(Slide):
         # Nagłówek znika, a twierdzenie idzie do góry, żeby zrobić miejsce na dowód.
         self.play(FadeOut(naglowek, shift=0.3 * UP), tw.animate.to_edge(UP, buff=0.35), run_time=0.7)
 
+        # =============== Strona 0: jednoznaczność (prostsza, więc najpierw) ===============
+        J1 = MathTex(r"\textit{Dowód.}\ \textit{Jednoznaczność.}\ \text{Niech }", r"f(x)=x", r"\text{ oraz }",
+                     r"f(y)=y", r".", font_size=FS)
+        J2 = MathTex(r"\text{Wtedy }", r"p(x,y)=p(f(x),f(y))", r"\le c\cdot p(x,y)", r",", font_size=FS)
+        J3 = MathTex(r"\text{więc }", r"(1-c)\,p(x,y)\le 0", r"\text{. Ponieważ } c<1 \text{ i } p\ge 0\text{, to }",
+                     r"p(x,y)=0", r".", font_size=FS)
+        J4 = MathTex(r"\text{Z (P2) i (P3) }", r"p(x,x)\le p(x,y)=0", r"\text{ oraz }",
+                     r"p(y,y)\le p(y,x)=p(x,y)=0", r".", font_size=FS)
+        J5 = MathTex(r"\text{Zatem }", r"p(x,x)=p(x,y)=p(y,y)", r"\text{, więc z (P1) }", r"x=y", r".",
+                     font_size=FS)
+        strona0 = VGroup(J1, J2, J3, J4, J5).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        strona0.next_to(tw, DOWN, buff=0.45).to_edge(LEFT, buff=0.6)
+        p2p3 = przypomnienie(r"\text{(P2)}\quad p(x,x)\le p(x,y),\qquad \text{(P3)}\quad p(x,y)=p(y,x)")
+
+        pokaz(J1[0])
+        pokaz(J1[1:], pomaranczowe=[J1[1], J1[3]])
+        wyszarz(J1[1], J1[3])
+        pokaz(J2[:2], pomaranczowe=[J2[1]])
+        wyszarz(J2[1])
+        pokaz_przyp(kontr)
+        pokaz(J2[2:], pomaranczowe=[J2[2]])
+        wyszarz(J2[2], przyp=kontr)
+        pokaz(J3[:2], pomaranczowe=[J3[1]])
+        wyszarz(J3[1])
+        pokaz(J3[2:], pomaranczowe=[J3[3]])
+        wyszarz(J3[3])
+        pokaz_przyp(p2p3)
+        pokaz(J4[:2], pomaranczowe=[J4[1]])
+        wyszarz(J4[1])
+        pokaz(J4[2:], pomaranczowe=[J4[3]])
+        wyszarz(J4[3], przyp=p2p3)
+        pokaz_przyp(p1)
+        pokaz(J5[:2], pomaranczowe=[J5[1]])
+        wyszarz(J5[1])
+        pokaz(J5[2:], pomaranczowe=[J5[3]])
+        wyszarz(J5[3], przyp=p1)
+
+        self.play(FadeOut(strona0, shift=0.3 * LEFT), run_time=0.7)
+        self.next_slide()
+
         # =============== Strona 1: oszacowanie p(x_n, x_m) ===============
-        A1 = MathTex(r"\textit{Dowód.}\ \textit{Istnienie.}\ \text{Ustalmy } x_0\in X", r"\text{ i niech }",
+        A1 = MathTex(r"\textit{Istnienie.}\ \text{Ustalmy } x_0\in X", r"\text{ i niech }",
                      r"x_{n+1}\coloneqq f(x_n)", r"\text{ dla } n=0,1,2,\dots", font_size=FS)
         A2 = MathTex(r"p(x_{n+1},x_n)", r"=p(f(x_n),f(x_{n-1}))", r"\le c\cdot p(x_n,x_{n-1})",
                      r"\le\dots\le c^n\cdot p(x_1,x_0)", r".", font_size=FS)
@@ -301,7 +341,7 @@ class TwierdzenieMatthewsa(Slide):
         self.play(FadeOut(strona2, shift=0.3 * LEFT), run_time=0.7)
         self.next_slide()
 
-        # =============== Strona 3: granica jest punktem stałym; jednoznaczność ===============
+        # =============== Strona 3: granica jest punktem stałym ===============
         B1 = MathTex(r"\text{Z zupełności istnieje } x^*\in X\text{ taki, że }", r"x_n\to x^*", r"\text{ oraz }",
                      r"p(x^*,x^*)=\lim_{n,m\to\infty}p(x_n,x_m)=0", r".", font_size=FS)
         B2 = MathTex(r"\textit{Punkt stały.}\ \text{Dla } n\in\mathbb{N}\text{ mamy}", font_size=FS)
@@ -313,12 +353,7 @@ class TwierdzenieMatthewsa(Slide):
                       font_size=FS)
         B4 = MathTex(r"\text{Zatem }", r"p(x^*,f(x^*))=0", r"\text{, a z (P2) }",
                      r"p(x^*,x^*)=p(f(x^*),f(x^*))=0", r"\text{, więc z (P1) }", r"f(x^*)=x^*", r".", font_size=FS)
-        B5 = MathTex(r"\textit{Jednoznaczność.}\ \text{Jeśli } f(y)=y\text{, to }",
-                     r"p(x^*,y)=p(f(x^*),f(y))\le c\cdot p(x^*,y)", r"\text{, więc }", r"p(x^*,y)=0", r".",
-                     font_size=FS)
-        B6 = MathTex(r"\text{Z (P2) }", r"p(x^*,x^*)=p(x^*,y)=p(y,y)=0", r"\text{, więc z (P1) }", r"y=x^*",
-                     r".", font_size=FS)
-        strona3 = VGroup(B1, B2, B3, B3b, B3c, B3d, B4, B5, B6).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
+        strona3 = VGroup(B1, B2, B3, B3b, B3c, B3d, B4).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
         strona3.next_to(tw, DOWN, buff=0.35).to_edge(LEFT, buff=0.6)
         B3.shift(0.6 * RIGHT)
         for r in (B3b, B3c, B3d):
@@ -371,19 +406,6 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(B4[4:], pomaranczowe=[B4[5]])
         wyszarz(B4[5], przyp=p1)
 
-        # Jednoznaczność.
-        pokaz(B5[0])
-        pokaz_przyp(kontr)
-        pokaz(B5[1], pomaranczowe=[B5[1]])
-        wyszarz(B5[1], przyp=kontr)
-        pokaz(B5[2:], pomaranczowe=[B5[3]])
-        wyszarz(B5[3])
-        pokaz_przyp(p2)
-        pokaz(B6[:2], pomaranczowe=[B6[1]])
-        wyszarz(B6[1], przyp=p2)
-        pokaz_przyp(p1)
-        pokaz(B6[2:], pomaranczowe=[B6[3]])
-        wyszarz(B6[3], przyp=p1)
-        kwadrat = MathTex(r"\blacksquare", font_size=FS).next_to(B6, RIGHT, buff=0.15)
+        kwadrat = MathTex(r"\blacksquare", font_size=FS).next_to(B4, RIGHT, buff=0.15)
         self.play(FadeIn(kwadrat))
         self.next_slide()
