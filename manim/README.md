@@ -45,11 +45,10 @@ Controls in the browser: arrow keys / space to advance, `F` for full screen.
 - `common.py` — shared colours, LaTeX template and helpers.
 - `sNN_*.py` — scenes, numbered in presentation order.
 
-## Website build (GitHub Pages)
+## GitHub Pages
 
-`python build.py --quality h --web site` renders all scenes and writes `site/index.html`
-with the videos as separate files next to it (a much smaller page than the single-file HTML).
-The GitHub Actions workflow `.github/workflows/presentation.yml` runs exactly this on every push
-to `main` that touches `manim/` (in 1080p) and publishes `site/` on GitHub Pages. A run in a lower
-quality (720p / 480p) can be started by hand from the *Actions* tab ("Run workflow").
+The GitHub Actions workflow `.github/workflows/presentation.yml` runs `python build.py --quality h`
+on every push to `main` that touches `manim/` and publishes the resulting single-file
+`prezentacja.html` on GitHub Pages (as `index.html`). A run in a lower quality (720p / 480p)
+can be started by hand from the *Actions* tab ("Run workflow").
 The Beamer PDF is built by a separate workflow, `.github/workflows/pdf.yml`.

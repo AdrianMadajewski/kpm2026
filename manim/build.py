@@ -7,10 +7,8 @@ Usage:
     python build.py --scene PrzykladMax --html   # render one scene and bundle it alone into PrzykladMax.html
     python build.py --html-only      # skip rendering, just bundle the HTML
     python build.py --scene PrzykladMax --html-only  # bundle one already rendered scene into PrzykladMax.html
-    python build.py --quality h --web site          # website build: site/index.html + separate video files
 """
 import argparse
-import os
 import subprocess
 import sys
 
@@ -78,8 +76,6 @@ def main():
     parser.add_argument("--html-only", action="store_true", help="only bundle already rendered scenes")
     parser.add_argument("--html", action="store_true",
                         help="with --scene: also bundle that scene alone into <Scene>.html")
-    parser.add_argument("--web", metavar="DIR",
-                        help="bundle into DIR/index.html with videos as separate files (for GitHub Pages)")
     args = parser.parse_args()
 
     if args.scene and args.scene not in {cls for _, cls in SCENES}:
@@ -92,21 +88,15 @@ def main():
             run([sys.executable, "-m", "manim", "render", *QUALITY[args.quality],
                  "--disable_caching", file, cls])
 
-    if args.scene and not (args.html or args.html_only or args.web):
+    if args.scene and not (args.html or args.html_only):
         return
 
     scenes = [args.scene] if args.scene else [cls for _, cls in SCENES]
-    if args.web:
-        os.makedirs(args.web, exist_ok=True)
-        output = os.path.join(args.web, "index.html")
-        bundle = []  # videos are copied next to index.html, keeping the page small
-    else:
-        output = f"{args.scene}.html" if args.scene else OUTPUT
-        bundle = ["--one-file"]
+    output = f"{args.scene}.html" if args.scene else OUTPUT
     run([
         sys.executable, "-m", "manim_slides", "convert",
         *scenes, output,
-        "--to", "html", *bundle, "--offline",
+        "--to", "html", "--one-file", "--offline",
         f"-ctitle={TITLE}",
         "-cbackground_color=white",
         "-creveal_theme=white",

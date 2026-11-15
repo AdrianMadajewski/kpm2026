@@ -51,8 +51,13 @@ jobs:
       - name: Install Python packages
         run: pip install -r requirements.txt
 
-      - name: Render scenes and build the site
-        run: python build.py --quality "${{ inputs.quality || 'h' }}" --web site
+      - name: Render scenes and bundle them into one HTML file
+        run: python build.py --quality "${{ inputs.quality || 'h' }}"
+
+      - name: Prepare the site
+        run: |
+          mkdir -p site
+          cp prezentacja.html site/index.html
 
       - uses: actions/upload-pages-artifact@v3
         with:
