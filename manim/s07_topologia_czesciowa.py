@@ -513,8 +513,9 @@ class WlasnosciTopologii(Slide):
         self.next_slide()
 
         # ---- Rysunek: x = 1.5, y = 3, kula wokół y kurczy się, a x wciąż w niej jest ----
-        os1 = NumberLine(x_range=[0, 5, 1], length=8, include_numbers=True,
-                         font_size=24, include_tip=False).move_to(np.array([0, -2.3, 0]))
+        os1 = NumberLine(x_range=[0, 5, 1], length=6.2, include_numbers=True,
+                         font_size=24, include_tip=False)
+        os1.next_to(M1, DOWN, buff=1.5).align_to(M1, LEFT)
         x1, y1 = 1.5, 3.0
         sx = Dot(os1.n2p(x1), radius=0.08, color=O).set_z_index(10)
         sy = Dot(os1.n2p(y1), radius=0.08, color=KOLOR_Y).set_z_index(10)
@@ -530,7 +531,7 @@ class WlasnosciTopologii(Slide):
                              .next_to(kula_y[0], UP, buff=0.15).align_to(kula_y[0], RIGHT))
         eps_lab = MathTex(r"\varepsilon=", font_size=30)
         eps_num = DecimalNumber(1.5, num_decimal_places=2, font_size=30)
-        eps_grp = VGroup(eps_lab, eps_num).arrange(RIGHT, buff=0.12).move_to(np.array([5.4, -2.3, 0]))
+        eps_grp = VGroup(eps_lab, eps_num).arrange(RIGHT, buff=0.12).next_to(os1, DOWN, buff=0.75)
         eps_num.add_updater(lambda m: m.set_value(eps_t.get_value()).next_to(eps_lab, RIGHT, buff=0.12))
         self.play(FadeIn(kula_y), FadeIn(e_ky), FadeIn(eps_grp))
         self.wait(0.2)
