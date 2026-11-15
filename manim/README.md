@@ -52,3 +52,4 @@ with the videos as separate files next to it (a much smaller page than the singl
 The GitHub Actions workflow `.github/workflows/presentation.yml` runs exactly this on every push
 to `main` that touches `manim/` and publishes `site/` on GitHub Pages. A run with a different
 quality (480p / 720p / 1080p) can be started by hand from the *Actions* tab ("Run workflow").
+The same workflow compiles `beamer/prezentacja.tex` and puts `prezentacja.pdf` on the site.
