@@ -15,19 +15,6 @@ class Kontrakcja(Slide):
         self.play(naglowek.animate.scale(44 / 48).to_edge(UP, buff=0.4), run_time=1.0)
         self.next_slide()
 
-        # ---- Definicja punktu stałego ----
-        PS1 = MathTex(r"\textbf{Definicja.}\ \text{Punkt } x^*\in X \text{ nazywamy \emph{punktem stałym} "
-                      r"odwzorowania } f\colon X\to X\text{, gdy}", font_size=FS)
-        PS2 = MathTex(r"f(x^*)=x^*", r".", font_size=FS + 2)
-        PS = VGroup(PS1, PS2).arrange(DOWN, buff=0.25).next_to(naglowek, DOWN, buff=0.4)
-        self.play(FadeIn(PS1, shift=0.2 * DOWN))
-        self.next_slide()
-        PS2[0].set_color(O)
-        self.play(FadeIn(PS2, shift=0.2 * DOWN))
-        self.next_slide()
-        self.play(PS2[0].animate.set_color(KOLOR_TEKST), run_time=0.6)
-        self.next_slide()
-
         # ---- Definicja kontrakcji w przestrzeni metrycznej ----
         A = Tex(r"\textbf{Definicja.} Odwzorowanie $f\colon X\to X$ nazywamy \emph{kontrakcją} w ", font_size=FS)
         B = MathTex(r"(X,", r"d", r")", font_size=FS)
@@ -36,7 +23,7 @@ class Kontrakcja(Slide):
         C.next_to(B, RIGHT, buff=0.04).align_to(A, DOWN)
         D = MathTex(r"\exists\,c\in[0,1)\ \ \forall\,x,y\in X\colon\ \ ", r"d", r"(f(x),f(y))\le c\cdot ",
                     r"d", r"(x,y).", font_size=FS + 2)
-        definicja = VGroup(wiersz1, D).arrange(DOWN, buff=0.25).next_to(PS, DOWN, buff=0.35)
+        definicja = VGroup(wiersz1, D).arrange(DOWN, buff=0.25).next_to(naglowek, DOWN, buff=0.45)
         self.play(FadeIn(wiersz1, shift=0.2 * DOWN))
         self.next_slide()
         self.play(FadeIn(D, shift=0.2 * DOWN))
@@ -79,19 +66,17 @@ class Kontrakcja(Slide):
         self.play(FadeIn(wn, shift=0.2 * RIGHT))
         self.next_slide()
 
-        # Punkt stały w przykładzie.
-        ps = MathTex(r"\text{Jedynym punktem stałym } f \text{ jest }", r"x^*=0", r"\text{, przy czym }",
-                     r"p(0,0)=0", r".", font_size=34)
-        ps.next_to(wn, DOWN, buff=0.25)
-        ps[1].set_color(O)
-        self.play(FadeIn(ps[:2], shift=0.2 * RIGHT))
+        # ---- Definicja punktu stałego ----
+        PS1 = MathTex(r"\textbf{Definicja.}\ \text{Punkt } x^*\in X \text{ nazywamy \emph{punktem stałym} "
+                      r"odwzorowania } f\colon X\to X\text{, gdy}", font_size=FS)
+        PS2 = MathTex(r"f(x^*)=x^*", r".", font_size=FS + 2)
+        PS = VGroup(PS1, PS2).arrange(DOWN, buff=0.25).next_to(wn, DOWN, buff=0.5)
+        self.play(FadeIn(PS1, shift=0.2 * DOWN))
         self.next_slide()
-        self.play(ps[1].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        PS2[0].set_color(O)
+        self.play(FadeIn(PS2, shift=0.2 * DOWN))
         self.next_slide()
-        ps[3].set_color(O)
-        self.play(FadeIn(ps[2:], shift=0.2 * RIGHT))
-        self.next_slide()
-        self.play(ps[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.play(PS2[0].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
 
 
