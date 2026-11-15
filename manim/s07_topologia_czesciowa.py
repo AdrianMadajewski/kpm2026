@@ -233,7 +233,7 @@ class LematBaza(Slide):
 
         # Rysunek w przykładzie max: x = 2, eps = 1.5, y = 1, delta = 1.5.
         os = NumberLine(x_range=[0, 5, 1], length=10, include_numbers=True,
-                        font_size=26, include_tip=False).move_to(0.75 * UP)
+                        font_size=26, include_tip=False).move_to(0.6 * DOWN)
         x0, eps, y0 = 2.0, 1.5, 1.0
         delta = x0 + eps - max(x0, y0)
         kx = Dot(os.n2p(x0), radius=0.09, color=KOLOR_CZESCIOWA).set_z_index(10)
@@ -247,7 +247,7 @@ class LematBaza(Slide):
 
         # Przykład, w którym rysujemy.
         przyklad = MathTex(r"X=[0,\infty),\qquad p(x,y)=\max\{x,y\}", font_size=34)
-        przyklad.next_to(lemat, DOWN, buff=0.25)
+        przyklad.move_to(1.0 * UP)
         self.play(FadeIn(przyklad, shift=0.2 * DOWN))
         self.next_slide()
 
@@ -259,6 +259,10 @@ class LematBaza(Slide):
         self.next_slide()
         self.play(FadeIn(kula_y), FadeIn(e_ky))
         self.next_slide()
+
+        # Przykład znika w całości przed dowodem.
+        rysunek = VGroup(przyklad, os, kx, ky, ex, ey, kula_x, kula_y, e_kx, e_ky)
+        self.play(FadeOut(rysunek, shift=0.3 * DOWN), run_time=0.8)
 
         # Dowód — każde przejście na kliknięcie, z podświetleniem tego, z czego korzystamy.
         FS = 32
@@ -273,7 +277,7 @@ class LematBaza(Slide):
                      r"=", r"p(x,x)+\varepsilon", r",", font_size=FS + 2)
         L5 = Tex(r"czyli $z\in B_p(x,\varepsilon)$. \hfill $\blacksquare$", font_size=FS)
         dowod = VGroup(L1, L2, L3, L4, L5).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
-        dowod.next_to(os, DOWN, buff=0.85).to_edge(LEFT, buff=0.8)
+        dowod.next_to(lemat, DOWN, buff=0.7).to_edge(LEFT, buff=0.8)
         L4.shift(0.6 * RIGHT + 0.2 * DOWN)
         L5.shift(0.2 * DOWN)
         tag = Tex(r"(P4)", font_size=24, color=KOLOR_DRUGORZEDNY).next_to(L4[1], UP, buff=0.1)
@@ -355,7 +359,7 @@ class LematBaza(Slide):
             Tex(r"Zatem kule tworzą bazę topologii $\tau_p$.", font_size=34),
             Tex(r"W przykładzie zbiory otwarte to $\emptyset$, $[0,\infty)$ oraz $[0,a)$ dla $a>0$.",
                 font_size=34, color=KOLOR_CZESCIOWA),
-        ).arrange(DOWN, buff=0.3).next_to(os, DOWN, buff=1.3)
+        ).arrange(DOWN, buff=0.3).move_to(0.3 * DOWN)
         self.play(FadeIn(wniosek[0], shift=0.2 * UP))
         self.next_slide()
         self.play(FadeIn(wniosek[1], shift=0.2 * UP))
