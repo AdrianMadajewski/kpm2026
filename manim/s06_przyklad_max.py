@@ -259,10 +259,6 @@ class Interpretacja(Slide):
             punkt(r"$p(x,x)$ mierzy niedookreśloność $x$ --- im większe, tym mniej o nim wiemy."),
             punkt(r"$p(x,x)=0$ --- element $x$ jest \emph{w pełni określony}."),
             punkt(r"$p(x,y)$ to łączna niepewność $x$ i $y$."),
-            punkt(r"$p(x,y)\ge p(x,x)$ --- odległość nie jest mniejsza niż niepewność",
-                  r"żadnego z punktów (P2)."),
-            punkt(r"$x=y \iff p(x,x)=p(x,y)=p(y,y)$ --- porównanie z $y$ nie wnosi",
-                  r"żadnej nowej niepewności (P1)."),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.32)
         punkty.next_to(naglowek, DOWN, buff=0.5).to_edge(LEFT, buff=0.6)
 
