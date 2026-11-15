@@ -528,7 +528,7 @@ class WlasnosciTopologii(Slide):
         eps_t = ValueTracker(1.5)
         kula_y = always_redraw(lambda: _kula_na_osi(os1, y1 + eps_t.get_value(), KOLOR_Y, 0.35))
         e_ky = always_redraw(lambda: MathTex(r"B_p(y,\varepsilon)", font_size=28, color=KOLOR_Y)
-                             .next_to(kula_y[0], UP, buff=0.15).align_to(kula_y[0], RIGHT))
+                             .next_to(kula_y[0], RIGHT, buff=0.2))
         eps_lab = MathTex(r"\varepsilon=", font_size=30)
         eps_num = DecimalNumber(1.5, num_decimal_places=2, font_size=30)
         eps_grp = VGroup(eps_lab, eps_num).arrange(RIGHT, buff=0.12).next_to(os1, DOWN, buff=0.75)
@@ -542,4 +542,11 @@ class WlasnosciTopologii(Slide):
         self.play(eps_t.animate.set_value(0.15), run_time=1.5)
         self.next_slide()
         self.play(Indicate(sx, color=O, scale_factor=1.6))
+        self.next_slide()
+
+        # Dla porównania: wokół x jest otoczenie bez y (ta część T_1 działa).
+        kula_x = _kula_na_osi(os1, x1 + 1.0, O, 0.8)
+        e_kx = MathTex(r"B_p(x,1)", font_size=28, color=O).next_to(kula_x[0], RIGHT, buff=0.2)
+        self.play(FadeIn(kula_x), FadeIn(e_kx))
+        self.play(Indicate(sy, color=KOLOR_Y, scale_factor=1.6))
         self.next_slide()
