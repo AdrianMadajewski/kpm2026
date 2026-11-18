@@ -81,14 +81,21 @@ class Zbieznosc(Slide):
         # (=>)
         pokaz(Q1[0])
         pokaz_przyp(baza)
-        pokaz(Q1[1:], pomaranczowe=[Q1[2]])
-        wyszarz(Q1[2], przyp=baza)
-
-        # Skąd Q2: definicja zbieżności (u góry) dla U := B_p(x, eps).
-        Q2[1].set_color(O)
-        self.play(defn[1].animate.set_color(O), FadeIn(Q2, shift=0.2 * RIGHT))
+        # Kula jest zbiorem otwartym zawierającym x: to jest "U" z definicji zbieżności (u góry).
+        Q1[2].set_color(O)
+        Q1[3].set_color(O)
+        self.play(*[FadeIn(c, shift=0.2 * RIGHT) for c in Q1[1:]], defn[1].animate.set_color(O))
         self.next_slide()
-        self.play(defn[1].animate.set_color(KOLOR_DRUGORZEDNY), Q2[1].animate.set_color(KOLOR_TEKST),
+        self.play(Q1[2].animate.set_color(KOLOR_TEKST), Q1[3].animate.set_color(KOLOR_TEKST),
+                  defn[1].animate.set_color(KOLOR_DRUGORZEDNY),
+                  FadeOut(baza, shift=0.2 * DOWN), run_time=0.6)
+        self.next_slide()
+
+        # Skąd Q2: reszta definicji zbieżności dla U := B_p(x, eps).
+        Q2[1].set_color(O)
+        self.play(defn[2].animate.set_color(O), FadeIn(Q2, shift=0.2 * RIGHT))
+        self.next_slide()
+        self.play(defn[2].animate.set_color(KOLOR_DRUGORZEDNY), Q2[1].animate.set_color(KOLOR_TEKST),
                   run_time=0.6)
         self.next_slide()
 
