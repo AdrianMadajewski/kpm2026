@@ -44,7 +44,6 @@ class Strumienie(Slide):
     def construct(self):
         O = KOLOR_CZESCIOWA
         B = KOLOR_METRYKA
-        KOLOR_Y = ManimColor("#7B3FA0")
         BOK = 0.62
         N = 8
 
@@ -122,10 +121,10 @@ class Strumienie(Slide):
         self.play(cyfry_x.animate.set_color(KOLOR_TEKST), kropki.animate.set_color(KOLOR_TEKST),
                   ex.animate.set_color(KOLOR_TEKST), run_time=0.5)
         ky = wiersz(-0.1)
-        ey = MathTex("y", "=", font_size=38, color=KOLOR_Y).next_to(ky, LEFT, buff=0.3)
+        ey = MathTex("y", "=", font_size=38, color=KOLOR_TEKST).next_to(ky, LEFT, buff=0.3)
         bity_y = [0, 1, 1, 1, 0, 1, 1, 0]
-        cyfry_y = VGroup(*[bit(b, ky[i], KOLOR_Y) for i, b in enumerate(bity_y)])
-        kropki_y = MathTex(r"\dots", font_size=38, color=KOLOR_Y).next_to(ky, RIGHT, buff=0.15)
+        cyfry_y = VGroup(*[bit(b, ky[i], KOLOR_TEKST) for i, b in enumerate(bity_y)])
+        kropki_y = MathTex(r"\dots", font_size=38, color=KOLOR_TEKST).next_to(ky, RIGHT, buff=0.15)
         self.play(FadeIn(ey), Create(ky))
         self.play(LaggedStart(*[FadeIn(c, shift=0.3 * DOWN) for c in cyfry_y], lag_ratio=0.15),
                   FadeIn(kropki_y), run_time=1.2)
