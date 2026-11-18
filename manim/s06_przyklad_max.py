@@ -153,11 +153,8 @@ class PrzykladMax(Slide):
         self.next_slide()
 
         # Kwadrat [0, max{x,y}]^2: jego wysokość na OY to p(x,y).
-        # "wzrost" rośnie od 0 do 1, żeby kwadrat wyrósł z punktu (0,0).
-        wzrost = ValueTracker(0.0)
-
         def m():
-            return wzrost.get_value() * max(xx.get_value(), yy.get_value())
+            return max(xx.get_value(), yy.get_value())
 
         def kolor_m():
             # Pomarańczowy, gdy maksimum to x; fioletowy, gdy y.
@@ -166,8 +163,6 @@ class PrzykladMax(Slide):
             return interpolate_color(KOLOR_Y, KOLOR_CZESCIOWA, t)
 
         def rysuj_kwadrat():
-            if m() < 0.05:
-                return VMobject()
             k = kolor_m()
             tlo = Polygon(ax.c2p(0, 0), ax.c2p(m(), 0), ax.c2p(m(), m()), ax.c2p(0, m()),
                           stroke_width=0).set_fill(k, 0.12)
@@ -180,9 +175,14 @@ class PrzykladMax(Slide):
             MathTex(r"p(x,y)=\max\{x,y\}=", font_size=30, color=kolor_m()),
             DecimalNumber(m(), num_decimal_places=2, font_size=30, color=kolor_m()),
         ).arrange(RIGHT, buff=0.1).next_to(ax.c2p(0, m()), LEFT, buff=0.55))
+        # Pojawianie się: kreska z większego punktu do góry, potem w lewo do osi, potem wypełnienie.
+        start = rysuj_kwadrat()
+        tlo0, pion0, poziom0 = start
+        self.play(Create(pion0), run_time=0.8)
+        self.play(Create(poziom0), FadeIn(etyk_pxy), run_time=0.8)
+        self.play(FadeIn(tlo0), run_time=0.6)
+        self.remove(start, tlo0, pion0, poziom0)
         self.add(kwadrat)
-        self.play(FadeIn(etyk_pxy), run_time=0.3)
-        self.play(wzrost.animate.set_value(1.0), run_time=1.5, rate_func=smooth)
         self.next_slide()
 
         # Ruszamy punktami: kwadrat zawsze sięga do większego z nich.
