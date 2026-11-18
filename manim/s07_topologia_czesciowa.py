@@ -31,13 +31,14 @@ class KulaCzesciowa(Slide):
         self.add(naglowek)
 
         FS = 40
+        # Litery d/p wydzielone, żeby zmieniały się tylko one.
         kula_d = MathTex(
-            r"B_d(x,\varepsilon)", r"\coloneqq", r"\{y\in X :", r"d(x,y)", r"<", r"\varepsilon\}",
+            r"B_", r"d", r"(x,\varepsilon)", r"\coloneqq", r"\{y\in X :", r"d", r"(x,y)", r"<", r"\varepsilon\}",
             font_size=FS,
         ).move_to(1.6 * UP)
         kula_p = MathTex(
-            r"B_p(x,\varepsilon)", r"\coloneqq", r"\{y\in X :", r"p(x,y)", r"<", r"p(x,x)+", r"\varepsilon\}",
-            font_size=FS,
+            r"B_", r"p", r"(x,\varepsilon)", r"\coloneqq", r"\{y\in X :", r"p", r"(x,y)", r"<", r"p(x,x)+",
+            r"\varepsilon\}", font_size=FS,
         ).move_to(1.6 * UP)
         podpis_d = Tex(r"kula w przestrzeni metrycznej", font_size=30, color=KOLOR_DRUGORZEDNY)
         podpis_d.next_to(kula_d, DOWN, buff=0.3)
@@ -48,28 +49,23 @@ class KulaCzesciowa(Slide):
         self.play(FadeIn(kula_d, shift=0.2 * DOWN), FadeIn(podpis_d))
         self.next_slide()
 
-        # Krok 2: podświetl -> zamień tylko różniące się znaki -> zgaś.
-        self.play(kula_d[0].animate.set_color(KOLOR_CZESCIOWA),
-                  kula_d[3].animate.set_color(KOLOR_CZESCIOWA), run_time=0.7)
-        self.wait(0.3)
-        for i in (0, 3, 5):
-            kula_p[i].set_color(KOLOR_CZESCIOWA)
-        # Wspólne części przesuwają się na nowe miejsca, różne płynnie się przenikają,
-        # a nowy człon p(x,x)+ wjeżdża z góry.
+        # Krok 2: d odpływa w górę, reszta robi miejsce, p i p(x,x)+ wpływają od dołu.
+        stare = [kula_d[1], kula_d[5]]
+        nowe = [kula_p[1], kula_p[5], kula_p[8]]
+        self.play(*[m.animate.set_color(KOLOR_CZESCIOWA) for m in stare], run_time=0.5)
+        self.play(*[FadeOut(m, shift=0.25 * UP) for m in stare], FadeOut(podpis_d, shift=0.25 * UP),
+                  run_time=0.5, rate_func=smooth)
         self.play(
-            ReplacementTransform(kula_d[1], kula_p[1]),
-            ReplacementTransform(kula_d[2], kula_p[2]),
-            ReplacementTransform(kula_d[4], kula_p[4]),
-            ReplacementTransform(kula_d[5], kula_p[6]),
-            FadeTransform(kula_d[0], kula_p[0]),
-            FadeTransform(kula_d[3], kula_p[3]),
-            FadeIn(kula_p[5], shift=0.25 * DOWN),
-            run_time=1.2,
+            *[ReplacementTransform(kula_d[i], kula_p[j]) for i, j in ((0, 0), (2, 2), (3, 3), (4, 4), (6, 6),
+                                                                      (7, 7), (8, 9))],
+            run_time=0.9, rate_func=smooth,
         )
-        self.play(FadeOut(podpis_d, shift=0.4 * LEFT), run_time=0.5)
-        self.play(FadeIn(podpis_p, shift=0.4 * RIGHT), run_time=0.6)
+        for m in nowe:
+            m.set_color(KOLOR_CZESCIOWA)
+        self.play(*[FadeIn(m, shift=0.25 * UP) for m in nowe], FadeIn(podpis_p, shift=0.25 * UP),
+                  run_time=0.6, rate_func=smooth)
         self.wait(0.5)
-        self.play(*[kula_p[i].animate.set_color(KOLOR_TEKST) for i in (0, 3, 5)], run_time=0.7)
+        self.play(*[m.animate.set_color(KOLOR_TEKST) for m in nowe], run_time=0.7)
         self.next_slide()
 
         # Krok 3: rachunek dla p = max.
