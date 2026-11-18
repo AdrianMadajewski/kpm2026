@@ -111,7 +111,6 @@ class PrzestrzenMetryczna(Slide):
         self.play(FadeIn(kropka_z), FadeIn(etyk_z))
         self.play(Create(bok_xz))
         self.play(Create(bok_xy), Create(bok_yz))
-        self.next_slide()
 
         # Porównanie długości: boki „zjeżdżają” pod wykres i układają się poziomo.
         jedn = ax.x_axis.unit_size
