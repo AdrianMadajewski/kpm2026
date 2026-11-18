@@ -3,22 +3,23 @@ from common import *
 
 
 class Podsumowanie(Slide):
-    """Cztery najważniejsze wnioski + pętla z tytułu: p(x,x) >= 0, metryka d(x,x) = 0, p(x*,x*) = 0."""
+    """Sześć wniosków; po prawej rysunek do każdego: pętla p(x,x), T_0, zbieżność, zupełność, punkt stały."""
 
     def construct(self):
         O = KOLOR_CZESCIOWA
         B = KOLOR_METRYKA
-        FS = 31
+        KOLOR_Y = ManimColor("#7B3FA0")
+        FS = 28
 
         naglowek = Tex(r"Podsumowanie", font_size=48)
         self.play(FadeIn(naglowek))
         self.next_slide()
         self.play(naglowek.animate.scale(44 / 48).to_edge(UP, buff=0.4), run_time=1.0)
 
-        # ---- Cztery wnioski ----
+        # ---- Wnioski ----
         def punkt_listy(tekst):
             t = Tex(tekst, font_size=FS, tex_environment="flushleft")
-            kropka = Dot(radius=0.045).move_to(t.get_corner(UL) + 0.25 * LEFT + 0.14 * DOWN)
+            kropka = Dot(radius=0.04).move_to(t.get_corner(UL) + 0.22 * LEFT + 0.13 * DOWN)
             return VGroup(kropka, t)
 
         wnioski = VGroup(
@@ -27,13 +28,17 @@ class Podsumowanie(Slide):
             punkt_listy(r"Metryki to dokładnie te metryki częściowe,\\w których $p(x,x)=0$."),
             punkt_listy(r"Topologia $\tau_p$ jest $T_0$, ale nie musi być $T_1$,\\"
                         r"a granice ciągów nie muszą być jednoznaczne."),
-            punkt_listy(r"Zupełność wybiera granicę z $p(x,x)=\lim p(x_n,x_m)$,\\"
-                        r"a punkt stały kontrakcji jest w pełni określony."),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.42)
-        wnioski.next_to(naglowek, DOWN, buff=0.6).to_edge(LEFT, buff=0.6)
+            punkt_listy(r"W $\tau_p$ mamy $x_n\to x$ wtedy i tylko wtedy, gdy\\"
+                        r"$\lim p(x,x_n)=p(x,x)$."),
+            punkt_listy(r"$(X,p)$ jest zupełna, gdy każdy ciąg Cauchy'ego zbiega do $x$,\\"
+                        r"dla którego $p(x,x)=\lim p(x,x_n)=\lim p(x_n,x_m)$."),
+            punkt_listy(r"Twierdzenie Banacha przenosi się na zupełne przestrzenie\\"
+                        r"częściowo metryczne, a punkt stały jest w pełni określony."),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        wnioski.next_to(naglowek, DOWN, buff=0.45).to_edge(LEFT, buff=0.5)
 
         # ---- Pętla z tytułu, po prawej ----
-        srodek = np.array([4.6, 0.6, 0])
+        srodek = np.array([4.9, 0.6, 0])
         punkt = Dot(srodek, radius=0.09)
         etykieta_x = MathTex("x", font_size=36).next_to(punkt, DOWN, buff=0.15)
         petla = Arc(radius=0.35, start_angle=-PI / 2 + 0.45, angle=2 * PI - 0.9,
@@ -52,7 +57,7 @@ class Podsumowanie(Slide):
         self.play(petla.animate.set_color(B), FadeTransform(wzor_p, wzor_0), run_time=0.8)
         self.next_slide()
 
-        # 3. Topologia: pętla znika, a w tym miejscu rysunek T_0 (jak na slajdzie o własnościach topologii).
+        # 3. Topologia: pętla znika, a w tym miejscu rysunek T_0.
         self.play(FadeIn(wnioski[2], shift=0.2 * RIGHT),
                   FadeOut(VGroup(punkt, etykieta_x, petla, wzor_0)), run_time=0.8)
         ramka = RoundedRectangle(width=3.4, height=1.9, corner_radius=0.15, color=GRAY_C, stroke_width=2)
@@ -76,18 +81,48 @@ class Podsumowanie(Slide):
         self.play(FadeIn(def_t0, shift=0.2 * DOWN))
         self.next_slide()
 
-        # 4. Punkt stały: wraca pętla p(x,x) >= 0, potem pętla niebieska i p(x*,x*) = 0.
-        self.play(FadeIn(wnioski[3], shift=0.2 * RIGHT))
+        # 4. Zbieżność: wartości p(x,x_n) dążą do poziomu p(x,x) (a nie do 0).
+        self.play(FadeOut(panel_t0), FadeIn(wnioski[3], shift=0.2 * RIGHT), run_time=0.8)
+        ax = Axes(x_range=[0, 8, 2], y_range=[0, 3, 1], x_length=3.2, y_length=2.6, tips=False,
+                  axis_config={"include_numbers": True, "font_size": 22}).move_to(np.array([4.2, 0.2, 0]))
+        etyk_n = MathTex("n", font_size=26).next_to(ax.x_axis, RIGHT, buff=0.12)
+        poziom = 1.0
+        linia = DashedLine(ax.c2p(0, poziom), ax.c2p(8, poziom), color=O, stroke_width=2.5)
+        etyk_linia = MathTex(r"p(x,x)", font_size=26, color=O).next_to(ax.c2p(8, poziom), DOWN, buff=0.12) \
+            .align_to(ax.c2p(8, 0), RIGHT)
+        kropki_x = VGroup(*[Dot(ax.c2p(n, poziom + 1.2 * 0.65 ** n), radius=0.05) for n in range(1, 9)])
+        # Legenda nad wykresem zamiast podpisów przy kropkach.
+        etyk_x = VGroup(Dot(radius=0.05), MathTex(r"p(x,x_n)", font_size=26)).arrange(RIGHT, buff=0.1)
+        etyk_x.next_to(ax, UP, buff=0.2).align_to(ax, LEFT)
+        self.play(Create(ax), FadeIn(etyk_n))
+        self.play(Create(linia), FadeIn(etyk_linia))
+        self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki_x], lag_ratio=0.25),
+                  FadeIn(etyk_x), run_time=2.0)
+        self.next_slide()
+
+        # 5. Zupełność: także p(x_n,x_m) dąży do tego samego poziomu p(x,x).
+        self.play(FadeIn(wnioski[4], shift=0.2 * RIGHT))
+        kropki_c = VGroup(*[Dot(ax.c2p(n, poziom + 1.9 * 0.8 ** n), radius=0.05, color=KOLOR_Y)
+                            for n in range(1, 9)])
+        etyk_c = VGroup(Dot(radius=0.05, color=KOLOR_Y), MathTex(r"p(x_n,x_m)", font_size=26, color=KOLOR_Y)
+                        ).arrange(RIGHT, buff=0.1)
+        etyk_c.next_to(etyk_x, RIGHT, buff=0.4)
+        self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki_c], lag_ratio=0.25),
+                  FadeIn(etyk_c), run_time=2.0)
+        self.play(Indicate(VGroup(linia, etyk_linia), color=O, scale_factor=1.08))
+        self.next_slide()
+
+        # 6. Twierdzenie Banacha: wraca pętla, p(x*,x*) = 0 na pomarańczowo.
+        wykres = VGroup(ax, etyk_n, linia, etyk_linia, kropki_x, etyk_x, kropki_c, etyk_c)
+        self.play(FadeOut(wykres), FadeIn(wnioski[5], shift=0.2 * RIGHT), run_time=0.8)
         self.next_slide()
         petla.set_color(O)
         wzor_p2 = MathTex(r"p(x,x)\ge 0", font_size=38, color=O).move_to(wzor_0)
-        self.play(FadeOut(panel_t0), run_time=0.6)
         self.play(FadeIn(punkt), FadeIn(etykieta_x), FadeIn(petla), FadeIn(wzor_p2), run_time=0.6)
         etykieta_xs = MathTex(r"x^*", font_size=36).move_to(etykieta_x)
-        wzor_k = MathTex(r"p(x^*,x^*)=0", font_size=38, color=B).move_to(wzor_p2)
-        self.play(petla.animate.set_color(B), FadeTransform(wzor_p2, wzor_k),
-                  FadeTransform(etykieta_x, etykieta_xs), run_time=1.0)
-        self.play(Flash(punkt, color=B, line_length=0.25, flash_radius=0.3))
+        wzor_k = MathTex(r"p(x^*,x^*)=0", font_size=38, color=O).move_to(wzor_p2)
+        self.play(FadeTransform(wzor_p2, wzor_k), FadeTransform(etykieta_x, etykieta_xs), run_time=1.0)
+        self.play(Flash(punkt, color=O, line_length=0.25, flash_radius=0.3))
         self.next_slide()
 
 
