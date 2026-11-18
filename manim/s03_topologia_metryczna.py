@@ -106,15 +106,13 @@ class TopologiaMetryczna(Slide):
 
         # ================= Krok 2: kule tworzą bazę =================
         tekst2 = kolumna(
-            Tex(r"W przestrzeni metrycznej \emph{kulą} o środku $x$", font_size=32),
-            Tex(r"i promieniu $\varepsilon>0$ nazywamy zbiór", font_size=32),
             MathTex(r"B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}", font_size=34, color=B),
             Tex(r"Kule tworzą \emph{bazę} topologii $\tau_d$, czyli", font_size=32),
             Tex(r"$U$ jest otwarty $\iff$ dla każdego $x\in U$", font_size=32),
             Tex(r"istnieje $\varepsilon>0$ takie, że $B_d(x,\varepsilon)\subset U$.", font_size=32),
         )
         tresc2 = tekst2[2]
-        self.play(FadeIn(tresc2[:3], shift=0.2 * RIGHT))
+        self.play(FadeIn(tresc2[0], shift=0.2 * RIGHT))
         self.next_slide()
 
         # Zbiór otwarty U jako kula, a w nim mniejsze kule wokół punktów.
@@ -136,7 +134,7 @@ class TopologiaMetryczna(Slide):
         etyk_x2 = always_redraw(lambda: MathTex("x", font_size=28)
                                 .next_to(P(c_K + s.get_value() * kier2), DL, buff=0.06))
 
-        self.play(FadeIn(tresc2[3:], shift=0.2 * RIGHT))
+        self.play(FadeIn(tresc2[1:], shift=0.2 * RIGHT))
         self.play(FadeIn(UK[0]), Create(UK[1]), FadeIn(etyk_UK))
         self.play(LaggedStart(*[FadeIn(m) for m in male_B], lag_ratio=0.4))
         self.play(FadeIn(ruchoma_B), FadeIn(etyk_x2))
