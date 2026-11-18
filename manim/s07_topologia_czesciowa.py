@@ -175,7 +175,7 @@ class Kule(Slide):
         self.next_slide()
 
         # eps machamy w dół i w górę: kula B_p zawsze zawiera [0, x], niezależnie od eps.
-        for e in (0.4, 1.4, 0.15, 0.9, 0.05):
+        for e in (1.9, 0.5, 1.7, 0.2):
             self.play(eps.animate.set_value(e), run_time=1.1, rate_func=smooth)
         self.next_slide()
 
