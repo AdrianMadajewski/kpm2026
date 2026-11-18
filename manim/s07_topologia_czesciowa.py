@@ -178,8 +178,9 @@ class Kule(Slide):
         self.play(FadeIn(k_d), FadeIn(k_p), FadeIn(wzor_kd), FadeIn(wzor_kp), FadeIn(licznik))
         self.next_slide()
 
-        # eps -> 0
-        self.play(eps.animate.set_value(0.03), run_time=4, rate_func=smooth)
+        # eps machamy w dół i w górę: kula B_p zawsze zawiera [0, x], niezależnie od eps.
+        for e in (0.4, 1.4, 0.15, 0.9, 0.05):
+            self.play(eps.animate.set_value(e), run_time=1.1, rate_func=smooth)
         self.next_slide()
 
 
