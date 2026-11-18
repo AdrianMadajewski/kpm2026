@@ -184,26 +184,20 @@ class Kule(Slide):
         self.next_slide()
 
 
-def _diabelek():
-    """Mały, sympatyczny diabełek w kolorze punktu y: buzia, rogi, oczy, uśmiech, ogonek."""
-    czerw = ManimColor("#5E2D7A")  # ciemny fiolet (kontur, rogi, ogon)
-    twarz = Circle(radius=0.5, color=czerw, stroke_width=3).set_fill(ManimColor("#7B3FA0"), 1)
-    rog_l = Polygon([-0.38, 0.28, 0], [-0.18, 0.42, 0], [-0.42, 0.78, 0],
-                    color=czerw, stroke_width=2).set_fill(czerw, 1)
-    rog_p = rog_l.copy().flip(UP).move_to([-rog_l.get_center()[0], rog_l.get_center()[1], 0])
-    oko_l = Dot([-0.17, 0.08, 0], radius=0.06, color=WHITE)
-    oko_p = Dot([0.17, 0.08, 0], radius=0.06, color=WHITE)
-    zrenica_l = Dot([-0.15, 0.06, 0], radius=0.03, color=BLACK)
-    zrenica_p = Dot([0.19, 0.06, 0], radius=0.03, color=BLACK)
-    brwi = VGroup(Line([-0.3, 0.24, 0], [-0.07, 0.17, 0], color=BLACK, stroke_width=3),
-                  Line([0.3, 0.24, 0], [0.07, 0.17, 0], color=BLACK, stroke_width=3))
-    usmiech = Arc(radius=0.24, start_angle=-PI + 0.55, angle=PI - 1.1, color=BLACK, stroke_width=3)
-    usmiech.move_to([0, -0.17, 0])
-    ogon = VMobject(color=czerw, stroke_width=3).set_points_smoothly(
-        [[0.42, -0.25, 0], [0.7, -0.35, 0], [0.8, -0.1, 0], [0.7, 0.1, 0]])
-    grot = Polygon([0.62, 0.08, 0], [0.82, 0.02, 0], [0.74, 0.24, 0], color=czerw,
-                   stroke_width=2).set_fill(czerw, 1)
-    return VGroup(ogon, grot, rog_l, rog_p, twarz, oko_l, oko_p, zrenica_l, zrenica_p, brwi, usmiech)
+def _klodka(kolor=ManimColor("#7B3FA0")):
+    """Mała kłódka: korpus z dziurką od klucza i pałąk (pałąk osobno, żeby dało się go "zatrzasnąć")."""
+    korpus = RoundedRectangle(width=0.5, height=0.4, corner_radius=0.07, color=kolor,
+                              stroke_width=2).set_fill(kolor, 1)
+    dziurka = VGroup(Dot(radius=0.045, color=WHITE).shift(0.03 * UP),
+                     Rectangle(width=0.035, height=0.1, stroke_width=0).set_fill(WHITE, 1).shift(0.04 * DOWN))
+    dziurka.move_to(korpus)
+    r = 0.15
+    luk = Arc(radius=r, start_angle=0, angle=PI, color=kolor, stroke_width=6)
+    lewa = Line([-r, 0, 0], [-r, -0.12, 0], color=kolor, stroke_width=6)
+    prawa = Line([r, 0, 0], [r, -0.12, 0], color=kolor, stroke_width=6)
+    palak = VGroup(luk, lewa, prawa)
+    palak.next_to(korpus, UP, buff=-0.1)
+    return VGroup(korpus, dziurka, palak)
 
 
 def _koniec_otwarty(punkt, kolor):
@@ -532,9 +526,12 @@ class WlasnosciTopologii(Slide):
         self.play(eps_t.animate.set_value(0.15), run_time=1.5)
         self.next_slide()
 
-        # Kropka y zamienia się w diabełka, który buja się na boki:
-        # y nie da się wyrzucić z żadnej kuli wokół x.
-        diabelek = _diabelek().scale(0.42).move_to(sy).shift(0.18 * UP).set_z_index(11)
-        self.play(FadeTransform(sy, diabelek), run_time=0.8)
-        self.play(Wiggle(diabelek, scale_value=1.0, rotation_angle=0.09 * TAU, n_wiggles=4), run_time=1.6)
+        # Nad y = 0 pojawia się kłódka i się zatrzaskuje: kula wokół x jest "przypięta" do 0,
+        # więc y nie da się wyrzucić z żadnej kuli wokół x.
+        klodka = _klodka().scale(0.8).next_to(sy, UP, buff=0.12).set_z_index(11)
+        palak = klodka[2]
+        palak.shift(0.12 * UP)
+        self.play(FadeIn(klodka, shift=0.2 * DOWN), run_time=0.6)
+        self.play(palak.animate.shift(0.12 * DOWN), run_time=0.25, rate_func=rush_into)
+        self.play(Indicate(klodka, color=O, scale_factor=1.15), run_time=0.6)
         self.next_slide()
