@@ -100,8 +100,8 @@ def main():
         f"-ctitle={TITLE}",
         "-cbackground_color=white",
         "-creveal_theme=white",
-        "-cslide_number=true",
-        "-cprogress=true",
+        "-cslide_number=false",
+        "-cprogress=false",
     ])
     print(f"Done: {output}")
 
