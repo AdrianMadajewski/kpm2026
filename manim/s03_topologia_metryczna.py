@@ -34,21 +34,7 @@ def przygotuj():
 class TopologiaMetryczna(Slide):
     def construct(self):
         naglowek, ax, J, P, kolumna = przygotuj()
-
-        # ---------------- Krok 1: kula ----------------
-        tekst1 = kolumna(
-            Tex(r"Kula o środku $x$ i promieniu $\varepsilon>0$", font_size=32),
-            MathTex(r"B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}", font_size=34),
-        )
-        x1 = np.array([1.6, 1.5])
-        eps = ValueTracker(0.8)
-        k1 = always_redraw(lambda: kula(P(x1), eps.get_value() * J))
-        promien = always_redraw(lambda: Line(P(x1), P(x1 + np.array([eps.get_value(), 0])),
-                                             color=KOLOR_METRYKA, stroke_width=3))
-        etyk_eps = always_redraw(lambda: MathTex(r"\varepsilon", font_size=30, color=KOLOR_METRYKA)
-                                 .next_to(promien, UP, buff=0.08))
-        d1 = Dot(P(x1), radius=0.07)
-        e1 = MathTex("x", font_size=30).next_to(d1, DL, buff=0.08)
+        B = KOLOR_METRYKA
 
         # Tytuł.
         self.play(FadeIn(naglowek))
@@ -65,62 +51,96 @@ class TopologiaMetryczna(Slide):
             self.next_slide()
         self.play(FadeOut(pytania))
 
-        # Definicja kuli na środku ekranu.
-        cel_tekst1 = tekst1.copy()
-        tekst1.move_to(ORIGIN)
-        self.play(FadeIn(tekst1))
-        self.next_slide()
+        # ---- Pomocnicze: zbiory na rysunku ----
+        def plama(srodek, R, faza):
+            """Punkty brzegu "nieregularnego" zbioru wokół srodek (współrzędne osi)."""
+            th = np.linspace(0, 2 * PI, 240)
+            r = R * (1 + 0.16 * np.sin(3 * th + faza) + 0.08 * np.cos(2 * th - faza))
+            return np.stack([srodek[0] + r * np.cos(th), srodek[1] + 0.8 * r * np.sin(th)], axis=1)
 
-        # Definicja na lewo, wykres z kulą po prawej.
-        self.play(Transform(tekst1, cel_tekst1))
-        self.play(Create(ax))
-        self.play(FadeIn(k1), FadeIn(d1), FadeIn(e1), Create(promien), FadeIn(etyk_eps))
-        self.play(eps.animate.set_value(1.2), run_time=1.2)
-        self.play(eps.animate.set_value(0.4), run_time=1.2)
-        self.play(eps.animate.set_value(0.8), run_time=1.0)
-        self.next_slide()
+        def zbior(pkt, kolor=KOLOR_TEKST, wyp=GRAY):
+            ksztalt = VMobject().set_points_smoothly([P(u) for u in pkt[:-1]] + [P(pkt[0])])
+            return VGroup(ksztalt.copy().set_stroke(width=0).set_fill(wyp, 0.14),
+                          DashedVMobject(ksztalt.copy().set_stroke(kolor, 3), num_dashes=50))
 
-        # ---------------- Krok 2: zbiór otwarty ----------------
-        tekst2 = kolumna(
-            Tex(r"Zbiór $U\subset X$ jest \emph{otwarty}, gdy", font_size=32),
-            Tex(r"dla każdego $x\in U$ istnieje $\varepsilon>0$", font_size=32),
-            Tex(r"takie, że $B_d(x,\varepsilon)\subset U$.", font_size=32),
-        )
-        srodek_U = np.array([2.1, 1.5])
-        pa, pb = 1.5, 1.0  # półosie elipsy w jednostkach osi
-        U = DashedVMobject(Ellipse(width=2 * pa * J, height=2 * pb * J, color=KOLOR_TEKST,
-                                   stroke_width=3), num_dashes=50).move_to(P(srodek_U))
-        U_tlo = Ellipse(width=2 * pa * J, height=2 * pb * J, stroke_width=0).set_fill(GRAY, 0.12).move_to(P(srodek_U))
-        etyk_U = MathTex("U", font_size=34).move_to(P(srodek_U + np.array([pa * 0.85, pb * 0.95])))
-
-        kat = np.linspace(0, 2 * PI, 400)
-        brzeg = np.stack([srodek_U[0] + pa * np.cos(kat), srodek_U[1] + pb * np.sin(kat)], axis=1)
-
-        def odl_do_brzegu(u):
+        def odl(u, brzeg):
             return np.min(np.linalg.norm(brzeg - u, axis=1))
 
-        punkty_stale = [np.array([1.5, 1.7]), np.array([2.6, 1.1])]
-        male_kule = VGroup(*[
-            VGroup(kula(P(u), 0.8 * odl_do_brzegu(u) * J), Dot(P(u), radius=0.06))
-            for u in punkty_stale
-        ])
+        # ================= Krok 1: zbiory otwarte w topologii =================
+        tekst1 = kolumna(
+            Tex(r"Zbiór $U\subset X$ jest \emph{otwarty}, gdy $U\in\tau$.", font_size=32),
+            Tex(r"Równoważnie, dla każdego $x\in U$ istnieje", font_size=32),
+            Tex(r"zbiór otwarty $V$ taki, że $x\in V\subset U$.", font_size=32),
+        )
+        c_U = np.array([2.0, 1.5])
+        brzeg_U = plama(c_U, 1.25, 0.4)
+        U = zbior(brzeg_U)
+        etyk_U = MathTex("U", font_size=34).move_to(P(c_U + np.array([1.25, 0.95])))
+
+        def otoczenie(u, faza):
+            R = 0.7 * odl(u, brzeg_U) / 1.24
+            return zbior(plama(u, R, faza), kolor=KOLOR_DRUGORZEDNY, wyp=GRAY_D)
+
+        stale = [(np.array([1.35, 1.75]), 1.3), (np.array([2.55, 1.05]), 2.6)]
+        male_V = VGroup(*[VGroup(otoczenie(u, f), Dot(P(u), radius=0.06)) for u, f in stale])
 
         t = ValueTracker(0.0)
-        kierunek = np.array([1.0, 0.45]) / np.linalg.norm([1.0, 0.45])
-
-        def ruchomy():
-            return srodek_U + t.get_value() * kierunek
-
-        ruch = always_redraw(lambda: VGroup(
-            kula(P(ruchomy()), 0.8 * odl_do_brzegu(ruchomy()) * J),
-            Dot(P(ruchomy()), radius=0.06),
+        kier = np.array([1.0, 0.5]) / np.linalg.norm([1.0, 0.5])
+        ruchomy_V = always_redraw(lambda: VGroup(
+            otoczenie(c_U + t.get_value() * kier, 2.0 + 2.0 * t.get_value()),
+            Dot(P(c_U + t.get_value() * kier), radius=0.06),
         ))
+        etyk_x = always_redraw(lambda: MathTex("x", font_size=28)
+                               .next_to(P(c_U + t.get_value() * kier), DL, buff=0.06))
 
-        self.play(FadeOut(VGroup(tekst1, d1, e1, promien, etyk_eps, k1)))
-        self.play(FadeIn(tekst2, shift=0.2 * RIGHT), FadeIn(U_tlo), Create(U), FadeIn(etyk_U))
-        self.play(LaggedStart(*[FadeIn(m) for m in male_kule], lag_ratio=0.4))
-        self.play(FadeIn(ruch))
-        self.play(t.animate.set_value(1.30), run_time=3, rate_func=smooth)
+        self.play(FadeIn(tekst1[2][0], shift=0.2 * RIGHT), Create(ax))
+        self.next_slide()
+        self.play(FadeIn(tekst1[2][1:], shift=0.2 * RIGHT))
+        self.play(FadeIn(U[0]), Create(U[1]), FadeIn(etyk_U))
+        self.play(LaggedStart(*[FadeIn(m) for m in male_V], lag_ratio=0.4))
+        self.play(FadeIn(ruchomy_V), FadeIn(etyk_x))
+        self.play(t.animate.set_value(0.95), run_time=3, rate_func=smooth)
+        self.next_slide()
+
+        self.play(FadeOut(VGroup(tekst1, U, etyk_U, male_V, ruchomy_V, etyk_x)))
+
+        # ================= Krok 2: kule tworzą bazę =================
+        tekst2 = kolumna(
+            Tex(r"W przestrzeni metrycznej \emph{kulą} o środku $x$", font_size=32),
+            Tex(r"i promieniu $\varepsilon>0$ nazywamy zbiór", font_size=32),
+            MathTex(r"B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}", font_size=34, color=B),
+            Tex(r"Kule tworzą \emph{bazę} topologii $\tau_d$, czyli", font_size=32),
+            Tex(r"$U$ jest otwarty $\iff$ dla każdego $x\in U$", font_size=32),
+            Tex(r"istnieje $\varepsilon>0$ takie, że $B_d(x,\varepsilon)\subset U$.", font_size=32),
+        )
+        tresc2 = tekst2[2]
+        self.play(FadeIn(tresc2[:3], shift=0.2 * RIGHT))
+        self.next_slide()
+
+        # Zbiór otwarty U jako kula, a w nim mniejsze kule wokół punktów.
+        c_K, r_K = np.array([2.0, 1.5]), 1.15
+        UK = VGroup(Circle(radius=r_K * J, stroke_width=0).set_fill(GRAY, 0.14),
+                    DashedVMobject(Circle(radius=r_K * J, color=KOLOR_TEKST, stroke_width=3), num_dashes=50)
+                    ).move_to(P(c_K))
+        etyk_UK = MathTex("U", font_size=34).move_to(P(c_K + np.array([0.95, 0.95])))
+
+        def kulka(u):
+            return kula(P(u), 0.75 * (r_K - np.linalg.norm(u - c_K)) * J)
+
+        stale2 = [np.array([1.45, 1.8]), np.array([2.5, 1.1])]
+        male_B = VGroup(*[VGroup(kulka(u), Dot(P(u), radius=0.06)) for u in stale2])
+        s = ValueTracker(0.0)
+        kier2 = np.array([-0.4, -1.0]) / np.linalg.norm([-0.4, -1.0])
+        ruchoma_B = always_redraw(lambda: VGroup(
+            kulka(c_K + s.get_value() * kier2), Dot(P(c_K + s.get_value() * kier2), radius=0.06)))
+        etyk_x2 = always_redraw(lambda: MathTex("x", font_size=28)
+                                .next_to(P(c_K + s.get_value() * kier2), DL, buff=0.06))
+
+        self.play(FadeIn(tresc2[3:], shift=0.2 * RIGHT))
+        self.play(FadeIn(UK[0]), Create(UK[1]), FadeIn(etyk_UK))
+        self.play(LaggedStart(*[FadeIn(m) for m in male_B], lag_ratio=0.4))
+        self.play(FadeIn(ruchoma_B), FadeIn(etyk_x2))
+        self.play(s.animate.set_value(0.95), run_time=3, rate_func=smooth)
         self.next_slide()
 
 
