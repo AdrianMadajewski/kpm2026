@@ -108,7 +108,7 @@ class TopologiaMetryczna(Slide):
         tekst_kula = kolumna(
             Tex(r"\emph{Kulą} o środku w punkcie $x$ i promieniu $\varepsilon>0$", font_size=32),
             Tex(r"nazywamy zbiór", font_size=32),
-            MathTex(r"B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}", r".", font_size=34, color=B),
+            MathTex(r"B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}", r".", font_size=34),
         )
         x1 = np.array([2.0, 1.5])
         eps = ValueTracker(0.8)
