@@ -22,11 +22,11 @@ class Matthews(Slide):
         foto.to_edge(LEFT, buff=1.0).shift(0.4 * DOWN)
 
         punkty = VGroup(*[
-            Tex(t, font_size=36) for t in [
-                r"$\bullet$ informatyk",
-                r"$\bullet$ doktorat o sieciach przepływu danych",
+            Tex(t, font_size=32, tex_environment="flushleft") for t in [
+                r"$\bullet$ informatyk, University of Warwick\\\phantom{$\bullet$ }(Department of Computer Science),",
+                r"$\bullet$ doktorat (1985) o sieciach przepływu danych.",
             ]
-        ]).arrange(DOWN, aligned_edge=LEFT, buff=0.45)
+        ]).arrange(DOWN, aligned_edge=LEFT, buff=0.35)
         punkty.next_to(foto, RIGHT, buff=0.8)
 
         self.play(FadeIn(naglowek), FadeIn(foto))
