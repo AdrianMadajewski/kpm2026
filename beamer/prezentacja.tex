@@ -1,5 +1,5 @@
 % Czy odległość punktu od samego siebie musi być zerowa? -- KPM 2026, Warszawa
-% Wersja zapasowa (Beamer) prezentacji animowanej z katalogu manim/.
+% Wersja zapasowa (Beamer).
 \documentclass[aspectratio=169,11pt]{beamer}
 
 \usepackage[T1]{fontenc}
@@ -8,78 +8,21 @@
 \usepackage{lmodern}
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns}
+\usetikzlibrary{arrows.meta}
 \usepackage{qrcode}
 
-% ------------------------------------------------------------------
-% Kolory (jak w wersji animowanej)
-% ------------------------------------------------------------------
-\definecolor{czesciowa}{HTML}{E06C00}   % metryka częściowa p
-\definecolor{metryka}{HTML}{29ABCA}     % metryka d
-\definecolor{fiolet}{HTML}{7B3FA0}      % punkt y
-\definecolor{szary}{HTML}{6E6E6E}
-\definecolor{jasnyszary}{HTML}{BBBBBB}
-\definecolor{czerwony}{HTML}{CF5044}
+\usetheme[progressbar=frametitle,numbering=fraction,block=fill]{metropolis}
+\usefonttheme{professionalfonts}
+\definecolor{akcent}{HTML}{E06C00}
+\definecolor{tlo}{HTML}{23373B}
+\setbeamercolor{progress bar}{fg=akcent,bg=akcent!20}
+\setbeamercolor{frametitle}{bg=tlo,fg=white}
+\setbeamercolor{alerted text}{fg=akcent}
+\setbeamercolor{title separator}{fg=akcent}
 
-\newcommand{\cz}[1]{\textcolor{czesciowa}{#1}}
-\newcommand{\me}[1]{\textcolor{metryka}{#1}}
-\newcommand{\sz}[1]{\textcolor{szary}{#1}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\R}{\mathbb{R}}
 
-% ------------------------------------------------------------------
-% Własny, minimalistyczny motyw
-% ------------------------------------------------------------------
-\usefonttheme{serif}
-\usefonttheme{professionalfonts}
-\setbeamertemplate{navigation symbols}{}
-\setbeamercolor{normal text}{fg=black,bg=white}
-\setbeamercolor{structure}{fg=czesciowa}
-\setbeamercolor{frametitle}{fg=black}
-\setbeamercolor{title}{fg=black}
-\setbeamercolor{alerted text}{fg=czesciowa}
-\setbeamerfont{frametitle}{size=\Large}
-
-% Tytuł ramki: po lewej, z cienką pomarańczową kreską; nazwa sekcji szarym drukiem po prawej.
-\setbeamertemplate{frametitle}{%
-  \vspace*{0.5em}%
-  \begin{beamercolorbox}[wd=\paperwidth,leftskip=1.2em,rightskip=1.2em]{frametitle}%
-    \usebeamerfont{frametitle}\insertframetitle\hfill
-    {\normalsize\color{jasnyszary}\insertsectionhead}%
-  \end{beamercolorbox}%
-  \vspace*{-0.35em}%
-  \begin{tikzpicture}
-    \fill[czesciowa] (0,0) rectangle (2.2cm,0.6mm);
-    \fill[jasnyszary!50] (2.2cm,0) rectangle (\paperwidth-2.4em,0.2mm);
-  \end{tikzpicture}%
-  \vspace*{0.2em}%
-}
-
-\newlength{\dlugoscpostepu}
-% Stopka: autor po lewej, numer slajdu po prawej, pasek postępu na dole.
-\setbeamertemplate{footline}{%
-  \pgfmathsetlength{\dlugoscpostepu}{min(1,\insertframenumber/max(1,\inserttotalframenumber))*\paperwidth}%
-  \vbox{%
-    \begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1.4ex,leftskip=1.2em,rightskip=1.2em]{footline}%
-      {\scriptsize\color{jasnyszary}Adrian Madajewski\quad·\quad KPM 2026}\hfill
-      {\scriptsize\color{jasnyszary}\insertframenumber\,/\,\inserttotalframenumber}%
-    \end{beamercolorbox}%
-    \hbox{\color{czesciowa}\rule{\dlugoscpostepu}{0.8mm}%
-          \color{jasnyszary!35}\rule{\dimexpr\paperwidth-\dlugoscpostepu\relax}{0.8mm}}}%
-}
-
-% Wypunktowania: małe pomarańczowe kropki.
-\setbeamertemplate{itemize item}{\raisebox{0.15em}{\tikz\fill[czesciowa] circle (0.22em);}}
-\setbeamertemplate{itemize subitem}{\raisebox{0.15em}{\tikz\fill[szary] circle (0.18em);}}
-\setbeamertemplate{enumerate item}{\color{czesciowa}\insertenumlabel.}
-\setlength{\leftmargini}{1.4em}
-
-% Twierdzenia bez ramek: pogrubiona nazwa i kropka, jak w wersji animowanej.
-\setbeamertemplate{theorems}[normal font]
-\setbeamertemplate{theorem begin}{%
-  \par\smallskip\noindent\textbf{\inserttheoremname}%
-  \ifx\inserttheoremaddition\empty\else\ (\inserttheoremaddition)\fi\textbf{.}~}
-\setbeamertemplate{theorem end}{\par\smallskip}
 \theoremstyle{definition}
 \newtheorem*{definicja}{Definicja}
 \newtheorem*{twierdzenie}{Twierdzenie}
@@ -88,144 +31,35 @@
 \newtheorem*{przyklad}{Przykład}
 \newtheorem*{uwaga}{Uwaga}
 \newtheorem*{wniosek}{Wniosek}
-\renewenvironment{proof}{\par\noindent\textit{Dowód.}~}{\hfill$\blacksquare$\par}
 
-% Podpowiedź na dole slajdu (jak przypomnienia aksjomatów w animacji).
-\newcommand{\podpowiedz}[1]{%
-  \vfill\begin{center}\small\cz{#1}\end{center}}
-
-% ------------------------------------------------------------------
-% Plan z wyróżnionym punktem (slajdy sekcji)
-% ------------------------------------------------------------------
-\newcommand{\punktplanu}[3]{% #1 numer, #2 tekst, #3 aktywny (1/0)
-  \ifnum#3=1
-    \node[draw=czesciowa,line width=1.2pt,rounded corners=4pt,minimum width=10.5cm,
-          minimum height=0.95cm,text width=10cm,align=left] (p#1) at (0,-1.25*#1) {\textbf{#1.}\ \ #2};
-  \else
-    \node[draw=jasnyszary,rounded corners=4pt,minimum width=10.5cm,minimum height=0.95cm,
-          text width=10cm,align=left,text=szary] (p#1) at (0,-1.25*#1) {#1.\ \ #2};
-  \fi}
-\newcommand{\plan}[1]{%
-  \begin{center}
-  \begin{tikzpicture}
-    \punktplanu{1}{Przestrzenie metryczne i ich topologia}{\ifnum#1=1 1\else 0\fi}
-    \punktplanu{2}{Przestrzenie częściowo metryczne}{\ifnum#1=2 1\else 0\fi}
-    \punktplanu{3}{Topologia w przestrzeniach częściowo metrycznych}{\ifnum#1=3 1\else 0\fi}
-    \punktplanu{4}{Zupełność i twierdzenie o punkcie stałym}{\ifnum#1=4 1\else 0\fi}
-    \punktplanu{5}{Podsumowanie}{\ifnum#1=5 1\else 0\fi}
-    \foreach \i/\j in {1/2,2/3,3/4,4/5}
-      \draw[-{Stealth[length=2mm]},jasnyszary,thick] (p\i.south) -- (p\j.north);
-  \end{tikzpicture}
-  \end{center}}
-
-% Pętla p(x,x) z tytułu.
-\newcommand{\petla}[3]{% #1 kolor pętli, #2 etykieta punktu, #3 wzór
-  \begin{tikzpicture}[baseline]
-    \fill (0,0) circle (2.2pt);
-    \node[below=1pt] at (0,0) {$#2$};
-    \draw[#1,line width=1.3pt,-{Stealth[length=2.5mm]}]
-      ([shift={(-62:0.45)}]0,0.55) arc (-62:238:0.45);
-    \node[#1] at (0,1.45) {$#3$};
-  \end{tikzpicture}}
-
-% Panel aksjomatu oddzielania.
-\newcommand{\panel}[3]{% #1 nazwa, #2 rysunek owali, #3 opis
-  \begin{tikzpicture}
-    \node at (0,1.35) {$#1$};
-    \draw[jasnyszary,rounded corners=5pt] (-1.6,-0.85) rectangle (1.6,0.95);
-    #2
-    \fill (-0.65,0) circle (1.6pt) node[below=1pt] {\small$x$};
-    \fill (0.65,0) circle (1.6pt) node[below=1pt] {\small$y$};
-    \node[text width=3.4cm,align=center,font=\footnotesize] at (0,-1.5) {#3};
-  \end{tikzpicture}}
-\newcommand{\owal}[3]{% #1 środek x, #2 szerokość, #3 kolor
-  \fill[#3,opacity=0.15] (#1,0) ellipse ({#2/2} and 0.6);
-  \draw[#3,dashed,thick] (#1,0) ellipse ({#2/2} and 0.6);}
-
-% Kłódka (punkt y = 0 „przypięty” do każdej kuli wokół x).
-\newcommand{\klodka}{%
-  \begin{scope}[fiolet]
-    \draw[line width=1.6pt] (-0.11,0.14) -- (-0.11,0.22) arc (180:0:0.11) -- (0.11,0.14);
-    \fill[rounded corners=1.5pt] (-0.18,-0.08) rectangle (0.18,0.16);
-    \fill[white] (0,0.06) circle (0.035);
-    \fill[white] (-0.012,-0.04) rectangle (0.012,0.05);
-  \end{scope}}
-
-\title{Czy odległość punktu od samego siebie\\musi być zerowa?}
+\title{Czy odległość punktu od samego siebie musi być zerowa?}
 \subtitle{Przestrzenie częściowo metryczne}
 \author{Adrian Madajewski}
 \institute{Wydział Matematyki i Informatyki UAM}
 \date{KPM 2026, Warszawa}
 
-\setbeamertemplate{title page}{%
-  \vfill
-  \begin{center}
-    {\LARGE\inserttitle\par}
-    \vspace{0.6em}
-    {\large\color{szary}\insertsubtitle\par}
-    \vspace{1.2em}
-    \petla{czesciowa}{x}{p(x,x)\ge 0}
-    \vspace{1.6em}
-
-    {\large\insertauthor\par}
-    \vspace{0.2em}
-    {\small\color{szary}\insertinstitute\par\insertdate\par}
-  \end{center}
-  \vfill}
-
-\AtBeginSection[]{%
-  \begin{frame}[noframenumbering,plain]{}
-    \vspace{1.5em}
-    {\centering\Large Plan\par}
-    \vspace{0.6em}
-    \plan{\thesection}
-  \end{frame}}
-
 \begin{document}
 
-% ==================================================================
-\begin{frame}[plain]
-  \titlepage
-\end{frame}
+\maketitle
 
-\begin{frame}[noframenumbering,plain]
-  \vspace{1.5em}
-  {\centering\Large Plan\par}
-  \vspace{0.6em}
-  \plan{0}
+\begin{frame}{Plan}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents
 \end{frame}
 
 % ==================================================================
-\section{Przestrzenie metryczne}
+\section{Przestrzenie metryczne i ich topologia}
 
 \begin{frame}{Przestrzeń metryczna}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      \emph{Metryka} na zbiorze $X$ to funkcja $d\colon X\times X\to[0,\infty)$ taka, że dla $x,y,z\in X$
-      \begin{itemize}
-        \item[\sz{(M1)}] \me{$d(x,y)=0\iff x=y$},
-        \item[\sz{(M2)}] \me{$d(x,y)=d(y,x)$},
-        \item[\sz{(M3)}] \me{$d(x,z)\le d(x,y)+d(y,z)$}.
-      \end{itemize}
-      \medskip
-      Parę $(X,d)$ nazywamy \emph{przestrzenią metryczną}.
-    \end{column}
-    \begin{column}{0.4\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=1.15]
-        \draw[->,szary] (0,0) -- (3.4,0);
-        \draw[->,szary] (0,0) -- (0,2.7);
-        \foreach \t in {1,2,3} \draw[szary] (\t,0.05) -- (\t,-0.05) node[below,font=\scriptsize] {\t};
-        \foreach \t in {1,2} \draw[szary] (0.05,\t) -- (-0.05,\t) node[left,font=\scriptsize] {\t};
-        \coordinate (x) at (0.8,0.8); \coordinate (y) at (2.8,1.3); \coordinate (z) at (1.7,2.3);
-        \draw[line width=1.6pt] (x) -- (z);
-        \draw[metryka,line width=1.6pt] (x) -- (y) -- (z);
-        \foreach \p/\l/\a in {x/x/below left,y/y/right,z/z/above}
-          \fill (\p) circle (2pt) node[\a] {$\l$};
-        \node[metryka,font=\small] at (1.9,0.65) {$d(x,y)$};
-      \end{tikzpicture}
-    \end{column}
-  \end{columns}
+  \begin{definicja}
+    \emph{Metryka} na zbiorze $X$ to funkcja $d\colon X\times X\to[0,\infty)$ taka, że dla $x,y,z\in X$
+    \begin{itemize}
+      \item[(M1)] $d(x,y)=0\iff x=y$,
+      \item[(M2)] $d(x,y)=d(y,x)$,
+      \item[(M3)] $d(x,z)\le d(x,y)+d(y,z)$.
+    \end{itemize}
+    Parę $(X,d)$ nazywamy \emph{przestrzenią metryczną}.
+  \end{definicja}
 \end{frame}
 
 \begin{frame}{Topologia w przestrzeni metrycznej}
@@ -234,234 +68,118 @@
     \item Jakie aksjomaty oddzielania spełnia nasza przestrzeń?
     \item Co możemy powiedzieć o zbieżności?
   \end{enumerate}
-  \pause\bigskip
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      Zbiór $U\subset X$ jest \emph{otwarty}, gdy $U\in\tau$. Równoważnie, dla każdego $x\in U$
-      istnieje zbiór otwarty $V$ taki, że $x\in V\subset U$.
-    \end{column}
-    \begin{column}{0.4\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.85]
-        \path[fill=jasnyszary!30,draw=black,dashed,thick]
-          plot[smooth cycle,tension=0.8] coordinates {(-1.6,0.1) (-0.9,1.1) (0.6,1.0) (1.7,0.3) (1.2,-0.9) (-0.6,-0.95)};
-        \node at (1.65,1.0) {$U$};
-        \path[fill=szary!30,draw=szary,dashed]
-          plot[smooth cycle,tension=0.8] coordinates {(-0.75,0.15) (-0.35,0.6) (0.15,0.4) (0.2,-0.15) (-0.4,-0.35)};
-        \fill (-0.25,0.1) circle (1.8pt) node[below left=-1pt,font=\small] {$x$};
-        \node[szary,font=\small] at (0.45,0.45) {$V$};
-      \end{tikzpicture}
-    \end{column}
-  \end{columns}
+  \pause
+  \begin{definicja}
+    Zbiór $U\subset X$ jest \emph{otwarty}, gdy $U\in\tau$. Równoważnie, dla każdego $x\in U$
+    istnieje zbiór otwarty $V$ taki, że $x\in V\subset U$.
+  \end{definicja}
 \end{frame}
 
-\begin{frame}{Topologia w przestrzeni metrycznej}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      \emph{Kulą} o środku w punkcie $x$ i promieniu $\varepsilon>0$ nazywamy zbiór
-      \[
-        B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}.
-      \]
-      \pause
-      Kule tworzą \emph{bazę} topologii $\tau_d$, czyli\\
-      $U$ jest otwarty $\iff$ dla każdego $x\in U$ istnieje $\varepsilon>0$ takie, że
-      $B_d(x,\varepsilon)\subset U$.
-    \end{column}
-    \begin{column}{0.4\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.85]
-        \fill[jasnyszary!30] (0,0) circle (1.6);
-        \draw[dashed,thick] (0,0) circle (1.6);
-        \node at (1.35,1.35) {$U$};
-        \foreach \c/\r in {{(-0.6,0.5)}/0.55,{(0.55,-0.35)}/0.6,{(-0.1,-1.05)}/0.3} {
-          \fill[metryka,opacity=0.2] \c circle (\r);
-          \draw[metryka,dashed] \c circle (\r);
-          \fill \c circle (1.6pt);}
-        \draw[metryka,thick] (-0.6,0.5) -- ++(0.55,0) node[midway,above,font=\scriptsize] {$\varepsilon$};
-      \end{tikzpicture}
-    \end{column}
-  \end{columns}
+\begin{frame}{Kule}
+  \begin{definicja}
+    \emph{Kulą} o środku w punkcie $x$ i promieniu $\varepsilon>0$ nazywamy zbiór
+    \[
+      B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}.
+    \]
+  \end{definicja}
+  \pause
+  Kule tworzą \emph{bazę} topologii $\tau_d$, czyli
+  \[
+    U \text{ jest otwarty} \iff \forall\,x\in U\ \exists\,\varepsilon>0\colon\ B_d(x,\varepsilon)\subset U.
+  \]
 \end{frame}
 
 \begin{frame}{Aksjomaty oddzielania}
-  Przestrzeń topologiczna $X$ spełnia aksjomat \dots, gdy dla dowolnych $x\neq y$
-  \begin{center}
-    \panel{T_0}{\owal{-0.65}{1.2}{metryka}}{jeden z punktów ma otoczenie, które nie zawiera drugiego}\hfill
-    \panel{T_1}{\owal{-0.4}{1.5}{metryka}\owal{0.4}{1.5}{czesciowa}}{każdy z punktów ma otoczenie, które nie zawiera drugiego}\hfill
-    \panel{T_2}{\owal{-0.65}{1.1}{metryka}\owal{0.65}{1.1}{czesciowa}}{punkty mają rozłączne otoczenia}
-  \end{center}
+  Przestrzeń topologiczna $X$ spełnia aksjomat
+  \begin{itemize}
+    \item $T_0$, gdy dla $x\neq y$ jeden z punktów ma otoczenie, które nie zawiera drugiego,
+    \item $T_1$, gdy dla $x\neq y$ każdy z punktów ma otoczenie, które nie zawiera drugiego,
+    \item $T_2$ (Hausdorffa), gdy dla $x\neq y$ punkty mają rozłączne otoczenia.
+  \end{itemize}
   \[
     T_2\;\Longrightarrow\;T_1\;\Longrightarrow\;T_0
   \]
   \pause
-  Dla $x\neq y$ kule o promieniu $\tfrac12 d(x,y)$ wokół $x$ i wokół $y$ są rozłączne.\\[0.3em]
+  Dla $x\neq y$ kule o promieniu $\tfrac12 d(x,y)$ wokół $x$ i wokół $y$ są rozłączne.
   \pause
-  \me{Przestrzeń metryczna jest Hausdorffa ($T_2$).}
+  \begin{alertblock}{}
+    Przestrzeń metryczna jest Hausdorffa ($T_2$).
+  \end{alertblock}
 \end{frame}
 
 \begin{frame}{Zbieżność w przestrzeni metrycznej}
-  \begin{columns}[T]
-    \begin{column}{0.58\textwidth}
-      Ciąg $(x_n)_{n\in\N}\subset X$ jest zbieżny do $a\in X$, gdy
-      \[
-        \forall\,U\in\tau_d,\ a\in U\ \ \exists\,N\ \forall\,n\ge N\colon\ x_n\in U.
-      \]
-      \pause
-      \sz{W przestrzeni metrycznej:}
-      \begin{align*}
-        x_n\to a &\iff \forall\,\varepsilon>0\ \exists\,N\ \forall\,n\ge N\colon\ x_n\in B_d(a,\varepsilon)\\
-                 &\iff \lim_{n\to\infty} d(a,x_n)=0.
-      \end{align*}
-    \end{column}
-    \begin{column}{0.38\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.9]
-        \coordinate (a) at (0,0);
-        \fill[metryka,opacity=0.2] (a) circle (0.75); \draw[metryka,dashed] (a) circle (0.75);
-        \foreach \n in {1,...,7} {
-          \pgfmathsetmacro{\r}{1.9*0.72^\n}
-          \pgfmathsetmacro{\k}{65*\n}
-          \fill ({\r*cos(\k)},{\r*sin(\k)}) circle ({2.2pt-0.15pt*\n});
-          \ifnum\n<4 \node[font=\scriptsize] at ({(\r+0.3)*cos(\k)},{(\r+0.3)*sin(\k)}) {$x_{\n}$};\fi}
-        \fill[metryka] (a) circle (2.2pt) node[below left=-1pt] {$a$};
-      \end{tikzpicture}
-    \end{column}
-  \end{columns}
+  Ciąg $(x_n)_{n\in\N}\subset X$ jest zbieżny do $a\in X$, gdy
+  \[
+    \forall\,U\in\tau_d,\ a\in U\ \ \exists\,N\ \forall\,n\ge N\colon\ x_n\in U.
+  \]
+  \pause
+  W przestrzeni metrycznej
+  \begin{align*}
+    x_n\to a &\iff \forall\,\varepsilon>0\ \exists\,N\ \forall\,n\ge N\colon\ x_n\in B_d(a,\varepsilon)\\
+    &\uncover<3->{\iff \lim_{n\to\infty} d(a,x_n)=0.}
+  \end{align*}
 \end{frame}
 
 % ==================================================================
 \section{Przestrzenie częściowo metryczne}
 
 \begin{frame}{Steve G.\ Matthews}
-  \begin{columns}[c]
-    \begin{column}{0.3\textwidth}
-      \centering
-      \begin{tikzpicture}
-        \draw[jasnyszary,rounded corners=6pt] (-1.3,-1.6) rectangle (1.3,1.6);
-        \fill[yellow!25] (0,0) circle (1); \draw[thick] (0,0) circle (1);
-        \draw[thick] (-0.36,0.25) circle (0.22) (0.36,0.25) circle (0.22) (-0.14,0.25) -- (0.14,0.25);
-        \fill (-0.36,0.25) circle (0.07) (0.36,0.25) circle (0.07);
-        \draw[thick] (-0.45,-0.35) arc (200:340:0.48);
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.65\textwidth}
-      \begin{itemize}
-        \item<2-> informatyk, University of Warwick\\(Department of Computer Science),
-        \item<3-> doktorat (1985) o sieciach przepływu danych.
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Sieci przepływu danych}
-  \centering
-  \begin{tikzpicture}[box/.style={draw=jasnyszary,minimum size=0.55cm,inner sep=0pt}]
-    % x: strumień nieskończony
-    \node[metryka] at (-0.7,2) {$x=$};
-    \foreach \b [count=\i] in {0,1,1,0,1,0,0,1}
-      \node[box,metryka] at (0.65*\i-0.3,2) {\b};
-    \node[metryka] at (5.55,2) {$\cdots$};
-    \node[metryka,font=\small] at (2.6,1.45) {strumień nieskończony --- wynik w pełni określony};
-    % z: przerwanie
-    \node[czerwony] at (-0.7,0.5) {$z=$};
-    \foreach \b [count=\i] in {1,0,1}
-      \node[box,draw=czerwony,czerwony] at (0.65*\i-0.3,0.5) {\b};
-    \foreach \i in {4,5,6}
-      \node[box,rotate=12*\i-30,draw=jasnyszary!60] at (0.65*\i-0.3+0.1*\i-0.4,0.25-0.2*\i+0.6) {};
-    \draw[fill=yellow!70!orange,draw=orange] (2.05,1.15) -- (1.85,0.75) -- (2.0,0.77) -- (1.85,0.42) -- (2.15,0.85) -- (2.0,0.83) -- (2.2,1.15) -- cycle;
-    \node[czerwony,font=\small] at (2.6,-0.35) {przerwanie przepływu --- wynik już nigdy się nie uzupełni};
-    % porównanie x i y
-    \begin{scope}[yshift=-2.6cm]
-      \fill[czesciowa,opacity=0.18] (0.07,-0.95) rectangle (2.27,0.35);
-      \node at (-0.7,0) {$x=$};
-      \foreach \b [count=\i] in {0,1,1,0,1,0,0,1} \node[box] at (0.65*\i-0.3,0) {\b};
-      \node at (-0.7,-0.65) {$y=$};
-      \foreach \b [count=\i] in {0,1,1,1,0,1,1,0} \node[box] at (0.65*\i-0.3,-0.65) {\b};
-      \draw[czerwony,dashed,thick] (2.27,0.45) -- (2.27,-1.05);
-      \node[czesciowa,font=\small] at (1.17,-1.3) {wspólny początek};
-    \end{scope}
-  \end{tikzpicture}
-
-  \medskip
-  im dłużej strumienie się zgadzają, tym są sobie bliższe
+  \begin{itemize}
+    \item<1-> informatyk, University of Warwick (Department of Computer Science),
+    \item<2-> doktorat (1985) o sieciach przepływu danych.
+  \end{itemize}
+  \bigskip
+  \uncover<3->{%
+  \textbf{Sieci przepływu danych.} Program dopisuje kolejne elementy strumienia --- wiemy coraz więcej.
+  \begin{itemize}
+    \item strumień nieskończony --- wynik w pełni określony,
+    \item przerwanie przepływu --- wynik już nigdy się nie uzupełni,
+    \item im dłużej dwa strumienie się zgadzają, tym są sobie bliższe.
+  \end{itemize}}
 \end{frame}
 
 \begin{frame}{Przestrzeń częściowo metryczna}
-  \begin{columns}[T]
-    \begin{column}{0.62\textwidth}
-      \emph{Metryka \cz{częściowa}} na zbiorze $X$ to funkcja $\cz{p}\colon X\times X\to[0,\infty)$ taka, że dla $x,y,z\in X$
-      \begin{itemize}
-        \item[\sz{(P1)}] $x=y\iff p(x,x)=p(x,y)=p(y,y)$ \hfill\sz{\small$\leftarrow$ rozróżnia punkty}
-        \item[\sz{(P2)}] $p(x,x)\le p(x,y)$ \hfill\sz{\small$\leftarrow$ nic nie jest bliżej $x$ niż samo $x$}
-        \item[\sz{(P3)}] $p(x,y)=p(y,x)$
-        \item[\sz{(P4)}] $p(x,z)\le p(x,y)+p(y,z)\cz{{}-p(y,y)}$
-      \end{itemize}
-      \medskip
-      Parę $(X,p)$ nazywamy \emph{przestrzenią częściowo metryczną}.
-    \end{column}
-    \begin{column}{0.33\textwidth}
-      \centering
-      \petla{czesciowa}{x}{p(x,x)\ge 0}\par\medskip
-      {\small A gdyby odległość punktu\\od siebie mogła być dodatnia?}
-    \end{column}
-  \end{columns}
+  \begin{definicja}
+    \emph{Metryka częściowa} na zbiorze $X$ to funkcja $p\colon X\times X\to[0,\infty)$ taka, że dla $x,y,z\in X$
+    \begin{itemize}
+      \item[(P1)] $x=y\iff p(x,x)=p(x,y)=p(y,y)$,
+      \item[(P2)] $p(x,x)\le p(x,y)$,
+      \item[(P3)] $p(x,y)=p(y,x)$,
+      \item[(P4)] $p(x,z)\le p(x,y)+p(y,z)-p(y,y)$.
+    \end{itemize}
+    Parę $(X,p)$ nazywamy \emph{przestrzenią częściowo metryczną}.
+  \end{definicja}
+  \pause
+  \alert{W odróżnieniu od metryki dopuszczamy $p(x,x)\ge 0$.}
 \end{frame}
 
 \begin{frame}{Przykład}
-  \centering
-  $X\coloneqq[0,\infty),\qquad p(x,y)\coloneqq\max\{x,y\}$
-  \medskip
-
-  \small
-  \begin{tabular}{@{}l l c l@{}}
-    \sz{(P1)} & $x=y\iff p(x,x)=p(x,y)=p(y,y)$ & \sz{$\rightsquigarrow$} & $x=y\iff x=\max\{x,y\}=y$ \ \cz{\checkmark}\\
-    \sz{(P2)} & $p(x,x)\le p(x,y)$ & \sz{$\rightsquigarrow$} & $x=\max\{x,x\}\le\max\{x,y\}$ \ \cz{\checkmark}\\
-    \sz{(P3)} & $p(x,y)=p(y,x)$ & \sz{$\rightsquigarrow$} & $\max\{x,y\}=\max\{y,x\}$ \ \cz{\checkmark}\\
-    \sz{(P4)} & $p(x,z)\le p(x,y)+p(y,z)-p(y,y)$ & \sz{$\rightsquigarrow$} & $\max\{x,z\}\le\max\{x,y\}+\max\{y,z\}-y$ \ \cz{\checkmark}
-  \end{tabular}
-  \normalsize
-  \medskip
-
-  \raggedright
+  \[
+    X\coloneqq[0,\infty),\qquad p(x,y)\coloneqq\max\{x,y\}\qquad(\text{w szczególności } p(x,x)=x).
+  \]
+  \pause
+  \begin{itemize}
+    \item[(P1)] $x=y\iff x=\max\{x,y\}=y$ \hfill\checkmark
+    \item[(P2)] $x=\max\{x,x\}\le\max\{x,y\}$ \hfill\checkmark
+    \item[(P3)] $\max\{x,y\}=\max\{y,x\}$ \hfill\checkmark
+    \item[(P4)] $\max\{x,z\}\le\max\{x,y\}+\max\{y,z\}-y$ \hfill\checkmark
+  \end{itemize}
   \pause
   \textit{Dowód (P4).} Bez straty ogólności $\max\{x,z\}=x$. Mamy $\max\{x,y\}\ge x$ oraz $\max\{y,z\}\ge y$. Stąd
   \[
-    \max\{x,y\}+\max\{y,z\}-y\ \ge\ x+y-y=x=\max\{x,z\}. \qquad\blacksquare
+    \max\{x,y\}+\max\{y,z\}-y\ge x+y-y=x=\max\{x,z\}. \qedhere
   \]
 \end{frame}
 
-\begin{frame}{Przykład}
-  \centering
-  $X\coloneqq[0,\infty),\qquad p(x,y)\coloneqq\max\{x,y\}$
-  \medskip
-
-  \begin{tikzpicture}[scale=0.75]
-    \fill[czesciowa,opacity=0.15] (0,0) rectangle (3,3);
-    \draw[czesciowa,dashed,thick] (3,0) -- (3,3) -- (0,3);
-    \fill[fiolet,opacity=0.15] (0,0) rectangle (1.5,1.5);
-    \draw[fiolet,dashed,thick] (1.5,0) -- (1.5,1.5) -- (0,1.5);
-    \draw[->] (0,0) -- (5.4,0); \draw[->] (0,0) -- (0,4.4) node[above] {$p$};
-    \foreach \t in {1,...,5} \draw (\t,0.07) -- (\t,-0.07) node[below,font=\scriptsize] {\t};
-    \foreach \t in {1,...,4} \draw (0.07,\t) -- (-0.07,\t) node[left,font=\scriptsize] {\t};
-    \fill[czesciowa] (3,0) circle (3pt) node[below=8pt,black] {$x$};
-    \fill[fiolet] (1.5,0) circle (3pt) node[below=8pt,black] {$y$};
-    \node[czesciowa,left,font=\small] at (-0.4,3) {$p(x,x)=\max\{x,x\}=3$};
-    \node[fiolet,left,font=\small] at (-0.4,1.5) {$p(y,y)=\max\{y,y\}=1.5$};
-  \end{tikzpicture}
-
-  \pause
-  O którym z punktów wiemy więcej?
-\end{frame}
-
 \begin{frame}{Interpretacja}
-  \begin{itemize}
+  \begin{itemize}[<+->]
     \item Element $x$ to \emph{przybliżenie} --- znamy o nim tylko część informacji.
     \item $p(x,x)$ mierzy niedookreśloność $x$ --- im większe, tym mniej o nim wiemy.
     \item $p(x,x)=0$ --- element $x$ jest \emph{w pełni określony}.
     \item $p(x,y)$ to łączna niepewność $x$ i $y$.
   \end{itemize}
-  \pause\bigskip
-  \centering A co, jeśli \emph{każdy} punkt jest w pełni określony?
+  \bigskip
+  \uncover<5->{A co, jeśli \emph{każdy} punkt jest w pełni określony?}
 \end{frame}
 
 \begin{frame}{Metryka jako szczególny przypadek}
@@ -469,78 +187,48 @@
     Jeżeli $p$ jest metryką częściową na $X$ i $p(x,x)=0$ dla każdego $x\in X$, to $p$ jest metryką.
   \end{stwierdzenie}
   \pause
-  \begin{proof}
-    Podstawiamy $p(x,x)=p(y,y)=0$:
+  \begin{proof}[Dowód]
+    Podstawiamy $p(x,x)=p(y,y)=0$.
     \begin{itemize}
-      \item[\sz{(P1)}] $x=y\iff p(x,y)=0$ \hfill \me{$\Longrightarrow$ (M1)}
-      \item[\sz{(P2)}] $0\le p(x,y)$ \hfill \me{zawsze prawda, bo $p\ge 0$}
-      \item[\sz{(P3)}] $p(x,y)=p(y,x)$ \hfill \me{$\Longrightarrow$ (M2)}
-      \item[\sz{(P4)}] $p(x,z)\le p(x,y)+p(y,z)$ \hfill \me{$\Longrightarrow$ (M3)}
+      \item[(P1)] daje $x=y\iff p(x,y)=0$, czyli (M1);
+      \item[(P2)] daje $0\le p(x,y)$, co zawsze zachodzi;
+      \item[(P3)] to (M2);
+      \item[(P4)] daje $p(x,z)\le p(x,y)+p(y,z)$, czyli (M3). \qedhere
     \end{itemize}
-    Zatem $p$ spełnia (M1)--(M3), czyli jest metryką.
   \end{proof}
-\end{frame}
-
-\begin{frame}{Metryka jako szczególny przypadek}
+  \pause
   \begin{wniosek}
-    Metryki to dokładnie te metryki częściowe, w których każdy punkt jest \emph{w pełni określony}.
+    Metryki to dokładnie te metryki częściowe, w których każdy punkt jest w pełni określony.
   \end{wniosek}
-  \begin{center}
-    \begin{tikzpicture}
-      \draw[czesciowa,thick,rounded corners=10pt] (-3.2,-1.5) rectangle (3.2,1.5);
-      \node[czesciowa] at (-1.7,1.05) {metryki częściowe};
-      \draw[metryka,thick,rounded corners=8pt] (-0.2,-1.1) rectangle (2.8,0.7);
-      \node[metryka] at (1.3,0.2) {metryki};
-      \node[metryka,font=\small] at (1.3,-0.4) {$p(x,x)=0$};
-    \end{tikzpicture}
-  \end{center}
 \end{frame}
 
 % ==================================================================
-\section{Topologia}
+\section{Topologia w przestrzeniach częściowo metrycznych}
 
-\begin{frame}{Topologia w przestrzeni częściowo metrycznej}
-  \begin{enumerate}
-    \item Jak wyglądają zbiory otwarte?
-    \item Jakie aksjomaty oddzielania spełnia nasza przestrzeń?
-    \item Co możemy powiedzieć o zbieżności?
-  \end{enumerate}
-  \pause\bigskip
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \centering\sz{\small kula w przestrzeni metrycznej}
-      \[ B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\} \]
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \centering\sz{\small kula w przestrzeni częściowo metrycznej}
-      \[ B_p(x,\varepsilon)\coloneqq\{y\in X : p(x,y)<\cz{p(x,x)+{}}\varepsilon\} \]
-    \end{column}
-  \end{columns}
+\begin{frame}{Kule w przestrzeni częściowo metrycznej}
+  \[
+    B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}
+    \qquad\leadsto\qquad
+    B_p(x,\varepsilon)\coloneqq\{y\in X : p(x,y)<p(x,x)+\varepsilon\}
+  \]
   \pause
-  \medskip
   Dla $X\coloneqq[0,\infty)$ i $p(x,y)\coloneqq\max\{x,y\}$ mamy
   \[
     B_p(x,\varepsilon)=\{y\ge 0 : \max\{x,y\}<x+\varepsilon\}=\{y\ge 0 : y<x+\varepsilon\}=[0,\,x+\varepsilon).
   \]
-\end{frame}
-
-\begin{frame}{Topologia w przestrzeni częściowo metrycznej}
-  \centering
-  \begin{tikzpicture}[scale=1.2]
-    \foreach \y/\kol/\opis/\a/\b in {1.6/metryka/{$d(x,y)=|x-y|$}/0.8/3.2, 0/czesciowa/{$p(x,y)=\max\{x,y\}$}/0/3.2} {
-      \draw (0,\y) -- (5,\y);
-      \foreach \t in {0,...,5} \draw (\t,\y+0.06) -- (\t,\y-0.06) node[below,font=\scriptsize] {\t};
-      \node[\kol,left] at (-0.3,\y) {\opis};
-      \draw[\kol,line width=2.4pt] (\a,\y+0.25) -- (\b,\y+0.25);
-      \fill[\kol] (2,\y) circle (2pt) node[above=10pt,black,font=\small] {$x$};}
-    \draw[metryka,fill=white,thick] (0.8,1.85) circle (2pt) (3.2,1.85) circle (2pt);
-    \fill[czesciowa] (0,0.25) circle (2pt); \draw[czesciowa,fill=white,thick] (3.2,0.25) circle (2pt);
-    \node[metryka,right] at (5.3,1.85) {$B_d(x,\varepsilon)=(x-\varepsilon,\,x+\varepsilon)$};
-    \node[czesciowa,right] at (5.3,0.25) {$B_p(x,\varepsilon)=[0,\,x+\varepsilon)$};
-  \end{tikzpicture}
-
-  \bigskip
-  Bez względu na $\varepsilon$ kula $B_p(x,\varepsilon)$ zawsze zawiera cały odcinek $[0,x]$.
+  \pause
+  \begin{center}
+    \begin{tikzpicture}[scale=1.1]
+      \foreach \y/\opis/\a in {1.2/{$|x-y|$}/0.8, 0/{$\max\{x,y\}$}/0} {
+        \draw (0,\y) -- (5,\y);
+        \foreach \t in {0,...,5} \draw (\t,\y+0.06) -- (\t,\y-0.06) node[below,font=\scriptsize] {\t};
+        \node[left] at (-0.3,\y) {\opis};
+        \draw[akcent,line width=2pt] (\a,\y+0.22) -- (3.2,\y+0.22);
+        \fill (2,\y) circle (1.8pt) node[above=8pt,font=\small] {$x$};}
+      \node[right,font=\small] at (5.2,1.42) {$B_d(x,\varepsilon)=(x-\varepsilon,x+\varepsilon)$};
+      \node[right,font=\small] at (5.2,0.22) {$B_p(x,\varepsilon)=[0,x+\varepsilon)$};
+    \end{tikzpicture}
+  \end{center}
 \end{frame}
 
 \begin{frame}{Kule tworzą bazę topologii}
@@ -548,142 +236,117 @@
     Jeżeli $y\in B_p(x,\varepsilon)$, to istnieje $\delta>0$ takie, że $B_p(y,\delta)\subset B_p(x,\varepsilon)$.
   \end{lemat}
   \pause
-  \textit{Dowód.} Ustalmy $y\in B_p(x,\varepsilon)\coloneqq\{u\in X : p(x,u)<p(x,x)+\varepsilon\}$.\\
-  Niech $\delta\coloneqq p(x,x)+\varepsilon-p(x,y)>0$.\\
-  Niech $z\in B_p(y,\delta)\coloneqq\{u\in X : p(y,u)<p(y,y)+\delta\}$. Wtedy
-  \[
-    p(x,z)\overset{\text{(P4)}}{\le} p(x,y)+p(y,z)-p(y,y)<p(x,y)+\delta=p(x,x)+\varepsilon,
-  \]
-  czyli $z\in B_p(x,\varepsilon)$. \hfill$\blacksquare$
+  \begin{proof}[Dowód]
+    Ustalmy $y\in B_p(x,\varepsilon)$, czyli $p(x,y)<p(x,x)+\varepsilon$.
+    Niech $\delta\coloneqq p(x,x)+\varepsilon-p(x,y)>0$ i niech $z\in B_p(y,\delta)$, czyli $p(y,z)<p(y,y)+\delta$.
+    \pause Wtedy
+    \[
+      p(x,z)\overset{\text{(P4)}}{\le} p(x,y)+p(y,z)-p(y,y)<p(x,y)+\delta=p(x,x)+\varepsilon,
+    \]
+    czyli $z\in B_p(x,\varepsilon)$. \qedhere
+  \end{proof}
   \pause
-  \medskip
-
-  Zatem kule tworzą bazę topologii $\tau_p$.
-  \cz{W przykładzie zbiory otwarte to $\emptyset$, $[0,\infty)$ oraz $[0,a)$ dla $a>0$.}
-  \podpowiedz{(P4)\quad $p(x,z)\le p(x,y)+p(y,z)-p(y,y)$}
+  Zatem kule tworzą bazę topologii $\tau_p$. W przykładzie zbiory otwarte to $\emptyset$, $[0,\infty)$ oraz $[0,a)$ dla $a>0$.
 \end{frame}
 
 \begin{frame}{Własności topologii $\tau_p$}
-  \begin{columns}[T]
-    \begin{column}{0.6\textwidth}
-      \begin{stwierdzenie}
-        Topologia $\tau_p$ spełnia aksjomat $T_0$.
-      \end{stwierdzenie}
-      \pause
-      \textit{Dowód.} Ustalmy $x\neq y$.\\
-      Z (P1) mamy $p(x,x)\neq p(x,y)$ lub $p(y,y)\neq p(x,y)$.\\
-      Z (P2) wynika, że $p(x,x)<p(x,y)$ lub $p(y,y)<p(x,y)$.\\
-      Niech np.\ $p(x,x)<p(x,y)$ i $\varepsilon\coloneqq p(x,y)-p(x,x)>0$.\\
-      Wtedy $p(x,y)=p(x,x)+\varepsilon$, czyli $y\notin B_p(x,\varepsilon)$. \hfill$\blacksquare$
-    \end{column}
-    \begin{column}{0.36\textwidth}
-      \centering
-      \panel{T_0}{\owal{-0.65}{1.2}{metryka}}{$\forall\,x\neq y\ \exists\,U\in\tau\colon$\\ $x\in U\not\ni y$ lub $y\in U\not\ni x$}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Własności topologii $\tau_p$}
-  \begin{columns}[T]
-    \begin{column}{0.6\textwidth}
-      \begin{uwaga}
-        Topologia $\tau_p$ \emph{nie musi} spełniać aksjomatu $T_1$.
-      \end{uwaga}
-      Niech $X=[0,\infty)$, $p(x,y)=\max\{x,y\}$ oraz $y=0$, $x>0$.
-      \medskip
-
-      \begin{tikzpicture}[scale=1.1]
-        \draw (0,0) -- (5,0);
-        \foreach \t in {0,...,5} \draw (\t,0.06) -- (\t,-0.06) node[below,font=\scriptsize] {\t};
-        \draw[czesciowa,line width=2.4pt] (0,0.3) -- (3.15,0.3);
-        \draw[czesciowa,fill=white,thick] (3.15,0.3) circle (2pt);
-        \node[czesciowa,font=\small] at (2.7,0.65) {$B_p(x,\varepsilon)$};
-        \fill[czesciowa] (3,0) circle (2.2pt) node[below=9pt,black] {$x$};
-        \fill[fiolet] (0,0) circle (2.2pt) node[below=9pt,black] {$y$};
-        \begin{scope}[shift={(0,0.42)},scale=1.1]\klodka\end{scope}
-      \end{tikzpicture}
-
-      \medskip
-      Każda kula wokół $x$ to $[0,x+\varepsilon)\ni 0$, więc $x$ nie da się oddzielić od $0$.
-    \end{column}
-    \begin{column}{0.36\textwidth}
-      \centering
-      \panel{T_1}{\owal{-0.4}{1.5}{metryka}\owal{0.4}{1.5}{czesciowa}}{$\forall\,x\neq y\ \exists\,U,V\in\tau\colon$\\ $x\in U\not\ni y$ i $y\in V\not\ni x$}
-    \end{column}
-  \end{columns}
+  \begin{stwierdzenie}
+    Topologia $\tau_p$ spełnia aksjomat $T_0$.
+  \end{stwierdzenie}
+  \pause
+  \begin{proof}[Dowód]
+    Ustalmy $x\neq y$. Z (P1) mamy $p(x,x)\neq p(x,y)$ lub $p(y,y)\neq p(x,y)$,
+    więc z (P2) $p(x,x)<p(x,y)$ lub $p(y,y)<p(x,y)$.
+    Niech np.\ $p(x,x)<p(x,y)$ i $\varepsilon\coloneqq p(x,y)-p(x,x)>0$.
+    Wtedy $p(x,y)=p(x,x)+\varepsilon$, czyli $y\notin B_p(x,\varepsilon)$. \qedhere
+  \end{proof}
+  \pause
+  \begin{uwaga}
+    Topologia $\tau_p$ \emph{nie musi} spełniać aksjomatu $T_1$.
+  \end{uwaga}
+  \pause
+  Niech $X=[0,\infty)$, $p(x,y)=\max\{x,y\}$ oraz $y=0$, $x>0$. Każda kula wokół $x$ to
+  $[0,x+\varepsilon)\ni 0$, więc nie istnieje zbiór otwarty zawierający $x$, a niezawierający $0$.
 \end{frame}
 
 \begin{frame}{Zbieżność w $\tau_p$}
-  Kiedy ciąg $(x_n)_{n\in\N}\subset X$ jest zbieżny do $x\in X$ w $\tau_p$?
-  \[
-    \sz{x_n\to x\iff \forall\,U\in\tau_p,\ x\in U\ \ \exists\,N\ \forall\,n\ge N\colon\ x_n\in U}
-  \]
   \begin{stwierdzenie}
     $x_n\to x$ w $\tau_p$ wtedy i tylko wtedy, gdy $\displaystyle\lim_{n\to\infty}p(x,x_n)=p(x,x)$.
   \end{stwierdzenie}
+  \pause
   \begin{center}
     \begin{tikzpicture}[scale=0.62]
       \draw[->] (0,0) -- (8.6,0) node[right] {$n$}; \draw[->] (0,0) -- (0,3.4);
       \foreach \t in {2,4,6,8} \draw (\t,0.08) -- (\t,-0.08) node[below,font=\scriptsize] {\t};
       \foreach \t in {1,2,3} \draw (0.08,\t) -- (-0.08,\t) node[left,font=\scriptsize] {\t};
-      \draw[czesciowa,dashed,thick] (0,1) -- (8,1) node[below=2pt,font=\small] {$p(x,x)$};
+      \draw[akcent,dashed,thick] (0,1) -- (8,1) node[below=2pt,font=\small] {$p(x,x)$};
       \foreach \n in {1,...,8} \fill (\n,{1+1.4*0.68^\n}) circle (2.6pt);
-      \node[font=\small] at (1.6,3.0) {$\bullet\ p(x,x_n)$};
+      \node[font=\small] at (2.1,3.0) {$\bullet$ $p(x,x_n)$};
     \end{tikzpicture}
   \end{center}
 \end{frame}
 
-\begin{frame}{Zbieżność w $\tau_p$}
-  \small
-  \textit{Dowód.} $(\Rightarrow)$ Ustalmy $\varepsilon>0$. Kula $B_p(x,\varepsilon)$ jest otwarta i zawiera $x$,
-  więc istnieje $N$ takie, że dla każdego $n\ge N$ mamy $x_n\in B_p(x,\varepsilon)$, czyli $p(x,x_n)<p(x,x)+\varepsilon$.
-  Z (P2) mamy $p(x,x)\le p(x,x_n)$, zatem $0\le p(x,x_n)-p(x,x)<\varepsilon$ dla $n\ge N$.
-  Zatem $\lim_{n\to\infty}p(x,x_n)=p(x,x)$.
+\begin{frame}{Zbieżność w $\tau_p$ --- dowód}
+  \begin{proof}[Dowód]
+    $(\Rightarrow)$ Ustalmy $\varepsilon>0$. Kula $B_p(x,\varepsilon)$ jest otwarta i zawiera $x$,
+    więc istnieje $N$ takie, że dla każdego $n\ge N$ mamy $x_n\in B_p(x,\varepsilon)$, czyli
+    $p(x,x_n)<p(x,x)+\varepsilon$. Z (P2) mamy $p(x,x)\le p(x,x_n)$, zatem
+    $0\le p(x,x_n)-p(x,x)<\varepsilon$ dla $n\ge N$.
 
-  \medskip
-  $(\Leftarrow)$ Niech $U\in\tau_p$, $x\in U$. Z lematu $B_p(x,\varepsilon)\subseteq U$ dla pewnego $\varepsilon>0$.
-  Z założenia istnieje $N$ takie, że dla każdego $n\ge N$ mamy $p(x,x_n)-p(x,x)<\varepsilon$,
-  zatem $p(x,x_n)<p(x,x)+\varepsilon$, czyli $x_n\in B_p(x,\varepsilon)\subseteq U$ dla $n\ge N$. \hfill$\blacksquare$
-  \normalsize
-  \pause
-  \bigskip
+    \pause\medskip
+    $(\Leftarrow)$ Niech $U\in\tau_p$, $x\in U$. Z lematu $B_p(x,\varepsilon)\subseteq U$ dla pewnego $\varepsilon>0$.
+    Z założenia istnieje $N$ takie, że dla każdego $n\ge N$ mamy $p(x,x_n)-p(x,x)<\varepsilon$,
+    czyli $x_n\in B_p(x,\varepsilon)\subseteq U$ dla $n\ge N$. \qedhere
+  \end{proof}
+\end{frame}
 
+\begin{frame}{Granica nie musi być jednoznaczna}
   \begin{przyklad}
-    $X=[0,\infty)$, $p(x,y)=\max\{x,y\}$, $x_n\coloneqq 0$ dla $n\in\N$. Wtedy
-    \[
-      p(x,x_n)=\max\{x,0\}=x=\max\{x,x\}=p(x,x),
-    \]
-    zatem $\lim_{n\to\infty}p(x,x_n)=x=p(x,x)$, więc $x_n\to x$ dla \emph{każdego} $x\in[0,\infty)$!
+    $X=[0,\infty)$, $p(x,y)=\max\{x,y\}$, $x_n\coloneqq 0$ dla $n\in\N$.
   \end{przyklad}
-  \centering\cz{\textbf{Granica ciągu nie jest jednoznaczna.}}
+  \pause
+  Dla dowolnego $x\in X$
+  \[
+    p(x,x_n)=\max\{x,0\}=x=\max\{x,x\}=p(x,x),
+  \]
+  \pause
+  zatem $\lim_{n\to\infty}p(x,x_n)=x=p(x,x)$, więc $x_n\to x$ dla \emph{każdego} $x\in[0,\infty)$!
+  \pause
+  \begin{alertblock}{}
+    Granica ciągu nie jest jednoznaczna.
+  \end{alertblock}
 \end{frame}
 
 % ==================================================================
-\section{Zupełność}
+\section{Zupełność i twierdzenie o punkcie stałym}
 
-\begin{frame}{Zupełność}
+\begin{frame}{Ciągi Cauchy'ego}
   \begin{definicja}
-    Ciąg $(x_n)_{n\in\N}\subset X$ jest \emph{ciągiem Cauchy'ego} w \me{$(X,d)$}, gdy
+    Ciąg $(x_n)_{n\in\N}\subset X$ jest \emph{ciągiem Cauchy'ego} w $(X,d)$, gdy
     \[
-      \me{\forall\,\varepsilon>0\ \ \exists\,N\in\N\ \ \forall\,n,m\ge N\colon\ \ d(x_n,x_m)<\varepsilon.}
+      \forall\,\varepsilon>0\ \ \exists\,N\in\N\ \ \forall\,n,m\ge N\colon\ \ d(x_n,x_m)<\varepsilon.
     \]
   \end{definicja}
   \pause
   \begin{definicja}
-    Ciąg $(x_n)_{n\in\N}\subset X$ jest \emph{ciągiem Cauchy'ego} w \cz{$(X,p)$}, gdy
+    Ciąg $(x_n)_{n\in\N}\subset X$ jest \emph{ciągiem Cauchy'ego} w $(X,p)$, gdy
     \[
-      \cz{\exists\,a\in\R\ \ \forall\,\varepsilon>0\ \ \exists\,N\in\N\ \ \forall\,n,m\ge N\colon\ \ |p(x_n,x_m)-a|<\varepsilon.}
+      \exists\,a\in\R\ \ \forall\,\varepsilon>0\ \ \exists\,N\in\N\ \ \forall\,n,m\ge N\colon\ \ |p(x_n,x_m)-a|<\varepsilon.
     \]
     Piszemy wtedy $\lim_{n,m\to\infty}p(x_n,x_m)=a$.
   \end{definicja}
-  \pause
+\end{frame}
+
+\begin{frame}{Ciągi Cauchy'ego --- przykład}
   \begin{przyklad}
-    $X=[0,\infty)$, $p(x,y)=\max\{x,y\}$, $x_n\coloneqq 1+\tfrac1n$ dla $n\in\N$. Wtedy
-    \[
-      p(x_n,x_m)=\max\Bigl\{1+\tfrac1n,\,1+\tfrac1m\Bigr\}=1+\frac{1}{\min\{n,m\}}\xrightarrow[n,m\to\infty]{}1,
-    \]
-    więc $(x_n)_{n\in\N}$ jest ciągiem Cauchy'ego i $\lim_{n,m\to\infty}p(x_n,x_m)=1\me{{}\neq 0}$.
+    $X=[0,\infty)$, $p(x,y)=\max\{x,y\}$, $x_n\coloneqq 1+\tfrac1n$ dla $n\in\N$.
   \end{przyklad}
+  \pause
+  \[
+    p(x_n,x_m)=\max\Bigl\{1+\tfrac1n,\,1+\tfrac1m\Bigr\}=1+\frac{1}{\min\{n,m\}}\xrightarrow[n,m\to\infty]{}1,
+  \]
+  \pause
+  więc $(x_n)_{n\in\N}$ jest ciągiem Cauchy'ego i $\lim_{n,m\to\infty}p(x_n,x_m)=1\neq 0$.
 \end{frame}
 
 \begin{frame}{Zupełność}
@@ -691,35 +354,30 @@
     Przestrzeń $(X,p)$ jest \emph{zupełna}, gdy każdy ciąg Cauchy'ego $(x_n)_{n\in\N}\subset X$
     jest zbieżny w $\tau_p$ do pewnego $x\in X$ takiego, że
     \[
-      \cz{p(x,x)=\lim_{n\to\infty}p(x,x_n)=\lim_{n,m\to\infty}p(x_n,x_m).}
+      p(x,x)=\lim_{n\to\infty}p(x,x_n)=\lim_{n,m\to\infty}p(x_n,x_m).
     \]
   \end{definicja}
   \pause
   \begin{twierdzenie}
-    Niech $(X,p)$ będzie przestrzenią częściowo metryczną. Wtedy wzór
-    \[
-      d_p(x,y)\coloneqq 2p(x,y)-p(x,x)-p(y,y)
-    \]
-    definiuje metrykę na $X$.
+    Wzór $d_p(x,y)\coloneqq 2p(x,y)-p(x,x)-p(y,y)$ definiuje metrykę na $X$.
   \end{twierdzenie}
   \pause
   \begin{twierdzenie}
-    Przestrzeń $(X,p)$ jest zupełna wtedy i tylko wtedy, gdy przestrzeń metryczna $(X,d_p)$ jest zupełna.
+    Przestrzeń $(X,p)$ jest zupełna wtedy i tylko wtedy, gdy $(X,d_p)$ jest zupełna.
   \end{twierdzenie}
 \end{frame}
 
 \begin{frame}{Kontrakcje i punkty stałe}
   \begin{definicja}
-    Odwzorowanie $f\colon X\to X$ nazywamy \emph{kontrakcją} w $(X,\cz{p})$, gdy
+    Odwzorowanie $f\colon X\to X$ nazywamy \emph{kontrakcją} w $(X,p)$, gdy
     \[
-      \exists\,c\in[0,1)\ \ \forall\,x,y\in X\colon\ \ \cz{p}(f(x),f(y))\le c\cdot \cz{p}(x,y).
+      \exists\,c\in[0,1)\ \ \forall\,x,y\in X\colon\ \ p(f(x),f(y))\le c\cdot p(x,y).
     \]
   \end{definicja}
+  \pause
   \begin{przyklad}
-    $X=[0,\infty)$, $p(x,y)=\max\{x,y\}$, $f(x)\coloneqq\tfrac{x}{2}$. Wtedy
-    \[
-      p(f(x),f(y))=\max\Bigl\{\tfrac{x}{2},\tfrac{y}{2}\Bigr\}=\tfrac12\max\{x,y\}=\tfrac12\,p(x,y),
-    \]
+    Dla $X=[0,\infty)$, $p(x,y)=\max\{x,y\}$ i $f(x)\coloneqq\tfrac{x}{2}$ mamy
+    $p(f(x),f(y))=\max\bigl\{\tfrac{x}{2},\tfrac{y}{2}\bigr\}=\tfrac12\,p(x,y)$,
     więc $f$ jest kontrakcją ze stałą $c=\tfrac12$.
   \end{przyklad}
   \pause
@@ -736,115 +394,106 @@
   \pause
   \begin{twierdzenie}[Matthews, 1994]
     Niech $(X,p)$ będzie zupełną przestrzenią częściowo metryczną, a $f\colon X\to X$ kontrakcją.
-    Wtedy $f$ ma dokładnie jeden punkt stały $x^*\in X$ oraz \cz{$p(x^*,x^*)=0$}.
+    Wtedy $f$ ma dokładnie jeden punkt stały $x^*\in X$ oraz $\alert{p(x^*,x^*)=0}$.
   \end{twierdzenie}
-  \pause
+\end{frame}
+
+\begin{frame}{Lemat i jednoznaczność}
   \begin{lemat}
     Jeśli $p(x,y)=0$, to $x=y$.
   \end{lemat}
-  \textit{Dowód.} Z (P2) $0\le p(x,x)\le p(x,y)=0$. Z (P2) i (P3) $0\le p(y,y)\le p(y,x)=p(x,y)=0$.
-  Zatem $p(x,x)=p(x,y)=p(y,y)$, więc z (P1) $x=y$. \hfill$\blacksquare$
+  \begin{proof}[Dowód]
+    Z (P2) $0\le p(x,x)\le p(x,y)=0$, a z (P2) i (P3) $0\le p(y,y)\le p(y,x)=p(x,y)=0$.
+    Zatem $p(x,x)=p(x,y)=p(y,y)$, więc z (P1) $x=y$. \qedhere
+  \end{proof}
+  \pause
+  \textit{Jednoznaczność.} Niech $f(x)=x$ oraz $f(y)=y$. Wtedy $p(x,y)=p(f(x),f(y))\le c\cdot p(x,y)$,
+  więc $(1-c)\,p(x,y)\le 0$. Ponieważ $c<1$ i $p\ge 0$, to $p(x,y)=0$, a z Lematu $x=y$.
 \end{frame}
 
-\begin{frame}{Dowód twierdzenia Matthewsa (1/4)}
-  \textit{Jednoznaczność.} Niech $f(x)=x$ oraz $f(y)=y$. Wtedy
-  \[
-    p(x,y)=p(f(x),f(y))\le c\cdot p(x,y),
-  \]
-  więc $(1-c)\,p(x,y)\le 0$. Ponieważ $c<1$ i $p\ge 0$, to $p(x,y)=0$. Z Lematu $x=y$.
-  \podpowiedz{(Lemat)\quad $p(x,y)=0\implies x=y$}
-\end{frame}
-
-\begin{frame}{Dowód twierdzenia Matthewsa (2/4)}
-  \textit{Istnienie.} Ustalmy $x_0\in X$ i niech $x_{n+1}\coloneqq f(x_n)$ dla $n=0,1,2,\dots$
+\begin{frame}{Istnienie (1/3)}
+  Ustalmy $x_0\in X$ i niech $x_{n+1}\coloneqq f(x_n)$ dla $n=0,1,2,\dots$
   \[
     p(x_{n+1},x_n)=p(f(x_n),f(x_{n-1}))\le c\cdot p(x_n,x_{n-1})\le\dots\le c^n\cdot p(x_1,x_0). \tag{$*$}
   \]
-  Niech $m>n$. Wtedy, z (P4) i $p\ge 0$,
+  \pause
+  Niech $m>n$. Z (P4), pomijając nieujemne wyrazy $-p(\cdot,\cdot)$,
   \begin{align*}
     p(x_n,x_m) &\le p(x_n,x_{n+1})+p(x_{n+1},x_m)\\
-               &\le p(x_n,x_{n+1})+p(x_{n+1},x_{n+2})+p(x_{n+2},x_m)\\
-               &\le\dots\le\sum_{k=n}^{m-1}p(x_k,x_{k+1})\le\sum_{k=n}^{m-1}c^k\,p(x_1,x_0)\\
-               &=p(x_1,x_0)\sum_{k=n}^{m-1}c^k\le\frac{c^n}{1-c}\,p(x_1,x_0). \tag{$**$}
+    &\uncover<3->{\le p(x_n,x_{n+1})+p(x_{n+1},x_{n+2})+p(x_{n+2},x_m)}\\
+    &\uncover<4->{\le\dots\le\sum_{k=n}^{m-1}p(x_k,x_{k+1})\le\sum_{k=n}^{m-1}c^k\,p(x_1,x_0)}\\
+    &\uncover<5->{=p(x_1,x_0)\sum_{k=n}^{m-1}c^k\le\frac{c^n}{1-c}\,p(x_1,x_0).} \only<5->{\tag{$**$}}
   \end{align*}
 \end{frame}
 
-\begin{frame}{Dowód twierdzenia Matthewsa (3/4)}
+\begin{frame}{Istnienie (2/3)}
   Dla $m=n$ mamy $p(x_n,x_n)\overset{\text{(P2)}}{\le}p(x_n,x_{n+1})\overset{(*)}{\le}c^n\,p(x_1,x_0)$.
 
-  \medskip
-  Ustalmy $N\in\N$ i niech $n,m\ge N$. Z (P3) możemy założyć, że $m\ge n$. Wtedy, z $(**)$ i przypadku $m=n$,
+  \pause\medskip
+  Ustalmy $N\in\N$ i niech $n,m\ge N$. Z (P3) możemy założyć, że $m\ge n$. Wtedy z $(**)$
   \[
     p(x_n,x_m)\le\frac{c^n}{1-c}\,p(x_1,x_0)\le\frac{c^N}{1-c}\,p(x_1,x_0).
   \]
-  Ponieważ $\frac{c^N}{1-c}\,p(x_1,x_0)\xrightarrow[N\to\infty]{}0$, to $\lim_{n,m\to\infty}p(x_n,x_m)=0$,\\
+  \pause
+  Ponieważ $\frac{c^N}{1-c}\,p(x_1,x_0)\xrightarrow[N\to\infty]{}0$, to $\lim_{n,m\to\infty}p(x_n,x_m)=0$,
   czyli $(x_n)_{n\in\N}$ jest ciągiem Cauchy'ego.
 \end{frame}
 
-\begin{frame}{Dowód twierdzenia Matthewsa (4/4)}
+\begin{frame}{Istnienie (3/3)}
   Z zupełności istnieje $x^*\in X$ taki, że $x_n\to x^*$ oraz
   $p(x^*,x^*)=\lim_{n,m\to\infty}p(x_n,x_m)=0$.
 
-  \medskip
-  \textit{Punkt stały.} Dla $n\in\N$ mamy
+  \pause\medskip
+  Dla $n\in\N$ mamy
   \begin{align*}
     p(x^*,f(x^*)) &\le p(x^*,x_{n+1})+p(x_{n+1},f(x^*))\\
                   &=p(x^*,x_{n+1})+p(f(x_n),f(x^*))\\
-                  &\le p(x^*,x_{n+1})+c\cdot p(x_n,x^*)\xrightarrow[n\to\infty]{}0.
+                  &\le p(x^*,x_{n+1})+c\cdot p(x_n,x^*)\xrightarrow[n\to\infty]{}0,
   \end{align*}
+  bo $x_n\to x^*$ daje $p(x^*,x_n)\to p(x^*,x^*)=0$.
+  \pause
   Zatem $p(x^*,f(x^*))=0$, więc z Lematu $f(x^*)=x^*$. \hfill$\blacksquare$
-  \podpowiedz{$x_n\to x^*\implies p(x^*,x_n)\xrightarrow[n\to\infty]{}p(x^*,x^*)=0$}
 \end{frame}
 
 % ==================================================================
 \section{Podsumowanie}
 
 \begin{frame}{Podsumowanie}
-  \begin{columns}[c]
-    \begin{column}{0.68\textwidth}
-      \small
-      \begin{itemize}\setlength{\itemsep}{0.35em}
-        \item Metryka częściowa dopuszcza $p(x,x)\ge 0$, czyli mierzy, jak słabo określony jest punkt.
-        \item Metryki to dokładnie te metryki częściowe, w których $p(x,x)=0$.
-        \item Topologia $\tau_p$ jest $T_0$, ale nie musi być $T_1$, a granice ciągów nie muszą być jednoznaczne.
-        \item W $\tau_p$ mamy $x_n\to x$ wtedy i tylko wtedy, gdy $\lim p(x,x_n)=p(x,x)$.
-        \item $(X,p)$ jest zupełna, gdy każdy ciąg Cauchy'ego zbiega do $x$, dla którego
-              $p(x,x)=\lim p(x,x_n)=\lim p(x_n,x_m)$.
-        \item Twierdzenie Banacha przenosi się na zupełne przestrzenie częściowo metryczne,
-              a punkt stały jest w pełni określony.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.28\textwidth}
-      \centering
-      \petla{czesciowa}{x^*}{p(x^*,x^*)=0}
-    \end{column}
-  \end{columns}
+  \begin{itemize}[<+->]
+    \item Metryka częściowa dopuszcza $p(x,x)\ge 0$, czyli mierzy, jak słabo określony jest punkt.
+    \item Metryki to dokładnie te metryki częściowe, w których $p(x,x)=0$.
+    \item Topologia $\tau_p$ jest $T_0$, ale nie musi być $T_1$, a granice ciągów nie muszą być jednoznaczne.
+    \item W $\tau_p$ mamy $x_n\to x$ wtedy i tylko wtedy, gdy $\lim p(x,x_n)=p(x,x)$.
+    \item $(X,p)$ jest zupełna, gdy każdy ciąg Cauchy'ego zbiega do $x$, dla którego
+          $p(x,x)=\lim p(x,x_n)=\lim p(x_n,x_m)$.
+    \item Twierdzenie Banacha przenosi się na zupełne przestrzenie częściowo metryczne,
+          a punkt stały jest w pełni określony.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Literatura}
   \small
-  \begin{enumerate}\setlength{\itemsep}{0.6em}
-    \item[\sz{[1]}] S.\,G.~Matthews, \emph{Metric domains for completeness},
+  \begin{enumerate}\setlength{\itemsep}{0.5em}
+    \item[{[1]}] S.\,G.~Matthews, \emph{Metric domains for completeness},
           praca doktorska, University of Warwick, 1985.
-    \item[\sz{[2]}] S.\,G.~Matthews, \emph{Partial metric topology},
+    \item[{[2]}] S.\,G.~Matthews, \emph{Partial metric topology},
           Annals of the New York Academy of Sciences 728 (1994), 183--197.
-    \item[\sz{[3]}] M.~Bukatin, R.~Kopperman, S.\,G.~Matthews, H.~Pajoohesh, \emph{Partial metric spaces},
+    \item[{[3]}] M.~Bukatin, R.~Kopperman, S.\,G.~Matthews, H.~Pajoohesh, \emph{Partial metric spaces},
           The American Mathematical Monthly 116 (2009), no.~8, 708--718.
-    \item[\sz{[4]}] G.~Kahn, \emph{The semantics of a simple language for parallel programming},
+    \item[{[4]}] G.~Kahn, \emph{The semantics of a simple language for parallel programming},
           Information Processing 74 (Proc.\ IFIP Congress), North-Holland, 1974, 471--475.
-    \item[\sz{[5]}] S.\,G.~Matthews, \texttt{partialmetric.org} (\texttt{dcs.warwick.ac.uk/pmetric}).
+    \item[{[5]}] S.\,G.~Matthews, \texttt{partialmetric.org} (\texttt{dcs.warwick.ac.uk/pmetric}).
   \end{enumerate}
 \end{frame}
 
-\begin{frame}[plain]
-  \centering
-  \vfill
-  {\LARGE Dziękuję za uwagę!}\par
-  \vspace{1.5em}
-  \qrcode[height=3.2cm]{https://github.com/AdrianMadajewski/kpm2026}\par
-  \vspace{0.8em}
-  {\small\color{szary}\texttt{github.com/AdrianMadajewski/kpm2026}}
-  \vfill
+\begin{frame}[standout]
+  Dziękuję za uwagę!
+
+  \bigskip
+  \colorbox{white}{\color{black}\qrcode[height=2.8cm]{https://github.com/AdrianMadajewski/kpm2026}}
+
+  \medskip
+  {\small\texttt{github.com/AdrianMadajewski/kpm2026}}
 \end{frame}
 
 \end{document}
