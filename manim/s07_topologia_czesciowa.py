@@ -52,7 +52,6 @@ class KulaCzesciowa(Slide):
         # Krok 2: d odpływa w górę, reszta robi miejsce, p i p(x,x)+ wpływają od dołu.
         stare = [kula_d[1], kula_d[5]]
         nowe = [kula_p[1], kula_p[5], kula_p[8]]
-        self.play(*[m.animate.set_color(KOLOR_CZESCIOWA) for m in stare], run_time=0.5)
         self.play(*[FadeOut(m, shift=0.25 * UP) for m in stare], FadeOut(podpis_d, shift=0.25 * UP),
                   run_time=0.5, rate_func=smooth)
         self.play(
