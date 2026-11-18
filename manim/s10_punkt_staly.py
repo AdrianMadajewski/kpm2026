@@ -175,7 +175,7 @@ class TwierdzenieMatthewsa(Slide):
         self.play(FadeOut(naglowek, shift=0.3 * UP), tw.animate.to_edge(UP, buff=0.35), run_time=0.7)
 
         # =============== Lemat: p(x,y) = 0 => x = y ===============
-        L1 = MathTex(r"\textbf{Lemat.}\ \text{Jeśli } p(x,y)=0\text{, to } x=y.", font_size=FS + 2)
+        L1 = MathTex(r"\textbf{Lemat.}\ \text{Jeśli }", r"p(x,y)=0", r"\text{, to } x=y.", font_size=FS + 2)
         L2 = MathTex(r"\textit{Dowód.}\ \text{Z (P2) }", r"0\le p(x,x)\le p(x,y)=0", r"\text{, więc }",
                      r"p(x,x)=0", r".", font_size=FS)
         L3 = MathTex(r"\text{Z (P2) i (P3) }", r"0\le p(y,y)\le p(y,x)=p(x,y)=0", r"\text{, więc }",
@@ -197,9 +197,12 @@ class TwierdzenieMatthewsa(Slide):
         wyszarz(L3[1], przyp=p2p3)
         pokaz(L3[2:], pomaranczowe=[L3[3]])
         wyszarz(L3[3])
+        # Wniosek z trzech równości: p(x,y) = 0 (założenie), p(x,x) = 0, p(y,y) = 0.
+        L4[1].set_color(O)
+        self.play(FadeIn(L4[:2], shift=0.2 * RIGHT), *[m.animate.set_color(O) for m in (L1[1], L2[3], L3[3])])
+        self.next_slide()
+        wyszarz(L4[1], L1[1], L2[3], L3[3])
         pokaz_przyp(p1)
-        pokaz(L4[:2], pomaranczowe=[L4[1]])
-        wyszarz(L4[1])
         pokaz(L4[2:], pomaranczowe=[L4[3]])
         wyszarz(L4[3], przyp=p1)
         self.play(FadeOut(lemat, shift=0.3 * LEFT), run_time=0.7)
