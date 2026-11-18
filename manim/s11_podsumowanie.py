@@ -3,26 +3,17 @@ from common import *
 
 
 class Podsumowanie(Slide):
-    """Cztery najważniejsze wnioski + powrót pętli z tytułu: p(x,x) = ? -> p(x*,x*) = 0."""
+    """Cztery najważniejsze wnioski + pętla z tytułu: p(x,x) >= 0, metryka p(x,x) = 0, p(x*,x*) = 0."""
 
     def construct(self):
         O = KOLOR_CZESCIOWA
+        B = KOLOR_METRYKA
         FS = 31
 
         naglowek = Tex(r"Podsumowanie", font_size=48)
         self.play(FadeIn(naglowek))
         self.next_slide()
         self.play(naglowek.animate.scale(44 / 48).to_edge(UP, buff=0.4), run_time=1.0)
-
-        # ---- Pętla z tytułu, po prawej ----
-        srodek = np.array([4.6, 0.6, 0])
-        punkt = Dot(srodek, radius=0.09)
-        etykieta_x = MathTex("x", font_size=36).next_to(punkt, DOWN, buff=0.15)
-        petla = Arc(radius=0.35, start_angle=-PI / 2 + 0.45, angle=2 * PI - 0.9,
-                    arc_center=srodek + 0.42 * UP, color=O).add_tip(tip_length=0.15)
-        wzor_p = MathTex(r"p(x,x)=\,?", font_size=38, color=O).next_to(petla, UP, buff=0.3)
-        self.play(FadeIn(punkt, scale=0.5), FadeIn(etykieta_x), Create(petla), FadeIn(wzor_p))
-        self.next_slide()
 
         # ---- Cztery wnioski ----
         def punkt_listy(tekst):
@@ -31,7 +22,7 @@ class Podsumowanie(Slide):
             return VGroup(kropka, t)
 
         wnioski = VGroup(
-            punkt_listy(r"Metryka częściowa dopuszcza $p(x,x)>0$,\\"
+            punkt_listy(r"Metryka częściowa dopuszcza $p(x,x)\ge 0$,\\"
                         r"czyli mierzy, jak słabo określony jest punkt."),
             punkt_listy(r"Metryki to dokładnie te metryki częściowe,\\w których $p(x,x)=0$."),
             punkt_listy(r"Topologia $\tau_p$ jest $T_0$, ale nie musi być $T_1$,\\"
@@ -41,34 +32,42 @@ class Podsumowanie(Slide):
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.42)
         wnioski.next_to(naglowek, DOWN, buff=0.6).to_edge(LEFT, buff=0.6)
 
-        # 1. p(x,x) > 0: pętla "pulsuje".
+        # ---- Pętla z tytułu, po prawej ----
+        srodek = np.array([4.6, 0.6, 0])
+        punkt = Dot(srodek, radius=0.09)
+        etykieta_x = MathTex("x", font_size=36).next_to(punkt, DOWN, buff=0.15)
+        petla = Arc(radius=0.35, start_angle=-PI / 2 + 0.45, angle=2 * PI - 0.9,
+                    arc_center=srodek + 0.42 * UP, color=O).add_tip(tip_length=0.15)
+        wzor_p = MathTex(r"p(x,x)\ge 0", font_size=38, color=O).next_to(petla, UP, buff=0.3)
+
+        # 1. Pierwszy wniosek, potem rysunek z pętlą: p(x,x) >= 0.
         self.play(FadeIn(wnioski[0], shift=0.2 * RIGHT))
-        self.play(Indicate(wzor_p, color=O, scale_factor=1.15))
+        self.next_slide()
+        self.play(FadeIn(punkt, scale=0.5), FadeIn(etykieta_x), Create(petla), FadeIn(wzor_p))
         self.next_slide()
 
-        # 2. Metryki: na chwilę pętla niebieska z d(x,x) = 0, potem wraca.
+        # 2. Metryki: cały rysunek na niebiesko i p(x,x) = 0.
         self.play(FadeIn(wnioski[1], shift=0.2 * RIGHT))
-        wzor_d = MathTex(r"d(x,x)=0", font_size=38, color=KOLOR_METRYKA).move_to(wzor_p)
-        self.play(petla.animate.set_color(KOLOR_METRYKA), FadeTransform(wzor_p, wzor_d), run_time=0.8)
-        self.wait(0.4)
-        wzor_p2 = MathTex(r"p(x,x)=\,?", font_size=38, color=O).move_to(wzor_d)
-        self.play(petla.animate.set_color(O), FadeTransform(wzor_d, wzor_p2), run_time=0.8)
-        wzor_p = wzor_p2
+        wzor_0 = MathTex(r"p(x,x)=0", font_size=38, color=B).move_to(wzor_p)
+        self.play(petla.animate.set_color(B), punkt.animate.set_color(B), etykieta_x.animate.set_color(B),
+                  FadeTransform(wzor_p, wzor_0), run_time=0.8)
         self.next_slide()
 
-        # 3. Topologia.
-        self.play(FadeIn(wnioski[2], shift=0.2 * RIGHT))
-        self.wait(0.2)
+        # 3. Topologia: wracamy do ogólnej metryki częściowej.
+        wzor_p2 = MathTex(r"p(x,x)\ge 0", font_size=38, color=O).move_to(wzor_0)
+        self.play(FadeIn(wnioski[2], shift=0.2 * RIGHT),
+                  petla.animate.set_color(O), punkt.animate.set_color(KOLOR_TEKST),
+                  etykieta_x.animate.set_color(KOLOR_TEKST), FadeTransform(wzor_0, wzor_p2), run_time=0.8)
         self.next_slide()
 
-        # 4. Punkt stały: pętla kurczy się i robi się niebieska, p(x*,x*) = 0.
+        # 4. Punkt stały: cały rysunek niebieski, p(x*,x*) = 0.
         self.play(FadeIn(wnioski[3], shift=0.2 * RIGHT))
         self.next_slide()
-        etykieta_xs = MathTex(r"x^*", font_size=36).move_to(etykieta_x)
-        wzor_k = MathTex(r"p(x^*,x^*)=0", font_size=38, color=KOLOR_METRYKA).move_to(wzor_p)
-        self.play(petla.animate.set_color(KOLOR_METRYKA), FadeTransform(wzor_p, wzor_k),
+        etykieta_xs = MathTex(r"x^*", font_size=36, color=B).move_to(etykieta_x)
+        wzor_k = MathTex(r"p(x^*,x^*)=0", font_size=38, color=B).move_to(wzor_p2)
+        self.play(petla.animate.set_color(B), punkt.animate.set_color(B), FadeTransform(wzor_p2, wzor_k),
                   FadeTransform(etykieta_x, etykieta_xs), run_time=1.0)
-        self.play(Flash(punkt, color=KOLOR_METRYKA, line_length=0.25, flash_radius=0.3))
+        self.play(Flash(punkt, color=B, line_length=0.25, flash_radius=0.3))
         self.next_slide()
 
 
