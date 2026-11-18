@@ -108,3 +108,47 @@ class CiagCauchyego(Slide):
         self.next_slide()
         self.play(zup[2].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
+
+
+class MetrykaIndukowana(Slide):
+    """Dwa twierdzenia (bez dowodów): d_p jest metryką oraz zupełność (X,p) <=> zupełność (X,d_p)."""
+
+    def construct(self):
+        FS = 34
+        B = KOLOR_METRYKA
+
+        naglowek = Tex(TYTUL_ZUP, font_size=44).to_edge(UP, buff=0.4)
+        self.add(naglowek)
+
+        tw1 = VGroup(
+            MathTex(r"\textbf{Twierdzenie.}\ \text{Niech } (X,p) \text{ będzie przestrzenią częściowo metryczną.}",
+                    font_size=FS),
+            MathTex(r"\text{Wtedy wzór}", font_size=FS),
+            MathTex(r"d_p(x,y)\coloneqq 2p(x,y)-p(x,x)-p(y,y)", font_size=FS + 4),
+            MathTex(r"\text{definiuje metrykę na } X.", font_size=FS),
+        ).arrange(DOWN, buff=0.22)
+        tw1[0].align_to(tw1, LEFT)
+        tw1[1].align_to(tw1, LEFT)
+        tw1[3].align_to(tw1, LEFT)
+
+        tw2 = VGroup(
+            MathTex(r"\textbf{Twierdzenie.}\ \text{Przestrzeń } (X,p) \text{ jest zupełna wtedy i tylko wtedy,}",
+                    font_size=FS),
+            MathTex(r"\text{gdy przestrzeń metryczna } (X,d_p) \text{ jest zupełna.}", font_size=FS),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
+
+        VGroup(tw1, tw2).arrange(DOWN, aligned_edge=LEFT, buff=0.8).next_to(naglowek, DOWN, buff=0.6)
+        tw1[2].set_x(0)
+
+        # Twierdzenie 1: wzór na d_p na chwilę na niebiesko (to jest metryka).
+        self.play(FadeIn(tw1[:2], shift=0.2 * DOWN))
+        self.next_slide()
+        tw1[2].set_color(B)
+        self.play(FadeIn(tw1[2], shift=0.2 * DOWN))
+        self.next_slide()
+        self.play(FadeIn(tw1[3], shift=0.2 * DOWN), tw1[2].animate.set_color(KOLOR_TEKST))
+        self.next_slide()
+
+        # Twierdzenie 2.
+        self.play(FadeIn(tw2, shift=0.2 * DOWN))
+        self.next_slide()
