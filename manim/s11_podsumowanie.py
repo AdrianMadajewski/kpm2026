@@ -117,11 +117,22 @@ class Podsumowanie(Slide):
         self.play(FadeOut(wykres), FadeIn(wnioski[5], shift=0.2 * RIGHT), run_time=0.8)
         self.next_slide()
         petla.set_color(O)
-        wzor_p2 = MathTex(r"p(x,x)\ge 0", font_size=38, color=O).move_to(wzor_0)
-        self.play(FadeIn(punkt), FadeIn(etykieta_x), FadeIn(petla), FadeIn(wzor_p2), run_time=0.6)
-        etykieta_xs = MathTex(r"x^*", font_size=36).move_to(etykieta_x)
-        wzor_k = MathTex(r"p(x^*,x^*)=0", font_size=38, color=O).move_to(wzor_p2)
-        self.play(FadeTransform(wzor_p2, wzor_k), FadeTransform(etykieta_x, etykieta_xs), run_time=1.0)
+        # Wzory podzielone na części, żeby podmieniać tylko to, co się zmienia.
+        wzor_a = MathTex(r"p(", r"x", r",", r"x", r")", r"\ge", r"0", font_size=38, color=O).move_to(wzor_0)
+        wzor_b = MathTex(r"p(", r"x", r"^*", r",", r"x", r"^*", r")", r"=", r"0", font_size=38, color=O)
+        wzor_b.move_to(wzor_a)
+        etyk_b = MathTex(r"x", r"^*", font_size=36).move_to(etykieta_x).align_to(etykieta_x, LEFT)
+        self.play(FadeIn(punkt), FadeIn(etykieta_x), FadeIn(petla), FadeIn(wzor_a), run_time=0.6)
+
+        # x -> x*: gwiazdki wpadają z góry; >= odpływa w górę, = wpływa od dołu.
+        anim = [
+            *[ReplacementTransform(wzor_a[i], wzor_b[j]) for i, j in ((0, 0), (1, 1), (2, 3), (3, 4), (4, 6), (6, 8))],
+            ReplacementTransform(etykieta_x, etyk_b[0]),
+            FadeIn(wzor_b[2], shift=0.3 * DOWN), FadeIn(wzor_b[5], shift=0.3 * DOWN),
+            FadeIn(etyk_b[1], shift=0.3 * DOWN),
+            FadeOut(wzor_a[5], shift=0.25 * UP), FadeIn(wzor_b[7], shift=0.25 * UP),
+        ]
+        self.play(*anim, run_time=1.2, rate_func=smooth)
         self.play(Flash(punkt, color=O, line_length=0.25, flash_radius=0.3))
         self.next_slide()
 
