@@ -55,14 +55,9 @@ class MetrykaCzesciowa(Slide):
         etyk_x = MathTex("x", font_size=34).next_to(punkt, DOWN, buff=0.15)
         petla = Arc(radius=0.35, start_angle=-PI / 2 + 0.45, angle=2 * PI - 0.9,
                     arc_center=srodek + 0.42 * UP, color=KOLOR_CZESCIOWA).add_tip(tip_length=0.15)
-        wzor = MathTex(r"p(x,x) = \,?", font_size=38, color=KOLOR_CZESCIOWA).next_to(petla, RIGHT, buff=0.35)
-        pytanie = VGroup(
-            Tex(r"A gdyby odległość punktu", font_size=32),
-            Tex(r"od siebie mogła być dodatnia?", font_size=32),
-        ).arrange(DOWN, buff=0.12).next_to(VGroup(punkt, petla, wzor), DOWN, buff=0.5)
-        grafika = VGroup(punkt, etyk_x, petla, wzor, pytanie)
+        wzor = MathTex(r"p(x,x) \ge 0", font_size=38, color=KOLOR_CZESCIOWA).next_to(petla, RIGHT, buff=0.35)
+        grafika = VGroup(punkt, etyk_x, petla, wzor)
         self.play(FadeIn(punkt), FadeIn(etyk_x), Create(petla), FadeIn(wzor))
-        self.play(FadeIn(pytanie, shift=0.2 * UP))
         self.next_slide()
 
         # Krok 3: przemiana aksjomatów — każde przejście na osobne kliknięcie.
