@@ -406,7 +406,7 @@ class WlasnosciTopologii(Slide):
         L3 = MathTex(r"\text{Z (P2) wynika, że }", r"p(x,x)<p(x,y)", r"\text{ lub }", r"p(y,y)<p(x,y)", r".",
                      font_size=FS)
         L4 = MathTex(r"\text{Niech np. }", r"p(x,x)<p(x,y)", r"\text{ i }",
-                     r"\varepsilon\coloneqq p(x,y)-p(x,x)>0", r".", font_size=FS)
+                     r"\varepsilon\coloneqq p(x,y)-p(x,x)", r">0", r".", font_size=FS)
         L5 = MathTex(r"\text{Wtedy }", r"p(x,y)=p(x,x)+\varepsilon", r"\text{, czyli }",
                      r"y\notin B_p(x,\varepsilon)", r".\ \blacksquare", font_size=FS)
         dowod = VGroup(L1, L2, L3, L4, L5).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
@@ -441,11 +441,15 @@ class WlasnosciTopologii(Slide):
                   L3[3].animate.set_color(KOLOR_TEKST), run_time=0.7)
         self.next_slide()
 
-        # Wybór epsilon.
-        L4[3].set_color(O)
-        self.play(FadeIn(L4, shift=0.2 * RIGHT))
-        self.wait(0.4)
-        self.play(L4[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        # Wybór epsilon: najpierw sama definicja, potem podświetlenie i dopisanie > 0.
+        kropka_tmp = L4[5].copy().next_to(L4[3], RIGHT, buff=0.04).align_to(L4[5], DOWN)
+        self.play(FadeIn(L4[:4], shift=0.2 * RIGHT), FadeIn(kropka_tmp, shift=0.2 * RIGHT))
+        self.next_slide()
+        L4[4].set_color(O)
+        self.play(L4[3].animate.set_color(O), FadeIn(L4[4], shift=0.2 * RIGHT),
+                  ReplacementTransform(kropka_tmp, L4[5]), run_time=0.7)
+        self.next_slide()
+        self.play(L4[3].animate.set_color(KOLOR_TEKST), L4[4].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
 
         # Wniosek: y poza kulą.
