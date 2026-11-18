@@ -8,8 +8,6 @@ class Matthews(Slide):
 
     def construct(self):
         naglowek = Tex(r"Steve G.\ Matthews", font_size=48).to_edge(UP, buff=0.5)
-        self.play(FadeIn(naglowek))
-        self.next_slide()
 
         # Zamiast zdjęcia: buźka w okularach.
         twarz = Circle(radius=1.15, color=KOLOR_TEKST, stroke_width=4).set_fill(ManimColor("#FFE7A8"), 1)
@@ -24,16 +22,16 @@ class Matthews(Slide):
         foto.to_edge(LEFT, buff=1.0).shift(0.4 * DOWN)
 
         punkty = VGroup(*[
-            Tex(t, font_size=32, tex_environment="flushleft") for t in [
-                r"$\bullet$ informatyk, University of Warwick\\\phantom{$\bullet$ }(Department of Computer Science),",
-                r"$\bullet$ doktorat (1985) o sieciach przepływu danych\\"
-                r"\phantom{$\bullet$ }(model Kahna, test Wadge'a, język Lucid).",
+            Tex(t, font_size=36) for t in [
+                r"$\bullet$ informatyk",
+                r"$\bullet$ doktorat o sieciach przepływu danych",
             ]
-        ]).arrange(DOWN, aligned_edge=LEFT, buff=0.35)
+        ]).arrange(DOWN, aligned_edge=LEFT, buff=0.45)
         punkty.next_to(foto, RIGHT, buff=0.8)
 
-        self.play(FadeIn(foto))
+        self.play(FadeIn(naglowek), FadeIn(foto))
         self.play(Wiggle(foto[1], scale_value=1.08))
+        self.next_slide()
         for p in punkty:
             self.play(FadeIn(p, shift=0.2 * RIGHT))
             self.next_slide()
