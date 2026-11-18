@@ -494,18 +494,18 @@ class WlasnosciTopologii(Slide):
         self.play(FadeIn(def_t1, shift=0.2 * DOWN))
         self.next_slide()
 
-        # ---- Przykład bez dowodu: max i dwa punkty 0 <= y < x ----
+        # ---- Przykład bez dowodu: max, y = 0 i x > 0 ----
         M1 = MathTex(r"\text{Niech }", r"X=[0,\infty)", r",\ ", r"p(x,y)=\max\{x,y\}",
-                     r"\text{ oraz }", r"0\le y<x", r".", font_size=FS)
+                     r"\text{ oraz }", r"y=0,\ x>0", r".", font_size=FS)
         M1.next_to(uwaga, DOWN, buff=0.6).to_edge(LEFT, buff=0.8)
         self.play(FadeIn(M1, shift=0.2 * RIGHT))
         self.next_slide()
 
-        # ---- Rysunek: y = 1.5, x = 3, kula wokół x kurczy się, a y wciąż w niej jest ----
+        # ---- Rysunek: y = 0, x = 3, kula wokół x kurczy się, a y wciąż w niej jest ----
         os1 = NumberLine(x_range=[0, 5, 1], length=6.2, include_numbers=True,
                          font_size=24, include_tip=False)
         os1.next_to(M1, DOWN, buff=1.5).align_to(M1, LEFT)
-        y1, x1 = 1.5, 3.0
+        y1, x1 = 0.0, 3.0
         sy = Dot(os1.n2p(y1), radius=0.08, color=KOLOR_Y).set_z_index(10)
         sx = Dot(os1.n2p(x1), radius=0.08, color=O).set_z_index(10)
         fy = MathTex("y", font_size=28).next_to(sy, DOWN, buff=0.4)
@@ -534,7 +534,7 @@ class WlasnosciTopologii(Slide):
 
         # Kropka y zamienia się w diabełka, który buja się na boki:
         # y nie da się wyrzucić z żadnej kuli wokół x.
-        diabelek = _diabelek().scale(0.42).move_to(sy).set_z_index(11)
+        diabelek = _diabelek().scale(0.42).move_to(sy).shift(0.18 * UP).set_z_index(11)
         self.play(FadeTransform(sy, diabelek), run_time=0.8)
         self.play(Wiggle(diabelek, scale_value=1.0, rotation_angle=0.09 * TAU, n_wiggles=4), run_time=1.6)
         self.next_slide()
