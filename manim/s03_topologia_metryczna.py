@@ -104,16 +104,39 @@ class TopologiaMetryczna(Slide):
 
         self.play(FadeOut(VGroup(tekst1, U, etyk_U, male_V, ruchomy_V, etyk_x)))
 
-        # ================= Krok 2: kule tworzą bazę =================
+        # ================= Krok 2: definicja kuli =================
+        tekst_kula = kolumna(
+            Tex(r"\emph{Kulą} o środku w punkcie $x$ i promieniu $\varepsilon>0$", font_size=32),
+            Tex(r"nazywamy zbiór", font_size=32),
+            MathTex(r"B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}", r".", font_size=34, color=B),
+        )
+        x1 = np.array([2.0, 1.5])
+        eps = ValueTracker(0.8)
+        k1 = always_redraw(lambda: kula(P(x1), eps.get_value() * J))
+        promien = always_redraw(lambda: Line(P(x1), P(x1 + np.array([eps.get_value(), 0])),
+                                             color=B, stroke_width=3))
+        etyk_eps = always_redraw(lambda: MathTex(r"\varepsilon", font_size=30, color=B)
+                                 .next_to(promien, UP, buff=0.08))
+        d1 = Dot(P(x1), radius=0.07)
+        e1 = MathTex("x", font_size=30).next_to(d1, DL, buff=0.08)
+
+        self.play(FadeIn(tekst_kula[2], shift=0.2 * RIGHT))
+        self.play(FadeIn(k1), FadeIn(d1), FadeIn(e1), Create(promien), FadeIn(etyk_eps))
+        self.play(eps.animate.set_value(1.2), run_time=1.2)
+        self.play(eps.animate.set_value(0.4), run_time=1.2)
+        self.play(eps.animate.set_value(0.8), run_time=1.0)
+        self.next_slide()
+
+        self.play(FadeOut(VGroup(tekst_kula, k1, d1, e1, promien, etyk_eps)))
+        self.next_slide()
+
+        # ================= Krok 3: kule tworzą bazę =================
         tekst2 = kolumna(
-            MathTex(r"B_d(x,\varepsilon)\coloneqq\{y\in X : d(x,y)<\varepsilon\}", font_size=34, color=B),
             Tex(r"Kule tworzą \emph{bazę} topologii $\tau_d$, czyli", font_size=32),
             Tex(r"$U$ jest otwarty $\iff$ dla każdego $x\in U$", font_size=32),
             Tex(r"istnieje $\varepsilon>0$ takie, że $B_d(x,\varepsilon)\subset U$.", font_size=32),
         )
         tresc2 = tekst2[2]
-        self.play(FadeIn(tresc2[0], shift=0.2 * RIGHT))
-        self.next_slide()
 
         # Zbiór otwarty U jako kula, a w nim mniejsze kule wokół punktów.
         c_K, r_K = np.array([2.0, 1.5]), 1.15
@@ -134,7 +157,7 @@ class TopologiaMetryczna(Slide):
         etyk_x2 = always_redraw(lambda: MathTex("x", font_size=28)
                                 .next_to(P(c_K + s.get_value() * kier2), DL, buff=0.06))
 
-        self.play(FadeIn(tresc2[1:], shift=0.2 * RIGHT))
+        self.play(FadeIn(tresc2, shift=0.2 * RIGHT))
         self.play(FadeIn(UK[0]), Create(UK[1]), FadeIn(etyk_UK))
         self.play(LaggedStart(*[FadeIn(m) for m in male_B], lag_ratio=0.4))
         self.play(FadeIn(ruchoma_B), FadeIn(etyk_x2))
