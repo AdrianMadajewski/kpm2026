@@ -533,5 +533,4 @@ class WlasnosciTopologii(Slide):
         palak.shift(0.12 * UP)
         self.play(FadeIn(klodka, shift=0.2 * DOWN), run_time=0.6)
         self.play(palak.animate.shift(0.12 * DOWN), run_time=0.25, rate_func=rush_into)
-        self.play(Indicate(klodka, color=O, scale_factor=1.15), run_time=0.6)
         self.next_slide()
