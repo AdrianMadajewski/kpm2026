@@ -35,7 +35,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install system packages (LaTeX, ffmpeg, Cairo, Pango)
+        env:
+          DEBIAN_FRONTEND: noninteractive
         run: |
+          # Na runnerach Ubuntu 24.04 trigger man-db potrafi wisieć kilkadziesiąt minut.
+          sudo rm -f /var/lib/man-db/auto-update
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
