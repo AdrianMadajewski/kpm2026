@@ -93,21 +93,43 @@ class TwierdzenieMatthewsa(Slide):
         self.play(naglowek.animate.scale(44 / 48).to_edge(UP, buff=0.4), run_time=1.0)
         self.next_slide()
 
-        tw = VGroup(
-            MathTex(r"\textbf{Twierdzenie}\ \text{(Matthews, 1994)}\textbf{.}\ \text{Niech } (X,p)"
+        # Najpierw twierdzenie Banacha, potem zamiana na twierdzenie Matthewsa.
+        ban = VGroup(
+            MathTex(r"\textbf{Twierdzenie}\ ", r"\text{(Banach, 1922)}", r"\textbf{.}\ \text{Niech }", r"(X,d)",
                     r"\text{ będzie zupełną przestrzenią}", font_size=34),
-            MathTex(r"\text{częściowo metryczną, a } f\colon X\to X \text{ kontrakcją.}", font_size=34),
+            MathTex(r"\text{metryczną}", r"\text{, a } f\colon X\to X \text{ kontrakcją.}", font_size=34),
+            MathTex(r"\text{Wtedy } f \text{ ma dokładnie jeden punkt stały } x^*\in X", r".", font_size=34),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        tw = VGroup(
+            MathTex(r"\textbf{Twierdzenie}\ ", r"\text{(Matthews, 1994)}", r"\textbf{.}\ \text{Niech }", r"(X,p)",
+                    r"\text{ będzie zupełną przestrzenią}", font_size=34),
+            MathTex(r"\text{częściowo metryczną}", r"\text{, a } f\colon X\to X \text{ kontrakcją.}", font_size=34),
             MathTex(r"\text{Wtedy } f \text{ ma dokładnie jeden punkt stały } x^*\in X", r"\text{ oraz }",
                     r"p(x^*,x^*)=0", r".", font_size=34),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
         tw.next_to(naglowek, DOWN, buff=0.5)
-        self.play(FadeIn(tw[0], shift=0.2 * DOWN))
-        self.play(FadeIn(tw[1], shift=0.2 * DOWN))
+        ban.align_to(tw, UL)
+
+        self.play(FadeIn(ban[0], shift=0.2 * DOWN))
+        self.play(FadeIn(ban[1], shift=0.2 * DOWN))
         self.next_slide()
-        self.play(FadeIn(tw[2][0], shift=0.2 * RIGHT))
+        self.play(FadeIn(ban[2], shift=0.2 * RIGHT))
         self.next_slide()
+
+        # Zamiana: wspólne fragmenty przesuwają się, zmienione przenikają, nowa część tezy na pomarańczowo.
+        self.play(
+            ReplacementTransform(ban[0][0], tw[0][0]), FadeTransform(ban[0][1], tw[0][1]),
+            ReplacementTransform(ban[0][2], tw[0][2]), FadeTransform(ban[0][3], tw[0][3]),
+            ReplacementTransform(ban[0][4], tw[0][4]),
+            FadeTransform(ban[1][0], tw[1][0]), ReplacementTransform(ban[1][1], tw[1][1]),
+            ReplacementTransform(ban[2][0], tw[2][0]), ban[2][1].animate.next_to(tw[2][0], RIGHT, buff=0.04)
+            .align_to(tw[2][3], DOWN),
+            run_time=1.2,
+        )
+        self.next_slide()
+        # Kropka przesuwa się na koniec, a przed nią dochodzi nowa część tezy.
         tw[2][2].set_color(O)
-        self.play(FadeIn(tw[2][1:], shift=0.2 * RIGHT))
+        self.play(FadeIn(tw[2][1:3], shift=0.2 * RIGHT), ReplacementTransform(ban[2][1], tw[2][3]))
         self.next_slide()
         self.play(tw[2][2].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
