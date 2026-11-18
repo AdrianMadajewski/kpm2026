@@ -36,6 +36,26 @@ class Zbieznosc(Slide):
         self.wait(0.2)
         self.next_slide()
 
+        # Intuicja: p(x,x_n) dąży do poziomu p(x,x), a nie do 0. Wykres znika przed dowodem.
+        ax = Axes(x_range=[0, 8, 2], y_range=[0, 3, 1], x_length=4.4, y_length=2.8, tips=False,
+                  axis_config={"include_numbers": True, "font_size": 22})
+        ax.next_to(stw, DOWN, buff=0.7)
+        etyk_n = MathTex("n", font_size=26).next_to(ax.x_axis, RIGHT, buff=0.12)
+        poziom = 1.0
+        linia = DashedLine(ax.c2p(0, poziom), ax.c2p(8, poziom), color=O, stroke_width=2.5)
+        etyk_linia = MathTex(r"p(x,x)", font_size=26, color=O).next_to(ax.c2p(8, poziom), DOWN, buff=0.12) \
+            .align_to(ax.c2p(8, 0), RIGHT)
+        kropki = VGroup(*[Dot(ax.c2p(n, poziom + 1.4 * 0.68 ** n), radius=0.055) for n in range(1, 9)])
+        legenda = VGroup(Dot(radius=0.055), MathTex(r"p(x,x_n)", font_size=26)).arrange(RIGHT, buff=0.1)
+        legenda.next_to(ax, UP, buff=0.15).align_to(ax, LEFT)
+        wykres = VGroup(ax, etyk_n, linia, etyk_linia, kropki, legenda)
+        self.play(Create(ax), FadeIn(etyk_n))
+        self.play(Create(linia), FadeIn(etyk_linia))
+        self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki], lag_ratio=0.25), FadeIn(legenda),
+                  run_time=2.0)
+        self.next_slide()
+        self.play(FadeOut(wykres), run_time=0.6)
+
         Q1 = MathTex(r"\textit{Dowód.}\ (\Rightarrow)", r"\ \text{Ustalmy }\varepsilon>0.\ \text{Kula }",
                      r"B_p(x,\varepsilon)", r"\text{ jest otwarta i zawiera } x\text{,}", font_size=FS)
         Q2 = MathTex(r"\text{więc istnieje } N \text{ takie, że dla każdego } n\ge N \text{ mamy }",
