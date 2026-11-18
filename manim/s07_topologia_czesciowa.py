@@ -270,7 +270,7 @@ class LematBaza(Slide):
         L4.shift(0.6 * RIGHT + 0.2 * DOWN)
         L5.shift(0.2 * DOWN)
         tag = Tex(r"(P4)", font_size=24, color=KOLOR_DRUGORZEDNY).next_to(L4[1], UP, buff=0.1)
-        tresc_p4 = MathTex(r"\text{(P4)}\quad p(a,c)\le p(a,b)+p(b,c)-p(b,b)",
+        tresc_p4 = MathTex(r"\text{(P4)}\quad p(x,z)\le p(x,y)+p(y,z)-p(y,y)",
                            font_size=30, color=KOLOR_CZESCIOWA).to_edge(DOWN, buff=0.3)
 
         def zaswiec(*m):
