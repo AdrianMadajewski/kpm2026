@@ -95,15 +95,16 @@ class TwierdzenieMatthewsa(Slide):
 
         # Najpierw twierdzenie Banacha, potem zamiana na twierdzenie Matthewsa.
         ban = VGroup(
-            MathTex(r"\textbf{Twierdzenie}\ ", r"\text{(Banach, 1922)}", r"\textbf{.}\ \text{Niech }", r"(X,d)",
-                    r"\text{ będzie zupełną przestrzenią}", font_size=34),
+            MathTex(r"\textbf{Twierdzenie}\ ", r"\text{(Banach, 1922)}", r"\textbf{.}\ \text{Niech }", r"(X,",
+                    r"d", r")", r"\text{ będzie zupełną przestrzenią}", font_size=34),
             MathTex(r"\text{metryczną}", r"\text{, a } f\colon X\to X \text{ kontrakcją.}", font_size=34),
             MathTex(r"\text{Wtedy } f \text{ ma dokładnie jeden punkt stały } x^*\in X", r".", font_size=34),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
         tw = VGroup(
-            MathTex(r"\textbf{Twierdzenie}\ ", r"\text{(Matthews, 1994)}", r"\textbf{.}\ \text{Niech }", r"(X,p)",
-                    r"\text{ będzie zupełną przestrzenią}", font_size=34),
-            MathTex(r"\text{częściowo metryczną}", r"\text{, a } f\colon X\to X \text{ kontrakcją.}", font_size=34),
+            MathTex(r"\textbf{Twierdzenie}\ ", r"\text{(Matthews, 1994)}", r"\textbf{.}\ \text{Niech }", r"(X,",
+                    r"p", r")", r"\text{ będzie zupełną przestrzenią}", font_size=34),
+            MathTex(r"\text{częściowo }", r"\text{metryczną}", r"\text{, a } f\colon X\to X \text{ kontrakcją.}",
+                    font_size=34),
             MathTex(r"\text{Wtedy } f \text{ ma dokładnie jeden punkt stały } x^*\in X", r"\text{ oraz }",
                     r"p(x^*,x^*)=0", r".", font_size=34),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
@@ -116,16 +117,23 @@ class TwierdzenieMatthewsa(Slide):
         self.play(FadeIn(ban[2], shift=0.2 * RIGHT))
         self.next_slide()
 
-        # Zamiana: wspólne fragmenty przesuwają się, zmienione przenikają, nowa część tezy na pomarańczowo.
+        # Zamiana w trzech płynnych krokach: zmieniane fragmenty odpływają w górę,
+        # reszta tekstu przesuwa się na nowe miejsca, nowe fragmenty wpływają od dołu.
+        stare = [ban[0][1], ban[0][4]]
+        nowe = [tw[0][1], tw[0][4], tw[1][0]]
+        self.play(*[FadeOut(m, shift=0.25 * UP) for m in stare], run_time=0.5, rate_func=smooth)
         self.play(
-            ReplacementTransform(ban[0][0], tw[0][0]), FadeTransform(ban[0][1], tw[0][1]),
-            ReplacementTransform(ban[0][2], tw[0][2]), FadeTransform(ban[0][3], tw[0][3]),
-            ReplacementTransform(ban[0][4], tw[0][4]),
-            FadeTransform(ban[1][0], tw[1][0]), ReplacementTransform(ban[1][1], tw[1][1]),
-            ReplacementTransform(ban[2][0], tw[2][0]), ban[2][1].animate.next_to(tw[2][0], RIGHT, buff=0.04)
-            .align_to(tw[2][3], DOWN),
-            run_time=1.2,
+            *[ReplacementTransform(ban[0][k], tw[0][k]) for k in (0, 2, 3, 5, 6)],
+            ReplacementTransform(ban[1][0], tw[1][1]), ReplacementTransform(ban[1][1], tw[1][2]),
+            ReplacementTransform(ban[2][0], tw[2][0]),
+            ban[2][1].animate.next_to(tw[2][0], RIGHT, buff=0.04).align_to(tw[2][3], DOWN),
+            run_time=0.9, rate_func=smooth,
         )
+        for m in nowe:
+            m.set_color(O)
+        self.play(*[FadeIn(m, shift=0.25 * UP) for m in nowe], run_time=0.6, rate_func=smooth)
+        self.wait(0.4)
+        self.play(*[m.animate.set_color(KOLOR_TEKST) for m in nowe], run_time=0.6)
         self.next_slide()
         # Kropka przesuwa się na koniec, a przed nią dochodzi nowa część tezy.
         tw[2][2].set_color(O)
