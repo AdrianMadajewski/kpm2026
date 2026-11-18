@@ -440,10 +440,11 @@ class WlasnosciTopologii(Slide):
         self.play(FadeIn(L4[:4], shift=0.2 * RIGHT), FadeIn(kropka_tmp, shift=0.2 * RIGHT))
         self.next_slide()
         L4[4].set_color(O)
-        self.play(L4[3].animate.set_color(O), FadeIn(L4[4], shift=0.2 * RIGHT),
+        # > 0 wynika z założenia p(x,x) < p(x,y): podświetlamy oba.
+        self.play(L4[1].animate.set_color(O), FadeIn(L4[4], shift=0.2 * RIGHT),
                   ReplacementTransform(kropka_tmp, L4[5]), run_time=0.7)
         self.next_slide()
-        self.play(L4[3].animate.set_color(KOLOR_TEKST), L4[4].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.play(L4[1].animate.set_color(KOLOR_TEKST), L4[4].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
 
         # Wniosek: y poza kulą.
