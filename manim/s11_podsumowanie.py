@@ -70,16 +70,12 @@ class Podsumowanie(Slide):
             DashedVMobject(owal.copy().set_stroke(B, 2.5), num_dashes=30),
         )
         naz = MathTex(r"T_0", font_size=34).next_to(ramka, UP, buff=0.12)
-        def_t0 = VGroup(MathTex(r"\forall\, x\neq y\ \ \exists\, U\in\tau\colon", font_size=26),
-                        MathTex(r"x\in U\not\ni y\ \ \text{lub}\ \ y\in U\not\ni x", font_size=26)
-                        ).arrange(DOWN, buff=0.12).next_to(ramka, DOWN, buff=0.2)
-        panel_t0 = VGroup(ramka, px_, py_, lx, ly, otoczenie, naz, def_t0)
+        panel_t0 = VGroup(ramka, px_, py_, lx, ly, otoczenie, naz)
         self.play(FadeIn(wnioski[2], shift=0.2 * RIGHT),
                   # stary rysunek najpierw znika, nowy pojawia się zaraz po nim (bez nakładania)
                   Succession(FadeOut(VGroup(punkt, etykieta_x, petla, wzor_0), run_time=0.5),
                              FadeIn(VGroup(ramka, px_, py_, lx, ly, naz), run_time=0.6)), run_time=1.1)
         self.play(FadeIn(otoczenie))
-        self.play(FadeIn(def_t0, shift=0.2 * DOWN))
         self.next_slide()
 
         # 4. Zbieżność: wartości p(x,x_n) dążą do poziomu p(x,x) (a nie do 0).
