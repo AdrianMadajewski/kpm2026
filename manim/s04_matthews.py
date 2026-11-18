@@ -113,7 +113,8 @@ class Strumienie(Slide):
         rozbite = VGroup(*kz[k:])
         self.play(LaggedStart(*[FadeOut(kr, shift=1.2 * DOWN, scale=0.7) for kr in rozbite], lag_ratio=0.12),
                   FadeOut(piorun), run_time=1.4)
-        self.play(FadeIn(p2, shift=0.2 * UP))
+        self.play(FadeIn(p2, shift=0.2 * UP), ez.animate.set_color(RED_D), cyfry_z.animate.set_color(RED_D),
+                  kz[:k].animate.set_stroke(RED_D))
         self.next_slide()
 
         # ================= 3. Porównanie dwóch strumieni =================
