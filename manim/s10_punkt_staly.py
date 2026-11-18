@@ -176,10 +176,12 @@ class TwierdzenieMatthewsa(Slide):
 
         # =============== Lemat: p(x,y) = 0 => x = y ===============
         L1 = MathTex(r"\textbf{Lemat.}\ \text{Jeśli } p(x,y)=0\text{, to } x=y.", font_size=FS + 2)
-        L2 = MathTex(r"\textit{Dowód.}\ \text{Z (P2) }", r"0\le p(x,x)\le p(x,y)=0", r".", font_size=FS)
-        L3 = MathTex(r"\text{Z (P2) i (P3) }", r"0\le p(y,y)\le p(y,x)=p(x,y)=0", r".", font_size=FS)
-        L4 = MathTex(r"\text{Zatem }", r"p(x,x)=p(x,y)=p(y,y)", r"\text{, więc z (P1) }", r"x=y", r".\ \ \blacksquare",
-                     font_size=FS)
+        L2 = MathTex(r"\textit{Dowód.}\ \text{Z (P2) }", r"0\le p(x,x)\le p(x,y)=0", r"\text{, więc }",
+                     r"p(x,x)=0", r".", font_size=FS)
+        L3 = MathTex(r"\text{Z (P2) i (P3) }", r"0\le p(y,y)\le p(y,x)=p(x,y)=0", r"\text{, więc }",
+                     r"p(y,y)=0", r".", font_size=FS)
+        L4 = MathTex(r"\text{Zatem }", r"p(x,x)=p(x,y)=p(y,y)=0", r"\text{, więc z (P1) }", r"x=y",
+                     r".\ \ \blacksquare", font_size=FS)
         lemat = VGroup(L1, L2, L3, L4).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         lemat.next_to(tw, DOWN, buff=0.45).to_edge(LEFT, buff=0.6)
         p2p3 = przypomnienie(r"\text{(P2)}\quad p(x,x)\le p(x,y),\qquad \text{(P3)}\quad p(x,y)=p(y,x)")
@@ -187,10 +189,14 @@ class TwierdzenieMatthewsa(Slide):
 
         pokaz(L1)
         pokaz_przyp(p2p3)
-        pokaz(L2, pomaranczowe=[L2[1]])
+        pokaz(L2[:2], pomaranczowe=[L2[1]])
         wyszarz(L2[1])
-        pokaz(L3, pomaranczowe=[L3[1]])
+        pokaz(L2[2:], pomaranczowe=[L2[3]])
+        wyszarz(L2[3])
+        pokaz(L3[:2], pomaranczowe=[L3[1]])
         wyszarz(L3[1], przyp=p2p3)
+        pokaz(L3[2:], pomaranczowe=[L3[3]])
+        wyszarz(L3[3])
         pokaz_przyp(p1)
         pokaz(L4[:2], pomaranczowe=[L4[1]])
         wyszarz(L4[1])
