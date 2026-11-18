@@ -213,6 +213,10 @@ class PrzykladMax(Slide):
         self.play(Create(slupek_x))
         self.bring_to_front(kropka_s)
         self.play(Create(linia_x), FadeIn(podpis_x))
+        # Kwadrat [0,x]^2 (półprzezroczysty, żeby wspólna część z kwadratem y mieszała kolory).
+        tlo_x = Polygon(ax.c2p(0, 0), ax.c2p(3, 0), ax.c2p(3, 3), ax.c2p(0, 3),
+                        stroke_width=0).set_fill(KOLOR_CZESCIOWA, 0.15).set_z_index(-1)
+        self.play(FadeIn(tlo_x), run_time=0.6)
         self.next_slide()
 
         # 3) Punkt y na prawo od x i fioletowa kreska do p(y,y).
@@ -232,8 +236,12 @@ class PrzykladMax(Slide):
         ).arrange(RIGHT, buff=0.1).next_to(ax.c2p(0, y.get_value()), LEFT, buff=0.55))
         self.play(FadeIn(kropka_y), FadeIn(etyk_y))
         self.next_slide()
+        tlo_y = always_redraw(lambda: Polygon(
+            ax.c2p(0, 0), ax.c2p(y.get_value(), 0), ax.c2p(y.get_value(), y.get_value()), ax.c2p(0, y.get_value()),
+            stroke_width=0).set_fill(KOLOR_Y, 0.15).set_z_index(-1) if y.get_value() > 0.02 else VMobject())
         self.play(Create(slupek_y))
         self.play(Create(linia_y), FadeIn(podpis_y))
+        self.play(FadeIn(tlo_y), run_time=0.6)
         self.next_slide()
 
         # 4) y jedzie do (0,0) razem z oznaczeniami.
