@@ -11,7 +11,6 @@ class CiagCauchyego(Slide):
     def construct(self):
         FS = 34
         O = KOLOR_CZESCIOWA
-        KOLOR_Y = ManimColor("#7B3FA0")
 
         naglowek = Tex(TYTUL_ZUP, font_size=48)
         self.play(FadeIn(naglowek))
@@ -67,7 +66,6 @@ class CiagCauchyego(Slide):
         # ---- Przykład w max ----
         prz = MathTex(r"\textbf{Przykład.}\ \ X\coloneqq[0,\infty),\quad p(x,y)\coloneqq\max\{x,y\},\quad",
                       r"x_n\coloneqq 1+\tfrac{1}{n}", r"\ \text{ dla } n\in\mathbb{N}.", font_size=32)
-        prz[1].set_color(KOLOR_Y)
         prz.next_to(piszemy, DOWN, buff=0.35)
         self.play(FadeIn(prz, shift=0.2 * RIGHT))
         self.next_slide()
