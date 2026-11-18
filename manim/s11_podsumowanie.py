@@ -52,15 +52,37 @@ class Podsumowanie(Slide):
         self.play(petla.animate.set_color(B), FadeTransform(wzor_p, wzor_0), run_time=0.8)
         self.next_slide()
 
-        # 3. Topologia: wracamy do ogólnej metryki częściowej.
-        wzor_p2 = MathTex(r"p(x,x)\ge 0", font_size=38, color=O).move_to(wzor_0)
+        # 3. Topologia: pętla znika, a w tym miejscu rysunek T_0 (jak na slajdzie o własnościach topologii).
         self.play(FadeIn(wnioski[2], shift=0.2 * RIGHT),
-                  petla.animate.set_color(O), FadeTransform(wzor_0, wzor_p2), run_time=0.8)
+                  FadeOut(VGroup(punkt, etykieta_x, petla, wzor_0)), run_time=0.8)
+        ramka = RoundedRectangle(width=3.4, height=1.9, corner_radius=0.15, color=GRAY_C, stroke_width=2)
+        ramka.move_to(srodek + 0.1 * UP)
+        px_ = Dot(ramka.get_center() + 0.7 * LEFT, radius=0.07)
+        py_ = Dot(ramka.get_center() + 0.7 * RIGHT, radius=0.07)
+        lx = MathTex("x", font_size=28).next_to(px_, DOWN, buff=0.1)
+        ly = MathTex("y", font_size=28).next_to(py_, DOWN, buff=0.1)
+        owal = Ellipse(width=1.2, height=1.2).move_to(px_)
+        otoczenie = VGroup(
+            owal.copy().set_stroke(width=0).set_fill(B, 0.15),
+            DashedVMobject(owal.copy().set_stroke(B, 2.5), num_dashes=30),
+        )
+        naz = MathTex(r"T_0", font_size=34).next_to(ramka, UP, buff=0.12)
+        def_t0 = VGroup(MathTex(r"\forall\, x\neq y\ \ \exists\, U\in\tau\colon", font_size=26),
+                        MathTex(r"x\in U\not\ni y\ \ \text{lub}\ \ y\in U\not\ni x", font_size=26)
+                        ).arrange(DOWN, buff=0.12).next_to(ramka, DOWN, buff=0.2)
+        panel_t0 = VGroup(ramka, px_, py_, lx, ly, otoczenie, naz, def_t0)
+        self.play(FadeIn(VGroup(ramka, px_, py_, lx, ly, naz)))
+        self.play(FadeIn(otoczenie))
+        self.play(FadeIn(def_t0, shift=0.2 * DOWN))
         self.next_slide()
 
-        # 4. Punkt stały: pętla niebieska, p(x*,x*) = 0.
+        # 4. Punkt stały: wraca pętla p(x,x) >= 0, potem pętla niebieska i p(x*,x*) = 0.
         self.play(FadeIn(wnioski[3], shift=0.2 * RIGHT))
         self.next_slide()
+        petla.set_color(O)
+        wzor_p2 = MathTex(r"p(x,x)\ge 0", font_size=38, color=O).move_to(wzor_0)
+        self.play(FadeOut(panel_t0), run_time=0.6)
+        self.play(FadeIn(punkt), FadeIn(etykieta_x), FadeIn(petla), FadeIn(wzor_p2), run_time=0.6)
         etykieta_xs = MathTex(r"x^*", font_size=36).move_to(etykieta_x)
         wzor_k = MathTex(r"p(x^*,x^*)=0", font_size=38, color=B).move_to(wzor_p2)
         self.play(petla.animate.set_color(B), FadeTransform(wzor_p2, wzor_k),
