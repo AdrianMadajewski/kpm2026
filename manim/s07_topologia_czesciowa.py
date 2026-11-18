@@ -121,9 +121,9 @@ class Kule(Slide):
 
         os_d = os().shift(1.0 * UP)
         os_p = os().shift(1.9 * DOWN)
-        opis_d = MathTex(r"d(x,y) = |x-y|", font_size=34, color=KOLOR_METRYKA)
+        opis_d = MathTex(r"d(x,y) \coloneqq |x-y|", font_size=34, color=KOLOR_METRYKA)
         opis_d.next_to(os_d, UP, buff=0.55).to_edge(LEFT, buff=0.8)
-        opis_p = MathTex(r"p(x,y) = \max\{x,y\}", font_size=34, color=KOLOR_CZESCIOWA)
+        opis_p = MathTex(r"p(x,y) \coloneqq \max\{x,y\}", font_size=34, color=KOLOR_CZESCIOWA)
         opis_p.next_to(os_p, UP, buff=0.55).to_edge(LEFT, buff=0.8)
 
         x0 = 2
@@ -499,8 +499,8 @@ class WlasnosciTopologii(Slide):
         self.next_slide()
 
         # ---- Przykład bez dowodu: max, y = 0 i x > 0 ----
-        M1 = MathTex(r"\text{Niech }", r"X=[0,\infty)", r",\ ", r"p(x,y)=\max\{x,y\}",
-                     r"\text{ oraz }", r"y=0,\ x>0", r".", font_size=FS)
+        M1 = MathTex(r"\text{Niech }", r"X\coloneqq[0,\infty)", r",\ ", r"p(x,y)\coloneqq\max\{x,y\}",
+                     r"\text{ oraz }", r"y\coloneqq 0,\ x>0", r".", font_size=FS)
         M1.next_to(uwaga, DOWN, buff=0.6).to_edge(LEFT, buff=0.8)
         self.play(FadeIn(M1, shift=0.2 * RIGHT))
         self.next_slide()
