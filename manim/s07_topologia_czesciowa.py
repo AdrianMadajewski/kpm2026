@@ -332,6 +332,12 @@ class LematBaza(Slide):
         self.play(*zgas(L2[1], L4[5], L4[7]), run_time=0.6)
         self.next_slide()
 
+        # Przed wnioskiem: definicja B_p(x, eps) oraz p(x,z) < p(x,x) + eps.
+        def_kuli = [L1[1][2:], L1[2], L1[3], L1[4]]
+        nier = [L4[0], L4[4], L4[7]]
+        self.play(*zaswiec(*def_kuli, *nier), run_time=0.6)
+        self.next_slide()
+        self.play(*zgas(*def_kuli, *nier), run_time=0.6)
         self.play(FadeIn(L5))
         self.next_slide()
         uwaga = tag
