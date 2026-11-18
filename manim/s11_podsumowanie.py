@@ -45,21 +45,19 @@ class Podsumowanie(Slide):
                     arc_center=srodek + 0.42 * UP, color=O).add_tip(tip_length=0.15)
         wzor_p = MathTex(r"p(x,x)\ge 0", font_size=38, color=O).next_to(petla, UP, buff=0.3)
 
-        # 1. Pierwszy wniosek, potem rysunek z pętlą: p(x,x) >= 0.
-        self.play(FadeIn(wnioski[0], shift=0.2 * RIGHT))
-        self.next_slide()
-        self.play(FadeIn(punkt, scale=0.5), FadeIn(etykieta_x), Create(petla), FadeIn(wzor_p))
+        # Każdy wniosek pojawia się razem ze swoją animacją po prawej.
+        # 1. p(x,x) >= 0: rysunek z pętlą.
+        self.play(FadeIn(wnioski[0], shift=0.2 * RIGHT),
+                  FadeIn(punkt, scale=0.5), FadeIn(etykieta_x), Create(petla), FadeIn(wzor_p), run_time=1.0)
         self.next_slide()
 
         # 2. Metryki: pętla na niebiesko i d(x,x) = 0.
-        self.play(FadeIn(wnioski[1], shift=0.2 * RIGHT))
         wzor_0 = MathTex(r"d(x,x)=0", font_size=38, color=B).move_to(wzor_p)
-        self.play(petla.animate.set_color(B), FadeTransform(wzor_p, wzor_0), run_time=0.8)
+        self.play(FadeIn(wnioski[1], shift=0.2 * RIGHT),
+                  petla.animate.set_color(B), FadeTransform(wzor_p, wzor_0), run_time=1.0)
         self.next_slide()
 
         # 3. Topologia: pętla znika, a w tym miejscu rysunek T_0.
-        self.play(FadeIn(wnioski[2], shift=0.2 * RIGHT),
-                  FadeOut(VGroup(punkt, etykieta_x, petla, wzor_0)), run_time=0.8)
         ramka = RoundedRectangle(width=3.4, height=1.9, corner_radius=0.15, color=GRAY_C, stroke_width=2)
         ramka.move_to(srodek + 0.1 * UP)
         px_ = Dot(ramka.get_center() + 0.7 * LEFT, radius=0.07)
@@ -76,13 +74,15 @@ class Podsumowanie(Slide):
                         MathTex(r"x\in U\not\ni y\ \ \text{lub}\ \ y\in U\not\ni x", font_size=26)
                         ).arrange(DOWN, buff=0.12).next_to(ramka, DOWN, buff=0.2)
         panel_t0 = VGroup(ramka, px_, py_, lx, ly, otoczenie, naz, def_t0)
-        self.play(FadeIn(VGroup(ramka, px_, py_, lx, ly, naz)))
+        self.play(FadeIn(wnioski[2], shift=0.2 * RIGHT),
+                  # stary rysunek najpierw znika, nowy pojawia się zaraz po nim (bez nakładania)
+                  Succession(FadeOut(VGroup(punkt, etykieta_x, petla, wzor_0), run_time=0.5),
+                             FadeIn(VGroup(ramka, px_, py_, lx, ly, naz), run_time=0.6)), run_time=1.1)
         self.play(FadeIn(otoczenie))
         self.play(FadeIn(def_t0, shift=0.2 * DOWN))
         self.next_slide()
 
         # 4. Zbieżność: wartości p(x,x_n) dążą do poziomu p(x,x) (a nie do 0).
-        self.play(FadeOut(panel_t0), FadeIn(wnioski[3], shift=0.2 * RIGHT), run_time=0.8)
         ax = Axes(x_range=[0, 8, 2], y_range=[0, 3, 1], x_length=3.2, y_length=2.6, tips=False,
                   axis_config={"include_numbers": True, "font_size": 22}).move_to(np.array([4.2, 0.2, 0]))
         etyk_n = MathTex("n", font_size=26).next_to(ax.x_axis, RIGHT, buff=0.12)
@@ -94,35 +94,39 @@ class Podsumowanie(Slide):
         # Legenda nad wykresem zamiast podpisów przy kropkach.
         etyk_x = VGroup(Dot(radius=0.05), MathTex(r"p(x,x_n)", font_size=26)).arrange(RIGHT, buff=0.1)
         etyk_x.next_to(ax, UP, buff=0.2).align_to(ax, LEFT)
-        self.play(Create(ax), FadeIn(etyk_n))
+        self.play(FadeIn(wnioski[3], shift=0.2 * RIGHT),
+                  Succession(FadeOut(panel_t0, run_time=0.5),
+                             AnimationGroup(Create(ax), FadeIn(etyk_n), run_time=0.8)), run_time=1.3)
         self.play(Create(linia), FadeIn(etyk_linia))
         self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki_x], lag_ratio=0.25),
                   FadeIn(etyk_x), run_time=2.0)
         self.next_slide()
 
         # 5. Zupełność: także p(x_n,x_m) dąży do tego samego poziomu p(x,x).
-        self.play(FadeIn(wnioski[4], shift=0.2 * RIGHT))
         kropki_c = VGroup(*[Dot(ax.c2p(n, poziom + 1.9 * 0.8 ** n), radius=0.05, color=KOLOR_Y)
                             for n in range(1, 9)])
         etyk_c = VGroup(Dot(radius=0.05, color=KOLOR_Y), MathTex(r"p(x_n,x_m)", font_size=26, color=KOLOR_Y)
                         ).arrange(RIGHT, buff=0.1)
         etyk_c.next_to(etyk_x, RIGHT, buff=0.4)
-        self.play(LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki_c], lag_ratio=0.25),
+        self.play(FadeIn(wnioski[4], shift=0.2 * RIGHT),
+                  LaggedStart(*[FadeIn(k, scale=0.5) for k in kropki_c], lag_ratio=0.25),
                   FadeIn(etyk_c), run_time=2.0)
         self.play(Indicate(VGroup(linia, etyk_linia), color=O, scale_factor=1.08))
         self.next_slide()
 
         # 6. Twierdzenie Banacha: wraca pętla, p(x*,x*) = 0 na pomarańczowo.
         wykres = VGroup(ax, etyk_n, linia, etyk_linia, kropki_x, etyk_x, kropki_c, etyk_c)
-        self.play(FadeOut(wykres), FadeIn(wnioski[5], shift=0.2 * RIGHT), run_time=0.8)
-        self.next_slide()
         petla.set_color(O)
         # Wzory podzielone na części, żeby podmieniać tylko to, co się zmienia.
         wzor_a = MathTex(r"p(", r"x", r",", r"x", r")", r"\ge", r"0", font_size=38, color=O).move_to(wzor_0)
         wzor_b = MathTex(r"p(", r"x", r"^*", r",", r"x", r"^*", r")", r"=", r"0", font_size=38, color=O)
         wzor_b.move_to(wzor_a)
         etyk_b = MathTex(r"x", r"^*", font_size=36).move_to(etykieta_x).align_to(etykieta_x, LEFT)
-        self.play(FadeIn(punkt), FadeIn(etykieta_x), FadeIn(petla), FadeIn(wzor_a), run_time=0.6)
+        self.play(FadeIn(wnioski[5], shift=0.2 * RIGHT),
+                  Succession(FadeOut(wykres, run_time=0.5),
+                             AnimationGroup(FadeIn(punkt), FadeIn(etykieta_x), FadeIn(petla), FadeIn(wzor_a),
+                                            run_time=0.6)), run_time=1.1)
+        self.next_slide()
 
         # x -> x*: gwiazdki wpadają z góry; >= odpływa w górę, = wpływa od dołu.
         anim = [
