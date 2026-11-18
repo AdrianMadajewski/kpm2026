@@ -318,7 +318,6 @@ class TwierdzenieMatthewsa(Slide):
                       r"\text{ dla } m>n.", font_size=FS)
         A5 = MathTex(r"\text{Dla } m=n \text{ mamy }", r"p(x_n,x_n)", r"\le p(x_n,x_{n+1})",
                      r"\le c^n\, p(x_1,x_0)", r".", font_size=FS)
-        A5b = MathTex(r"\text{Zatem }", r"\lim_{n\to\infty}p(x_n,x_n)=0", r".", font_size=FS)
         C1 = MathTex(r"\text{Ustalmy } N\in\mathbb{N}\text{ i niech } n,m\ge N.", r"\ \text{Z (P3) możemy założyć, że }",
                      r"m\ge n", r".", font_size=FS)
         C2 = MathTex(r"\text{Wtedy }", r"p(x_n,x_m)\le\frac{c^n}{1-c}\,p(x_1,x_0)", r"\le\frac{c^N}{1-c}\,p(x_1,x_0)",
@@ -326,10 +325,9 @@ class TwierdzenieMatthewsa(Slide):
         C3 = MathTex(r"\text{Ponieważ }", r"\frac{c^N}{1-c}\,p(x_1,x_0)\xrightarrow[N\to\infty]{}0",
                      r"\text{, to }", r"\lim_{n,m\to\infty}p(x_n,x_m)=0", r",", font_size=FS)
         C4 = MathTex(r"\text{czyli }", r"(x_n)_{n\in\mathbb{N}}\text{ jest ciągiem Cauchy'ego}", r".", font_size=FS)
-        strona2 = VGroup(A0r, A4r, A5, A5b, C1, C2, C3, C4).arrange(DOWN, aligned_edge=LEFT, buff=0.24)
+        strona2 = VGroup(A0r, A4r, A5, C1, C2, C3, C4).arrange(DOWN, aligned_edge=LEFT, buff=0.24)
         strona2.next_to(tw, DOWN, buff=0.4).to_edge(LEFT, buff=0.6)
 
-        cn0 = przypomnienie(r"c\in[0,1)\implies c^n\xrightarrow[n\to\infty]{}0")
         p3 = przypomnienie(r"\text{(P3)}\quad p(x,y)=p(y,x)")
         m_eq_n = przypomnienie(r"\text{dla } m=n\text{:}\quad c^n\le\frac{c^n}{1-c}")
         cN = przypomnienie(r"n\ge N \implies c^n\le c^N")
@@ -347,9 +345,6 @@ class TwierdzenieMatthewsa(Slide):
         pokaz(A5[3:], pomaranczowe=[A5[3]])
         self.play(A5[3].animate.set_color(KOLOR_TEKST), A0r[1].animate.set_color(KOLOR_TEKST), run_time=0.6)
         self.next_slide()
-        pokaz_przyp(cn0)
-        pokaz(A5b, pomaranczowe=[A5b[1]])
-        wyszarz(A5b[1], przyp=cn0)
 
         # Wspólne oszacowanie dla n, m >= N.
         pokaz(C1[0])
