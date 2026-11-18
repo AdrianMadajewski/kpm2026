@@ -43,7 +43,7 @@ class Podsumowanie(Slide):
         etykieta_x = MathTex("x", font_size=36).next_to(punkt, DOWN, buff=0.15)
         petla = Arc(radius=0.35, start_angle=-PI / 2 + 0.45, angle=2 * PI - 0.9,
                     arc_center=srodek + 0.42 * UP, color=O).add_tip(tip_length=0.15)
-        wzor_p = MathTex(r"p(x,x)\ge 0", font_size=38, color=O).next_to(petla, UP, buff=0.3)
+        wzor_p = MathTex(r"p", r"(x,x)", r"\ge", r"0", font_size=38, color=O).next_to(petla, UP, buff=0.3)
 
         # Każdy wniosek pojawia się razem ze swoją animacją po prawej.
         # 1. p(x,x) >= 0: rysunek z pętlą.
@@ -52,9 +52,14 @@ class Podsumowanie(Slide):
         self.next_slide()
 
         # 2. Metryki: pętla na niebiesko i d(x,x) = 0.
-        wzor_0 = MathTex(r"d(x,x)=0", font_size=38, color=B).move_to(wzor_p)
+        wzor_0 = MathTex(r"d", r"(x,x)", r"=", r"0", font_size=38, color=B).move_to(wzor_p)
         self.play(FadeIn(wnioski[1], shift=0.2 * RIGHT),
-                  petla.animate.set_color(B), FadeTransform(wzor_p, wzor_0), run_time=1.0)
+                  petla.animate.set_color(B),
+                  # p i >= odpływają w górę, d i = wpływają od dołu, (x,x) i 0 zostają (zmieniają kolor).
+                  FadeOut(wzor_p[0], shift=0.25 * UP), FadeOut(wzor_p[2], shift=0.25 * UP),
+                  FadeIn(wzor_0[0], shift=0.25 * UP), FadeIn(wzor_0[2], shift=0.25 * UP),
+                  ReplacementTransform(wzor_p[1], wzor_0[1]), ReplacementTransform(wzor_p[3], wzor_0[3]),
+                  run_time=1.0)
         self.next_slide()
 
         # 3. Topologia: pętla znika, a w tym miejscu rysunek T_0.
