@@ -41,7 +41,6 @@ SCENES = [
     # 4. Completeness and the fixed point theorem
     ("s01_plan.py", "PlanSekcja4"),
     ("s09_zupelnosc.py", "CiagCauchyego"),
-    ("s09_zupelnosc.py", "ZupelnoscMax"),
     ("s10_punkt_staly.py", "Kontrakcja"),
     ("s10_punkt_staly.py", "TwierdzenieMatthewsa"),
     # Summary
