@@ -401,9 +401,9 @@ class WlasnosciTopologii(Slide):
                      font_size=FS)
         L4 = MathTex(r"\text{Niech np. }", r"p(x,x)<p(x,y)", r"\text{ i }",
                      r"\varepsilon\coloneqq p(x,y)-p(x,x)", r">0", r".", font_size=FS)
-        L5 = MathTex(r"\text{Wtedy }", r"p(x,y)=p(x,x)+\varepsilon", r"\text{, czyli }",
-                     r"y\notin B_p(x,\varepsilon)", r".\ \blacksquare", font_size=FS)
-        dowod = VGroup(L1, L2, L3, L4, L5).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
+        L5 = MathTex(r"\text{Wtedy }", r"p(x,y)=p(x,x)+\varepsilon", r".", font_size=FS)
+        L6 = MathTex(r"\text{Zatem }", r"y\notin B_p(x,\varepsilon)", r".\ \blacksquare", font_size=FS)
+        dowod = VGroup(L1, L2, L3, L4, L5, L6).arrange(DOWN, aligned_edge=LEFT, buff=0.22)
         dowod.next_to(stw, DOWN, buff=0.45).to_edge(LEFT, buff=0.8)
 
         def przypomnienie(tex):
@@ -450,11 +450,21 @@ class WlasnosciTopologii(Slide):
         # Wniosek: y poza kulą.
         self.play(L4[3].animate.set_color(O), run_time=0.6)
         self.next_slide()
-        L5[1].set_color(O); L5[3].set_color(O)
+        L5[1].set_color(O)
         self.play(FadeIn(L5, shift=0.2 * RIGHT))
-        self.wait(0.4)
-        self.play(L4[3].animate.set_color(KOLOR_TEKST), L5[1].animate.set_color(KOLOR_TEKST),
-                  L5[3].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.next_slide()
+        self.play(L4[3].animate.set_color(KOLOR_TEKST), L5[1].animate.set_color(KOLOR_TEKST), run_time=0.6)
+        self.next_slide()
+
+        # Przypomnienie kuli i wniosek y poza kulą.
+        kula_def = przypomnienie(r"B_p(x,\varepsilon)\coloneqq\{u\in X : p(x,u)<p(x,x)+\varepsilon\}")
+        self.play(FadeIn(kula_def, shift=0.2 * UP), L5[1].animate.set_color(O), run_time=0.6)
+        self.next_slide()
+        L6[1].set_color(O)
+        self.play(FadeIn(L6, shift=0.2 * RIGHT))
+        self.next_slide()
+        self.play(L5[1].animate.set_color(KOLOR_TEKST), L6[1].animate.set_color(KOLOR_TEKST),
+                  FadeOut(kula_def, shift=0.2 * DOWN), run_time=0.6)
         self.next_slide()
 
         # ================= Uwaga: T_1 nie musi zachodzić =================
