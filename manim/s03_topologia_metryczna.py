@@ -275,8 +275,6 @@ class ZbieznoscMetryczna(Slide):
             Tex(r"Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest zbieżny do $a\in X$, gdy", font_size=30),
             MathTex(r"\forall\,U\in\tau_d,\ a\in U\ \ \exists\,N\ \forall\,n\ge N\colon\ x_n\in U", r".",
                     font_size=30),
-            Tex(r"(każde otoczenie $a$ zawiera prawie wszystkie wyrazy ciągu)", font_size=26,
-                color=KOLOR_DRUGORZEDNY),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
         tekst_d = VGroup(
             Tex(r"W przestrzeni metrycznej:", font_size=30, color=KOLOR_DRUGORZEDNY),
@@ -322,8 +320,6 @@ class ZbieznoscMetryczna(Slide):
         self.next_slide()
 
         # ---- Wersja topologiczna: dowolny zbiór otwarty U wokół a ----
-        self.play(FadeIn(tekst_top[2], shift=0.2 * RIGHT))
-        self.next_slide()
 
         def zbior_U(srodek, szer, wys, kat):
             ksztalt = Ellipse(width=szer * J, height=wys * J).rotate(kat).move_to(P(srodek))
