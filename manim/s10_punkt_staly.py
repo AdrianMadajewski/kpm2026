@@ -433,9 +433,11 @@ class TwierdzenieMatthewsa(Slide):
         wyszarz(B3d[1], przyp=kontr)
         # Zbieżność do x*.
         zb_c = przypomnienie(r"x_n\to x^*\implies p(x^*,x_n)\xrightarrow[n\to\infty]{}p(x^*,x^*)=0")
-        pokaz_przyp(zb_c)
+        # Korzystamy z x_n -> x* (z linijki o zupełności): podświetlamy ją razem z podpowiedzią.
+        self.play(FadeIn(zb_c, shift=0.2 * UP), B1[1].animate.set_color(O))
+        self.next_slide()
         pokaz(B3d[2:], pomaranczowe=[B3d[2]])
-        wyszarz(B3d[2], przyp=zb_c)
+        wyszarz(B3d[2], B1[1], przyp=zb_c)
         pokaz(B4[:2], pomaranczowe=[B4[1]])
         wyszarz(B4[1])
         pokaz_przyp(lemat_p)
