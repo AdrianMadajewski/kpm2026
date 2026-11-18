@@ -63,7 +63,7 @@ class Strumienie(Slide):
 
         # ================= 1. Strumień liczony bit po bicie =================
         kx = wiersz(1.5)
-        ex = MathTex("x", "=", font_size=38, color=O).next_to(kx, LEFT, buff=0.3)
+        ex = MathTex("x", "=", font_size=38, color=KOLOR_TEKST).next_to(kx, LEFT, buff=0.3)
         self.play(FadeIn(ex), Create(kx))
         self.next_slide()
 
@@ -71,7 +71,7 @@ class Strumienie(Slide):
         cyfry_x = VGroup()
         p1 = podpis(r"program dopisuje kolejne elementy --- wiemy coraz więcej", kx)
         for i, b in enumerate(bity_x[:4]):
-            c = bit(b, kx[i], O)
+            c = bit(b, kx[i], KOLOR_TEKST)
             cyfry_x.add(c)
             anims = [FadeIn(c, shift=0.3 * DOWN)]
             if i == 0:
@@ -79,8 +79,8 @@ class Strumienie(Slide):
             self.play(*anims, run_time=0.5)
             self.next_slide()
 
-        reszta = VGroup(*[bit(b, kx[i], O) for i, b in enumerate(bity_x[4:], start=4)])
-        kropki = MathTex(r"\dots", font_size=38, color=O).next_to(kx, RIGHT, buff=0.15)
+        reszta = VGroup(*[bit(b, kx[i], KOLOR_TEKST) for i, b in enumerate(bity_x[4:], start=4)])
+        kropki = MathTex(r"\dots", font_size=38, color=KOLOR_TEKST).next_to(kx, RIGHT, buff=0.15)
         self.play(LaggedStart(*[FadeIn(c, shift=0.3 * DOWN) for c in reszta], lag_ratio=0.3),
                   FadeIn(kropki), run_time=1.0)
         cyfry_x.add(*reszta)
@@ -91,9 +91,9 @@ class Strumienie(Slide):
 
         # ================= 2. Przerwanie przepływu =================
         kz = wiersz(-1.0)
-        ez = MathTex("z", "=", font_size=38, color=O).next_to(kz, LEFT, buff=0.3)
+        ez = MathTex("z", "=", font_size=38, color=KOLOR_TEKST).next_to(kz, LEFT, buff=0.3)
         bity_z = [1, 0, 1]
-        cyfry_z = VGroup(*[bit(b, kz[i], O) for i, b in enumerate(bity_z)])
+        cyfry_z = VGroup(*[bit(b, kz[i], KOLOR_TEKST) for i, b in enumerate(bity_z)])
         self.play(FadeIn(ez), Create(kz))
         self.play(LaggedStart(*[FadeIn(c, shift=0.3 * DOWN) for c in cyfry_z], lag_ratio=0.4), run_time=1.2)
         self.next_slide()
