@@ -225,10 +225,9 @@ def _kula_na_osi(os, prawy, kolor, wys):
 
 
 class LematBaza(Slide):
-    """Lemat: kule tworzą bazę topologii — treść, rysunek dla max i krótki dowód."""
+    """Lemat: kule tworzą bazę topologii — treść i krótki dowód."""
 
     def construct(self):
-        KOLOR_Y = ManimColor("#7B3FA0")
 
         # Motywacja: po co nam lemat.
         cel = Tex(r"Chcemy, żeby kule $B_p$ wyznaczały topologię", font_size=38)
@@ -253,39 +252,6 @@ class LematBaza(Slide):
         ).arrange(DOWN, buff=0.15).to_edge(UP, buff=0.45)
         self.play(FadeIn(lemat, shift=0.2 * DOWN))
         self.next_slide()
-
-        # Rysunek w przykładzie max: x = 2, eps = 1.5, y = 1, delta = 1.5.
-        os = NumberLine(x_range=[0, 5, 1], length=10, include_numbers=True,
-                        font_size=26, include_tip=False).move_to(0.6 * DOWN)
-        x0, eps, y0 = 2.0, 1.5, 1.0
-        delta = x0 + eps - max(x0, y0)
-        kx = Dot(os.n2p(x0), radius=0.09, color=KOLOR_CZESCIOWA).set_z_index(10)
-        ky = Dot(os.n2p(y0), radius=0.09, color=KOLOR_Y).set_z_index(10)
-        ex = MathTex("x", font_size=30).next_to(kx, DOWN, buff=0.45)
-        ey = MathTex("y", font_size=30).next_to(ky, DOWN, buff=0.45)
-        kula_x = _kula_na_osi(os, x0 + eps, KOLOR_CZESCIOWA, 0.35)
-        kula_y = _kula_na_osi(os, y0 + delta, KOLOR_Y, 0.7)
-        e_kx = MathTex(r"B_p(x,\varepsilon)", font_size=30, color=KOLOR_CZESCIOWA).next_to(kula_x[0], RIGHT, buff=0.3)
-        e_ky = MathTex(r"B_p(y,\delta)", font_size=30, color=KOLOR_Y).next_to(kula_y[0], RIGHT, buff=0.3)
-
-        # Przykład, w którym rysujemy.
-        przyklad = MathTex(r"X=[0,\infty),\qquad p(x,y)=\max\{x,y\}", font_size=34)
-        przyklad.move_to(1.0 * UP)
-        self.play(FadeIn(przyklad, shift=0.2 * DOWN))
-        self.next_slide()
-
-        self.play(Create(os))
-        self.play(FadeIn(kx), FadeIn(ex))
-        self.play(FadeIn(kula_x), FadeIn(e_kx))
-        self.next_slide()
-        self.play(FadeIn(ky), FadeIn(ey))
-        self.next_slide()
-        self.play(FadeIn(kula_y), FadeIn(e_ky))
-        self.next_slide()
-
-        # Przykład znika w całości przed dowodem.
-        rysunek = VGroup(przyklad, os, kx, ky, ex, ey, kula_x, kula_y, e_kx, e_ky)
-        self.play(FadeOut(rysunek, shift=0.3 * DOWN), run_time=0.8)
 
         # Dowód — każde przejście na kliknięcie, z podświetleniem tego, z czego korzystamy.
         FS = 32
