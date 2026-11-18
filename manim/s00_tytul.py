@@ -47,7 +47,7 @@ class Tytul(Slide):
         self.next_slide()
 
         # A gdyby nie?
-        wzor_p = MathTex(r"p(x,x) = \,?", font_size=40, color=KOLOR_CZESCIOWA)
+        wzor_p = MathTex(r"p(x,x) \ge 0", font_size=40, color=KOLOR_CZESCIOWA)
         wzor_p.move_to(wzor_d, aligned_edge=LEFT)
         self.play(FadeOut(wzor_d, shift=0.4 * LEFT), run_time=0.7)
         self.play(
