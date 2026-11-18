@@ -92,10 +92,10 @@ class Zbieznosc(Slide):
         self.next_slide()
 
         # Skąd Q2: reszta definicji zbieżności dla U := B_p(x, eps).
-        Q2[1].set_color(O)
+        Q2.set_color(O)
         self.play(defn[2].animate.set_color(O), FadeIn(Q2, shift=0.2 * RIGHT))
         self.next_slide()
-        self.play(defn[2].animate.set_color(KOLOR_DRUGORZEDNY), Q2[1].animate.set_color(KOLOR_TEKST),
+        self.play(defn[2].animate.set_color(KOLOR_DRUGORZEDNY), Q2.animate.set_color(KOLOR_TEKST),
                   run_time=0.6)
         self.next_slide()
 
