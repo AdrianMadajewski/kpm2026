@@ -310,10 +310,12 @@ class TwierdzenieMatthewsa(Slide):
         # Suma i szereg geometryczny.
         pokaz(R4[:2], pomaranczowe=[R4[1]])
         wyszarz(R4[1])
-        self.play(A2[3].animate.set_color(O), run_time=0.5)
+        # Z (*): początek p(x_{n+1}, x_n) i końcowe oszacowanie <= c^n p(x_1, x_0).
+        gwiazdka = VGroup(A2[0], A2[3][4:])
+        self.play(gwiazdka.animate.set_color(O), run_time=0.5)
         self.next_slide()
         pokaz(R4[2], pomaranczowe=[R4[2]])
-        wyszarz(R4[2], A2[3])
+        wyszarz(R4[2], gwiazdka)
         # Wyłączenie stałej przed sumę i szereg geometryczny.
         pokaz(R5[0])
         geom = MathTex(r"\sum_{k=n}^{m-1}c^k\le\sum_{k=n}^{\infty}c^k=\frac{c^n}{1-c}", font_size=26, color=O)
