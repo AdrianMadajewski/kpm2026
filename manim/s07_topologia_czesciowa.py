@@ -332,8 +332,7 @@ class LematBaza(Slide):
         nier = [L4[0], L4[4], L4[7]]
         self.play(*zaswiec(*def_kuli, *nier), run_time=0.6)
         self.next_slide()
-        self.play(*zgas(*def_kuli, *nier), run_time=0.6)
-        self.play(FadeIn(L5))
+        self.play(*zgas(*def_kuli, *nier), FadeIn(L5), run_time=0.8)
         self.next_slide()
         uwaga = tag
 
