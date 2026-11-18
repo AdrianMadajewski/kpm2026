@@ -66,8 +66,7 @@ class PrzestrzenMetryczna(Slide):
         self.next_slide()
         definicja[0].become(tlo_dla(definicja, wstep))
         self.add(definicja[0], definicja[1])
-        # Definicja razem z rysunkiem; d: X x X -> [0, inf) na niebiesko.
-        wstep[1].set_color(KOLOR_METRYKA)
+        # Definicja razem z rysunkiem.
         self.play(FadeIn(wstep, shift=0.2 * RIGHT), Create(ax))
         self.play(FadeIn(kropka_x), FadeIn(etyk_x), FadeIn(kropka_y), FadeIn(etyk_y))
         self.play(Create(odc_xy), FadeIn(wartosc))
@@ -75,8 +74,7 @@ class PrzestrzenMetryczna(Slide):
 
         # Krok 2: (M1) — y dojeżdża do x, odległość spada do zera.
         self.play(dopasuj_ramke(definicja, wstep, m1))
-        m1[1].set_color(KOLOR_METRYKA)
-        self.play(FadeIn(m1, shift=0.2 * RIGHT), wstep[1].animate.set_color(KOLOR_TEKST))
+        self.play(FadeIn(m1, shift=0.2 * RIGHT))
         self.play(py[0].animate.set_value(px[0]), py[1].animate.set_value(px[1]), run_time=2.5)
         self.wait(0.5)
         self.play(py[0].animate.set_value(3.0), py[1].animate.set_value(1.5), run_time=1.5)
@@ -84,8 +82,7 @@ class PrzestrzenMetryczna(Slide):
 
         # Krok 3: (M2) — strzałki w obie strony mają tę samą długość.
         self.play(dopasuj_ramke(definicja, wstep, m1, m2))
-        m2[1].set_color(KOLOR_METRYKA)
-        self.play(FadeIn(m2, shift=0.2 * RIGHT), m1[1].animate.set_color(KOLOR_TEKST))
+        self.play(FadeIn(m2, shift=0.2 * RIGHT))
         yv = wsp_y()
         kier = (yv - px) / np.linalg.norm(yv - px)
         normal = np.array([-kier[1], kier[0]]) * 0.18
@@ -100,8 +97,7 @@ class PrzestrzenMetryczna(Slide):
         # Krok 4: (M3) — trójkąt i „rozprostowanie” dwóch boków.
         self.play(FadeOut(VGroup(tam, z_pow, e_tam, e_zpow)), FadeOut(wartosc))
         self.play(dopasuj_ramke(definicja, wstep, m1, m2, m3))
-        m3[1].set_color(KOLOR_METRYKA)
-        self.play(FadeIn(m3, shift=0.2 * RIGHT), m2[1].animate.set_color(KOLOR_TEKST))
+        self.play(FadeIn(m3, shift=0.2 * RIGHT))
         pz = np.array([2.0, 2.8])
         kropka_z = Dot(P(pz), radius=0.07).set_z_index(10)
         etyk_z = MathTex("z", font_size=32).next_to(kropka_z, UP, buff=0.1)
@@ -133,10 +129,9 @@ class PrzestrzenMetryczna(Slide):
         znacznik = DashedLine(pasek0.get_end() + 0.15 * UP, pasek0.get_end() + 0.7 * DOWN,
                               color=KOLOR_DRUGORZEDNY, stroke_width=2)
         self.play(Create(znacznik))
-        self.play(Indicate(m3[1], color=KOLOR_METRYKA, scale_factor=1.1))
         self.next_slide()
 
         # Krok 6: nazwa przestrzeni.
-        self.play(m3[1].animate.set_color(KOLOR_TEKST), dopasuj_ramke(definicja, wstep, m1, m2, m3, nazwa))
+        self.play(dopasuj_ramke(definicja, wstep, m1, m2, m3, nazwa))
         self.play(FadeIn(nazwa, shift=0.2 * RIGHT))
         self.next_slide()
