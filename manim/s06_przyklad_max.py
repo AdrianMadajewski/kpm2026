@@ -193,8 +193,7 @@ class PrzykladMax(Slide):
         self.next_slide()
 
         # 2) Pomarańczowa kreska z x do góry, do wysokości p(x,x).
-        slupek_x = Line(ax.c2p(3, 0), ax.c2p(3, 3), color=KOLOR_CZESCIOWA,
-                        stroke_width=7).set_cap_style(CapStyleType.ROUND)
+        slupek_x = DashedLine(ax.c2p(3, 0), ax.c2p(3, 3), color=KOLOR_CZESCIOWA, stroke_width=2)
         linia_x = DashedLine(ax.c2p(3, 3), ax.c2p(0, 3), color=KOLOR_CZESCIOWA, stroke_width=2)
         podpis_x = MathTex(r"p(x,x)=\max\{x,x\}=3.00", font_size=30, color=KOLOR_CZESCIOWA)
         podpis_x.next_to(ax.c2p(0, 3), LEFT, buff=0.55)
@@ -208,10 +207,9 @@ class PrzykladMax(Slide):
         kropka_y = always_redraw(lambda: Dot(ax.c2p(y.get_value(), 0), radius=0.09,
                                              color=KOLOR_Y).set_z_index(10))
         etyk_y = always_redraw(lambda: MathTex("y", font_size=34).next_to(kropka_y, DOWN, buff=0.62))
-        slupek_y = always_redraw(lambda: Line(
-            ax.c2p(y.get_value(), 0), ax.c2p(y.get_value(), max(y.get_value(), 1e-3)),
-            color=KOLOR_Y, stroke_width=7,
-            stroke_opacity=1 if y.get_value() > 0.02 else 0).set_cap_style(CapStyleType.ROUND))
+        slupek_y = always_redraw(lambda: DashedLine(
+            ax.c2p(y.get_value(), 0), ax.c2p(y.get_value(), y.get_value()),
+            color=KOLOR_Y, stroke_width=2) if y.get_value() > 0.1 else VMobject())
         linia_y = always_redraw(lambda: DashedLine(
             ax.c2p(y.get_value(), y.get_value()), ax.c2p(0, y.get_value()),
             color=KOLOR_Y, stroke_width=2) if y.get_value() > 0.1 else VMobject())
