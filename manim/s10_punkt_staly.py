@@ -44,7 +44,7 @@ class Kontrakcja(Slide):
         self.next_slide()
 
         # ---- Przykład: f(x) = x/2 w max ----
-        prz = MathTex(r"\textbf{Przykład.}\ \ X=[0,\infty),\quad p(x,y)=\max\{x,y\},\quad",
+        prz = MathTex(r"\textbf{Przykład.}\ \ X\coloneqq[0,\infty),\quad p(x,y)\coloneqq\max\{x,y\},\quad",
                       r"f(x)\coloneqq \tfrac{x}{2}", r".", font_size=32)
         prz.next_to(definicja, DOWN, buff=0.4)
         self.play(FadeIn(prz, shift=0.2 * RIGHT))

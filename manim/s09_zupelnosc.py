@@ -65,7 +65,7 @@ class CiagCauchyego(Slide):
         self.next_slide()
 
         # ---- Przykład w max ----
-        prz = MathTex(r"\textbf{Przykład.}\ \ X=[0,\infty),\quad p(x,y)=\max\{x,y\},\quad",
+        prz = MathTex(r"\textbf{Przykład.}\ \ X\coloneqq[0,\infty),\quad p(x,y)\coloneqq\max\{x,y\},\quad",
                       r"x_n\coloneqq 1+\tfrac{1}{n}", r"\ \text{ dla } n\in\mathbb{N}.", font_size=32)
         prz[1].set_color(KOLOR_Y)
         prz.next_to(piszemy, DOWN, buff=0.35)

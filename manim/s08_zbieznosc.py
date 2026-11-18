@@ -8,7 +8,6 @@ class Zbieznosc(Slide):
     def construct(self):
         FS = 30
         O = KOLOR_CZESCIOWA
-        KOLOR_Y = ManimColor("#7B3FA0")
 
         def przypomnienie(tex):
             return MathTex(tex, font_size=30, color=O).to_edge(DOWN, buff=0.35)
@@ -162,10 +161,9 @@ class Zbieznosc(Slide):
         self.play(*[FadeOut(m, shift=0.3 * LEFT) for m in self.mobjects], run_time=0.8)
         self.next_slide()
 
-        prz = MathTex(r"\textbf{Przykład.}\ \ X=[0,\infty),\quad p(x,y)=\max\{x,y\},\quad",
+        prz = MathTex(r"\textbf{Przykład.}\ \ X\coloneqq[0,\infty),\quad p(x,y)\coloneqq\max\{x,y\},\quad",
                       r"x_n\coloneqq 0", r"\ \text{ dla } n\in\mathbb{N}.", font_size=34)
         prz.to_edge(UP, buff=0.5)
-        prz[1].set_color(KOLOR_Y)
         self.play(FadeIn(prz, shift=0.2 * DOWN))
         self.next_slide()
 
