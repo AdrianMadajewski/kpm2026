@@ -153,8 +153,11 @@ class PrzykladMax(Slide):
         self.next_slide()
 
         # Kwadrat [0, max{x,y}]^2: jego wysokość na OY to p(x,y).
+        # "wzrost" rośnie od 0 do 1, żeby kwadrat wyrósł z punktu (0,0).
+        wzrost = ValueTracker(0.0)
+
         def m():
-            return max(xx.get_value(), yy.get_value())
+            return wzrost.get_value() * max(xx.get_value(), yy.get_value())
 
         def kolor_m():
             # Pomarańczowy, gdy maksimum to x; fioletowy, gdy y.
@@ -162,14 +165,24 @@ class PrzykladMax(Slide):
             t = np.clip((xx.get_value() - yy.get_value()) / 0.8 + 0.5, 0, 1)
             return interpolate_color(KOLOR_Y, KOLOR_CZESCIOWA, t)
 
-        kwadrat = always_redraw(lambda: Polygon(
-            ax.c2p(0, 0), ax.c2p(m(), 0), ax.c2p(m(), m()), ax.c2p(0, m()),
-            color=kolor_m(), stroke_width=4).set_fill(kolor_m(), 0.12))
+        def rysuj_kwadrat():
+            if m() < 0.05:
+                return VMobject()
+            k = kolor_m()
+            tlo = Polygon(ax.c2p(0, 0), ax.c2p(m(), 0), ax.c2p(m(), m()), ax.c2p(0, m()),
+                          stroke_width=0).set_fill(k, 0.12)
+            pion = DashedLine(ax.c2p(m(), 0), ax.c2p(m(), m()), color=k, stroke_width=2)
+            poziom = DashedLine(ax.c2p(m(), m()), ax.c2p(0, m()), color=k, stroke_width=2)
+            return VGroup(tlo, pion, poziom)
+
+        kwadrat = always_redraw(rysuj_kwadrat)
         etyk_pxy = always_redraw(lambda: VGroup(
             MathTex(r"p(x,y)=\max\{x,y\}=", font_size=30, color=kolor_m()),
             DecimalNumber(m(), num_decimal_places=2, font_size=30, color=kolor_m()),
         ).arrange(RIGHT, buff=0.1).next_to(ax.c2p(0, m()), LEFT, buff=0.55))
-        self.play(Create(kwadrat), FadeIn(etyk_pxy))
+        self.add(kwadrat)
+        self.play(FadeIn(etyk_pxy), run_time=0.3)
+        self.play(wzrost.animate.set_value(1.0), run_time=1.5, rate_func=smooth)
         self.next_slide()
 
         # Ruszamy punktami: kwadrat zawsze sięga do większego z nich.
