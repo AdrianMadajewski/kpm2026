@@ -107,9 +107,9 @@ class PrzestrzenMetryczna(Slide):
         bok_xy = Line(P(px), P(yv), color=KOLOR_METRYKA, stroke_width=5)
         bok_yz = Line(P(yv), P(pz), color=KOLOR_METRYKA, stroke_width=5)
         bok_xz = Line(P(px), P(pz), color=KOLOR_TEKST, stroke_width=5)
-        self.play(FadeIn(kropka_z), FadeIn(etyk_z))
-        self.play(Create(bok_xz))
-        self.play(Create(bok_xy), Create(bok_yz))
+        self.play(FadeIn(kropka_z), FadeIn(etyk_z), run_time=0.5)
+        self.play(Create(bok_xz), run_time=0.6)
+        self.play(Create(bok_xy), Create(bok_yz), run_time=0.6)
 
         # Porównanie długości: boki „zjeżdżają” pod wykres i układają się poziomo.
         jedn = ax.x_axis.unit_size
@@ -125,14 +125,12 @@ class PrzestrzenMetryczna(Slide):
         e0 = MathTex(r"d(x,z)", font_size=28).next_to(pasek0, LEFT, buff=0.2)
         e1 = MathTex(r"d(x,y)+d(y,z)", font_size=28, color=KOLOR_METRYKA).next_to(pasek1, LEFT, buff=0.2)
         k0, k1, k2 = bok_xz.copy(), bok_xy.copy(), bok_yz.copy()
-        self.play(Transform(k0, pasek0), FadeIn(e0), run_time=1.5)
-        self.play(Transform(k1, pasek1), run_time=1.2)
-        self.play(Transform(k2, pasek2), FadeIn(e1), run_time=1.2)
+        self.play(Transform(k0, pasek0), FadeIn(e0), run_time=0.9)
+        self.play(Transform(k1, pasek1), Transform(k2, pasek2), FadeIn(e1), run_time=0.9)
         # Pionowa kreska na końcu krótszego paska pokazuje nadwyżkę.
         znacznik = DashedLine(pasek0.get_end() + 0.15 * UP, pasek0.get_end() + 0.7 * DOWN,
                               color=KOLOR_DRUGORZEDNY, stroke_width=2)
-        self.play(Create(znacznik))
-        self.play(Indicate(m3[1], color=KOLOR_METRYKA, scale_factor=1.1))
+        self.play(Create(znacznik), Indicate(m3[1], color=KOLOR_METRYKA, scale_factor=1.1), run_time=0.8)
         self.next_slide()
 
         # Krok 6: nazwa przestrzeni.
