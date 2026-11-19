@@ -1,4 +1,5 @@
-# Renders the Manim presentation (1080p by default) and publishes it on GitHub Pages.
+# Renders the Manim presentation (1080p by default), publishes it on GitHub Pages
+# and attaches the single-file HTML to the "html" release for download.
 name: Build presentation
 
 on:
@@ -16,7 +17,7 @@ on:
         options: [h, m, l]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -62,6 +63,16 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: manim/site
+
+      # A fixed release keeps a stable download link to the newest HTML (works offline).
+      - name: Update the "html" release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: html
+          name: Slides (HTML)
+          body: Newest animated slides as one offline HTML file — download and open in a browser (arrow keys to advance, T hides the timer).
+          files: manim/prezentacja.html
+          make_latest: false
 
   deploy:
     needs: build
