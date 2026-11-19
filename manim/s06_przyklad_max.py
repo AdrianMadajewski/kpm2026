@@ -190,9 +190,7 @@ class PrzykladMax(Slide):
         self.next_slide()
         self.play(xx.animate.set_value(2.0), run_time=1.2)
         self.next_slide()
-        self.play(yy.animate.set_value(1.0), run_time=1.6)
-        self.next_slide()
-        self.play(xx.animate.set_value(3.0), yy.animate.set_value(1.5), run_time=1.0)
+        self.play(xx.animate.set_value(3.0), yy.animate.set_value(1.5), run_time=1.6)
         self.next_slide()
 
         # Sprzątamy kwadrat i y; zostaje x w punkcie 3 (statyczna kopia).
