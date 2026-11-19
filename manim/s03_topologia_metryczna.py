@@ -93,9 +93,9 @@ class TopologiaMetryczna(Slide):
         etyk_x = always_redraw(lambda: MathTex("x", font_size=28)
                                .next_to(P(c_U + t.get_value() * kier), DL, buff=0.06))
 
-        self.play(FadeIn(tekst1[2][0], shift=0.2 * RIGHT), Create(ax))
+        self.play(FadeIn(tekst1[2][0], shift=0.2 * RIGHT))
         self.next_slide()
-        self.play(FadeIn(tekst1[2][1:], shift=0.2 * RIGHT))
+        self.play(FadeIn(tekst1[2][1:], shift=0.2 * RIGHT), Create(ax))
         self.play(FadeIn(U[0]), Create(U[1]), FadeIn(etyk_U))
         self.play(LaggedStart(*[FadeIn(m) for m in male_V], lag_ratio=0.4))
         self.play(FadeIn(ruchomy_V), FadeIn(etyk_x))
