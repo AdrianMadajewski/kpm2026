@@ -272,15 +272,15 @@ class ZbieznoscMetryczna(Slide):
 
         # ---- Lewa kolumna: najpierw definicja topologiczna, potem równoważność z d ----
         tekst_top = VGroup(
-            Tex(r"Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest zbieżny do $a\in X$, gdy", font_size=30),
-            MathTex(r"\forall\,U\in\tau_d,\ a\in U\ \ \exists\,N\ \forall\,n\ge N\colon\ x_n\in U", r".",
+            Tex(r"Ciąg $(x_n)_{n\in\mathbb{N}}\subset X$ jest zbieżny do $x\in X$, gdy", font_size=30),
+            MathTex(r"\forall\,U\in\tau_d,\ x\in U\ \ \exists\,N\ \forall\,n\ge N\colon\ x_n\in U", r".",
                     font_size=30),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
         tekst_d = VGroup(
             Tex(r"W przestrzeni metrycznej:", font_size=30, color=KOLOR_DRUGORZEDNY),
-            MathTex(r"x_n\to a", r"\iff", r"\forall\,\varepsilon>0\ \exists\,N\ \forall\,n\ge N\colon\ "
-                    r"x_n\in B_d(a,\varepsilon)", font_size=30),
-            MathTex(r"\iff", r"\lim_{n\to\infty} d(a,x_n)=0", r".", font_size=30),
+            MathTex(r"x_n\to x", r"\iff", r"\forall\,\varepsilon>0\ \exists\,N\ \forall\,n\ge N\colon\ "
+                    r"x_n\in B_d(x,\varepsilon)", font_size=30),
+            MathTex(r"\iff", r"\lim_{n\to\infty} d(x,x_n)=0", r".", font_size=30),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
         tekst_d[2].shift((tekst_d[1][1].get_left()[0] - tekst_d[2][0].get_left()[0]) * RIGHT)
         lewa = VGroup(tekst_top, tekst_d).arrange(DOWN, aligned_edge=LEFT, buff=0.6)
@@ -306,7 +306,7 @@ class ZbieznoscMetryczna(Slide):
                       + 0.08 * np.array([kier[0], kier[1], 0]) * e.width / 0.3)
             etykiety.add(e)
         da = Dot(P(a), radius=0.07, color=B).set_z_index(6)
-        ea = MathTex("a", font_size=30, color=B).move_to(da.get_center() + np.array([-0.6, -0.5, 0])).set_z_index(6)
+        ea = MathTex("x", font_size=30, color=B).move_to(da.get_center() + np.array([-0.6, -0.5, 0])).set_z_index(6)
         strz_a = Line(ea.get_corner(UR), da.get_center(), buff=0.08, color=B, stroke_width=2).set_z_index(6)
         ea = VGroup(ea, strz_a)
 
