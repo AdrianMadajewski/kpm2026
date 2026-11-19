@@ -257,17 +257,19 @@ class WniosekOkreslonosc(Slide):
         self.play(FadeIn(zd1, shift=0.2 * UP))
         self.next_slide()
 
-        # Diagram zawierania: metryki ⊂ metryki częściowe.
+        # Diagram zawierania: przestrzenie metryczne ⊂ przestrzenie częściowo metryczne.
         srodek = np.array([0, -1.2, 0])
         duzy = Ellipse(width=8.0, height=4.0, color=KOLOR_CZESCIOWA, stroke_width=4)
         duzy.set_fill(KOLOR_CZESCIOWA, 0.08).move_to(srodek)
         maly = Ellipse(width=3.4, height=1.9, color=KOLOR_METRYKA, stroke_width=4)
         maly.set_fill(KOLOR_METRYKA, 0.15).move_to(srodek + np.array([-1.7, -0.3, 0]))
-        etyk_duzy = Tex(r"metryki częściowe", font_size=34, color=KOLOR_CZESCIOWA)
-        etyk_duzy.move_to(srodek + np.array([1.8, 0.9, 0]))
+        etyk_duzy = VGroup(
+            Tex(r"przestrzenie częściowo", font_size=32, color=KOLOR_CZESCIOWA),
+            Tex(r"metryczne $(X,p)$", font_size=32, color=KOLOR_CZESCIOWA),
+        ).arrange(DOWN, buff=0.1).move_to(srodek + np.array([1.55, 0.45, 0]))
         etyk_maly = VGroup(
-            Tex(r"metryki", font_size=34, color=KOLOR_METRYKA),
-            MathTex(r"p(x,x)=0", font_size=28, color=KOLOR_METRYKA),
+            Tex(r"przestrzenie", font_size=30, color=KOLOR_METRYKA),
+            Tex(r"metryczne $(X,d)$", font_size=30, color=KOLOR_METRYKA),
         ).arrange(DOWN, buff=0.1).move_to(maly)
 
         self.play(GrowFromCenter(duzy), run_time=0.9)
