@@ -128,7 +128,6 @@ class TopologiaMetryczna(Slide):
         self.next_slide()
 
         self.play(FadeOut(VGroup(tekst_kula, k1, d1, e1, promien, etyk_eps)))
-        self.next_slide()
 
         # ================= Krok 3: kule tworzą bazę =================
         tekst2 = kolumna(
