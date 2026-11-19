@@ -9,6 +9,7 @@ Usage:
     python build.py --scene PrzykladMax --html-only  # bundle one already rendered scene into PrzykladMax.html
 """
 import argparse
+from pathlib import Path
 import subprocess
 import sys
 
@@ -68,6 +69,47 @@ def run(cmd):
     subprocess.run(cmd, check=True)
 
 
+# Mały zegar w prawym dolnym rogu: rusza przy pierwszej zmianie slajdu, klawisz T go chowa/pokazuje.
+ZEGAR = """
+<div id="zegar-prezentacji" style="position:fixed;right:1.2vw;bottom:1.6vh;z-index:9999;
+  font-family:ui-monospace,Consolas,monospace;font-size:clamp(11px,1.1vw,22px);
+  color:#888780;opacity:0.75;letter-spacing:0.05em;pointer-events:none;user-select:none;">00:00</div>
+<script>
+(function () {
+  var el = document.getElementById("zegar-prezentacji");
+  var start = null;
+  function fmt(ms) {
+    var s = Math.floor(ms / 1000);
+    return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+  }
+  function startuj() { if (start === null) start = Date.now(); }
+  setInterval(function () { if (start !== null) el.textContent = fmt(Date.now() - start); }, 250);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "t" || e.key === "T") {
+      el.style.visibility = el.style.visibility === "hidden" ? "visible" : "hidden";
+    } else {
+      startuj();
+    }
+  });
+  document.addEventListener("click", startuj);
+  function podepnij() {
+    if (window.Reveal && Reveal.on) { Reveal.on("slidechanged", startuj); Reveal.on("fragmentshown", startuj); }
+    else setTimeout(podepnij, 200);
+  }
+  podepnij();
+})();
+</script>
+"""
+
+
+def dodaj_zegar(path):
+    html = Path(path).read_text(encoding="utf-8")
+    if "zegar-prezentacji" in html:
+        return
+    i = html.rfind("</body>")
+    Path(path).write_text(html[:i] + ZEGAR + html[i:], encoding="utf-8")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--quality", default="p", choices=QUALITY,
@@ -103,6 +145,7 @@ def main():
         "-cslide_number=false",
         "-cprogress=false",
     ])
+    dodaj_zegar(output)
     print(f"Done: {output}")
 
 
