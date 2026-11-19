@@ -258,7 +258,7 @@ class WniosekOkreslonosc(Slide):
         self.next_slide()
 
         # Diagram zawierania: przestrzenie metryczne ⊂ przestrzenie częściowo metryczne.
-        srodek = np.array([0, -1.2, 0])
+        srodek = np.array([0, -0.8, 0])
         duzy = Ellipse(width=8.0, height=4.0, color=KOLOR_CZESCIOWA, stroke_width=4)
         duzy.set_fill(KOLOR_CZESCIOWA, 0.08).move_to(srodek)
         maly = Ellipse(width=3.4, height=1.9, color=KOLOR_METRYKA, stroke_width=4)
